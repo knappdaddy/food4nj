@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food4NJ — Story Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0D1F1A;--forest:#1B3D30;--moss:#2D6A4F;--sage:#52B788;--cream:#FAF7F1;--warm:#FFF9F2;--gold:#C8963E;--mist:#E8F4EE;--border:#D4EAD9;--text:#1A1A1A;--mid:#4A5548;--light:#8A9E8F;--red:#C0392B;--r:16px;--rsm:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* Gate */
+.gate{position:fixed;inset:0;background:var(--night);display:flex;align-items:center;justify-content:center;padding:1.5rem;z-index:999}
+.gate-card{background:var(--warm);border-radius:var(--r);padding:2.5rem 2rem;width:100%;max-width:360px}
+.gate-card h1{font-family:"Cormorant Garamond",serif;font-size:1.9rem;color:var(--forest);margin-bottom:.25rem;font-weight:400}
+.gate-card p{font-size:.85rem;color:var(--mid);margin-bottom:1.5rem;font-weight:300}
+.field label{display:block;font-size:.7rem;font-weight:500;color:var(--moss);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
+.field input{width:100%;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:"Jost",sans-serif;font-size:.92rem;color:var(--text);background:var(--cream);transition:border-color .2s;outline:none}
+.field input:focus{border-color:var(--moss)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;padding:.9rem;border:none;border-radius:var(--rsm);font-family:"Jost",sans-serif;font-size:.96rem;font-weight:500;cursor:pointer;transition:all .2s;margin-top:.85rem}
+.btn-f{background:var(--forest);color:white}
+.btn-f:hover{background:var(--moss)}
+.emsg{color:var(--red);font-size:.78rem;margin-top:.5rem;display:none}
+
+/* Layout */
+.dash{display:none;min-height:100vh;flex-direction:column}
+header{background:var(--night);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hlogo{font-family:"Cormorant Garamond",serif;font-size:1.3rem;color:white;font-weight:400}
+.hlogo span{color:var(--sage)}
+.hback{font-size:.75rem;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
+.hback:hover{color:rgba(255,255,255,.7)}
+
+/* Stats */
+.stats{background:var(--forest);padding:1.25rem 1.5rem;display:flex;gap:2rem;overflow-x:auto}
+.stat-n{font-family:"Cormorant Garamond",serif;font-size:2.2rem;color:white;line-height:1}
+.stat-l{font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem}
+
+/* Filters */
+.filters{padding:.85rem 1.25rem;background:var(--warm);border-bottom:1px solid var(--border);display:flex;gap:.4rem;overflow-x:auto}
+.ftag{background:transparent;border:1px solid var(--border);color:var(--mid);font-size:.72rem;padding:.28rem .7rem;border-radius:20px;cursor:pointer;font-family:"Jost",sans-serif;white-space:nowrap;transition:all .2s}
+.ftag.on{background:var(--forest);border-color:var(--forest);color:white}
+
+/* Feed */
+.feed{padding:1rem 1rem 4rem;max-width:720px;margin:0 auto;width:100%}
+.story{background:white;border-radius:var(--r);border:1px solid var(--border);margin-bottom:1rem;overflow:hidden}
+.story-head{padding:1rem 1.25rem .85rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem}
+.story-name{font-weight:500;color:var(--forest);font-size:.95rem;margin-bottom:.3rem}
+.story-detail{font-size:.78rem;color:var(--light);line-height:1.6}
+.ltag{display:inline-block;background:var(--mist);border:1px solid var(--border);color:var(--moss);font-size:.6rem;font-weight:500;padding:.12rem .45rem;border-radius:10px;text-transform:uppercase;letter-spacing:.05em;margin-left:.35rem;vertical-align:middle}
+.ltag.flagged{background:#fef3cd;border-color:#f0c040;color:#7a5800}
+.actions{display:flex;gap:.4rem;flex-shrink:0}
+.abtn{background:transparent;border:1px solid var(--border);color:var(--mid);font-size:.7rem;padding:.28rem .6rem;border-radius:8px;cursor:pointer;font-family:"Jost",sans-serif;transition:all .2s;white-space:nowrap}
+.abtn:hover{border-color:var(--moss);color:var(--moss)}
+.abtn.active{background:#fef3cd;border-color:#f0c040;color:#7a5800}
+.abtn.del:hover{border-color:var(--red);color:var(--red)}
+video{width:100%;max-height:360px;background:#000;display:block}
+.empty{text-align:center;padding:4rem 1.5rem;color:var(--light);font-size:.9rem}
+.loading{text-align:center;padding:4rem;color:var(--light)}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <h1>&#127807; Food4NJ</h1>
+    <p>Story Archive &mdash; Internal access only</p>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="pw" placeholder="Enter password" autocomplete="current-password">
+    </div>
+    <div class="emsg" id="pw-err">Incorrect password.</div>
+    <button class="btn btn-f" id="btn-login">Sign In</button>
+  </div>
+</div>
+
+<div class="dash" id="dash">
+  <header>
+    <div class="hlogo">Food4<span>NJ</span> &nbsp;&middot;&nbsp; Story Archive</div>
+    <a href="index.html" class="hback">&#8592; Public Site</a>
+  </header>
+
+  <div class="stats">
+    <div><div class="stat-n" id="s-total">—</div><div class="stat-l">Total Stories</div></div>
+    <div><div class="stat-n" id="s-week">—</div><div class="stat-l">This Week</div></div>
+    <div><div class="stat-n" id="s-flagged">—</div><div class="stat-l">Flagged</div></div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="ftag on" data-lang="all">All</button>
+    <button class="ftag" data-lang="en">&#127482;&#127480; English</button>
+    <button class="ftag" data-lang="es">&#127474;&#127485; Spanish</button>
+    <button class="ftag" data-lang="pt">&#127463;&#127479; Portuguese</button>
+    <button class="ftag" data-lang="fr">&#127467;&#127479; French</button>
+    <button class="ftag" data-lang="ht">&#127469;&#127481; Haitian Creole</button>
+    <button class="ftag" data-lang="ar">&#127462;&#127466; Arabic</button>
+    <button class="ftag" data-lang="zh">&#127464;&#127475; Chinese</button>
+    <button class="ftag" data-lang="hi">&#127470;&#127475; Hindi</button>
+    <button class="ftag" data-lang="ro">&#127479;&#127476; Romanian</button>
+    <button class="ftag" data-lang="wo">&#127480;&#127475; Wolof</button>
+  </div>
+
+  <div class="feed" id="feed">
+    <div class="loading">Loading stories&hellip;</div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const PASS = "food4nj";
+const app = initializeApp({
+  apiKey: "AIzaSyBJ2URua1lEEqrDbyMlu0lYcWzzau6JTgg",
+  authDomain: "food-c9f70.firebaseapp.com",
+  projectId: "food-c9f70",
+  storageBucket: "food-c9f70.firebasestorage.app",
+  messagingSenderId: "996978971379",
+  appId: "1:996978971379:web:320daa6c3af43857ab1d86"
+});
+const db = getFirestore(app);
+
+let allStories = [];
+let filterLang = "all";
+
+const LANG_LABELS = {en:"English",es:"Spanish",pt:"Portuguese",fr:"French",ht:"Haitian Creole",ar:"Arabic",zh:"Chinese",hi:"Hindi",ro:"Romanian",wo:"Wolof"};
+
+// Login
+function tryLogin() {
+  if (document.getElementById("pw").value === PASS) {
+    document.getElementById("gate").style.display = "none";
+    document.getElementById("dash").style.display = "flex";
+    loadStories();
+  } else {
+    document.getElementById("pw-err").style.display = "block";
+  }
+}
+document.getElementById("btn-login").addEventListener("click", tryLogin);
+document.getElementById("pw").addEventListener("keydown", e => { if (e.key === "Enter") tryLogin(); });
+
+// Filters
+document.getElementById("filters").addEventListener("click", e => {
+  const btn = e.target.closest(".ftag");
+  if (!btn) return;
+  document.querySelectorAll(".ftag").forEach(b => b.classList.remove("on"));
+  btn.classList.add("on");
+  filterLang = btn.dataset.lang;
+  renderStories();
+});
+
+// Load from Firestore
+async function loadStories() {
+  try {
+    const snap = await getDocs(query(collection(db, "stories"), orderBy("createdAt", "desc")));
+    allStories = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    updateStats();
+    renderStories();
+  } catch(e) {
+    document.getElementById("feed").innerHTML = '<div class="empty">&#9888;&#65039; Could not load stories. Check your connection and Firestore rules.</div>';
+  }
+}
+
+function updateStats() {
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  document.getElementById("s-total").textContent = allStories.length;
+  document.getElementById("s-week").textContent = allStories.filter(s => s.createdAt?.toDate?.() > weekAgo).length;
+  document.getElementById("s-flagged").textContent = allStories.filter(s => s.flagged).length;
+}
+
+function renderStories() {
+  const list = filterLang === "all" ? allStories : allStories.filter(s => s.language === filterLang);
+  const feed = document.getElementById("feed");
+  if (!list.length) {
+    feed.innerHTML = '<div class="empty">No stories yet.</div>';
+    return;
+  }
+  feed.innerHTML = list.map(card).join("");
+  feed.querySelectorAll("[data-flag]").forEach(btn =>
+    btn.addEventListener("click", () => toggleFlag(btn.dataset.flag, btn.dataset.flagged === "true"))
+  );
+  feed.querySelectorAll("[data-del]").forEach(btn =>
+    btn.addEventListener("click", () => deleteStory(btn.dataset.del))
+  );
+}
+
+function card(s) {
+  const date = s.createdAt?.toDate
+    ? s.createdAt.toDate().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" })
+    : "Unknown date";
+  const details = [s.country, s.relation, date].filter(Boolean).join(" &middot; ");
+  return `
+    <div class="story" id="sc-${s.id}">
+      <div class="story-head">
+        <div>
+          <div class="story-name">${s.name || "Anonymous"}${s.flagged ? '<span class="ltag flagged">Flagged</span>' : ''}<span class="ltag">${LANG_LABELS[s.language] || s.language || "—"}</span></div>
+          <div class="story-detail">${details}</div>
+        </div>
+        <div class="actions">
+          <button class="abtn${s.flagged ? ' active' : ''}" data-flag="${s.id}" data-flagged="${!!s.flagged}">&#9873; ${s.flagged ? 'Flagged' : 'Flag'}</button>
+          <button class="abtn del" data-del="${s.id}">Delete</button>
+        </div>
+      </div>
+      ${s.videoUrl
+        ? `<video controls playsinline preload="none" src="${s.videoUrl}"></video>`
+        : '<div style="padding:.5rem 1.25rem 1rem;font-size:.8rem;color:var(--light)">No video attached</div>'
+      }
+    </div>`;
+}
+
+async function toggleFlag(id, currently) {
+  const story = allStories.find(s => s.id === id);
+  if (!story) return;
+  story.flagged = !currently;
+  await updateDoc(doc(db, "stories", id), { flagged: !currently });
+  updateStats();
+  renderStories();
+}
+
+async function deleteStory(id) {
+  if (!confirm("Permanently delete this story? This cannot be undone.")) return;
+  await deleteDoc(doc(db, "stories", id));
+  allStories = allStories.filter(s => s.id !== id);
+  updateStats();
+  renderStories();
+}
+</script>
+</body>
+</html>
