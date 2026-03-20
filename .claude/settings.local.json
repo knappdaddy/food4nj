@@ -10,7 +10,8 @@
       "Bash(printf \"protocol=https\\\\nhost=github.com\\\\n\")",
       "Bash(git credential-osxkeychain:*)",
       "Bash(security find-internet-password:*)",
-      "Bash(security find-generic-password:*)"
+      "Bash(security find-generic-password:*)",
+      "WebFetch(domain:knappdaddy.github.io)"
     ]
   }
 }
