@@ -8,7 +8,9 @@
       "Bash(git push:*)",
       "Bash(gh auth:*)",
       "Bash(printf \"protocol=https\\\\nhost=github.com\\\\n\")",
-      "Bash(git credential-osxkeychain:*)"
+      "Bash(git credential-osxkeychain:*)",
+      "Bash(security find-internet-password:*)",
+      "Bash(security find-generic-password:*)"
     ]
   }
 }
