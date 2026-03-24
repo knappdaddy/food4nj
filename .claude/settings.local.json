@@ -11,7 +11,10 @@
       "Bash(git credential-osxkeychain:*)",
       "Bash(security find-internet-password:*)",
       "Bash(security find-generic-password:*)",
-      "WebFetch(domain:knappdaddy.github.io)"
+      "WebFetch(domain:knappdaddy.github.io)",
+      "WebFetch(domain:www.food4nj.org)",
+      "Bash(git checkout:*)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }

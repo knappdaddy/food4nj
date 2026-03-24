@@ -16,6 +16,7 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text);-we
 .gate-card{background:var(--warm);border-radius:var(--r);padding:2.5rem 2rem;width:100%;max-width:360px}
 .gate-card h1{font-family:"Cormorant Garamond",serif;font-size:1.9rem;color:var(--forest);margin-bottom:.25rem;font-weight:400}
 .gate-card p{font-size:.85rem;color:var(--mid);margin-bottom:1.5rem;font-weight:300}
+.field{margin-bottom:.85rem}
 .field label{display:block;font-size:.7rem;font-weight:500;color:var(--moss);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
 .field input{width:100%;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:"Jost",sans-serif;font-size:.92rem;color:var(--text);background:var(--cream);transition:border-color .2s;outline:none}
 .field input:focus{border-color:var(--moss)}
@@ -29,8 +30,9 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text);-we
 header{background:var(--night);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .hlogo{font-family:"Cormorant Garamond",serif;font-size:1.3rem;color:white;font-weight:400}
 .hlogo span{color:var(--sage)}
-.hback{font-size:.75rem;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
-.hback:hover{color:rgba(255,255,255,.7)}
+.hright{display:flex;align-items:center;gap:1rem}
+.hback{font-size:.75rem;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;background:none;border:none;cursor:pointer;font-family:"Jost",sans-serif}
+.hback:hover{color:rgba(255,255,255,.75)}
 
 /* Stats */
 .stats{background:var(--forest);padding:1.25rem 1.5rem;display:flex;gap:2rem;overflow-x:auto}
@@ -38,24 +40,47 @@ header{background:var(--night);padding:1rem 1.5rem;display:flex;align-items:cent
 .stat-l{font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem}
 
 /* Filters */
-.filters{padding:.85rem 1.25rem;background:var(--warm);border-bottom:1px solid var(--border);display:flex;gap:.4rem;overflow-x:auto}
+.filters{padding:.85rem 1.25rem;background:var(--warm);border-bottom:1px solid var(--border);display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
 .ftag{background:transparent;border:1px solid var(--border);color:var(--mid);font-size:.72rem;padding:.28rem .7rem;border-radius:20px;cursor:pointer;font-family:"Jost",sans-serif;white-space:nowrap;transition:all .2s}
 .ftag.on{background:var(--forest);border-color:var(--forest);color:white}
 
 /* Feed */
-.feed{padding:1rem 1rem 4rem;max-width:720px;margin:0 auto;width:100%}
-.story{background:white;border-radius:var(--r);border:1px solid var(--border);margin-bottom:1rem;overflow:hidden}
+.feed{padding:1rem 1rem 4rem;max-width:760px;margin:0 auto;width:100%}
+.story{background:white;border-radius:var(--r);border:1px solid var(--border);margin-bottom:1.25rem;overflow:hidden}
 .story-head{padding:1rem 1.25rem .85rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem}
 .story-name{font-weight:500;color:var(--forest);font-size:.95rem;margin-bottom:.3rem}
 .story-detail{font-size:.78rem;color:var(--light);line-height:1.6}
 .ltag{display:inline-block;background:var(--mist);border:1px solid var(--border);color:var(--moss);font-size:.6rem;font-weight:500;padding:.12rem .45rem;border-radius:10px;text-transform:uppercase;letter-spacing:.05em;margin-left:.35rem;vertical-align:middle}
 .ltag.flagged{background:#fef3cd;border-color:#f0c040;color:#7a5800}
-.actions{display:flex;gap:.4rem;flex-shrink:0}
+.actions{display:flex;gap:.4rem;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
 .abtn{background:transparent;border:1px solid var(--border);color:var(--mid);font-size:.7rem;padding:.28rem .6rem;border-radius:8px;cursor:pointer;font-family:"Jost",sans-serif;transition:all .2s;white-space:nowrap}
 .abtn:hover{border-color:var(--moss);color:var(--moss)}
 .abtn.active{background:#fef3cd;border-color:#f0c040;color:#7a5800}
 .abtn.del:hover{border-color:var(--red);color:var(--red)}
-video{width:100%;max-height:360px;background:#000;display:block}
+.abtn:disabled{opacity:.45;cursor:not-allowed}
+
+/* Video — full width, no height cap */
+video{width:100%;background:#000;display:block}
+
+/* Transcript panel */
+.tx-panel{border-top:1px solid var(--border);padding:1rem 1.25rem;background:var(--mist);display:none}
+.tx-label{font-size:.65rem;font-weight:500;color:var(--moss);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem}
+.tx-text{font-size:.86rem;color:var(--text);line-height:1.7;white-space:pre-wrap}
+.tx-divider{border-top:1px solid var(--border);margin:.85rem 0}
+.tx-loading{font-size:.82rem;color:var(--mid);font-style:italic}
+.tx-error{font-size:.82rem;color:var(--red)}
+
+/* Settings overlay */
+.sett-ov{position:fixed;inset:0;background:rgba(13,31,26,.88);display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem}
+.sett-card{background:var(--warm);border-radius:var(--r);padding:2rem 2rem 1.5rem;width:100%;max-width:440px}
+.sett-card h3{font-family:"Cormorant Garamond",serif;font-size:1.5rem;color:var(--forest);margin-bottom:.25rem;font-weight:400}
+.sett-card .hint{font-size:.78rem;color:var(--mid);margin-bottom:1.25rem;font-weight:300;line-height:1.55}
+.sett-card .hint a{color:var(--moss)}
+.sett-row{display:flex;gap:.5rem;margin-top:1rem}
+.btn-sm{flex:1;padding:.65rem;font-size:.83rem;margin-top:0}
+
+/* Misc */
 .empty{text-align:center;padding:4rem 1.5rem;color:var(--light);font-size:.9rem}
 .loading{text-align:center;padding:4rem;color:var(--light)}
 </style>
@@ -78,7 +103,10 @@ video{width:100%;max-height:360px;background:#000;display:block}
 <div class="dash" id="dash">
   <header>
     <div class="hlogo">Food4<span>NJ</span> &nbsp;&middot;&nbsp; Story Archive</div>
-    <a href="index.html" class="hback">&#8592; Public Site</a>
+    <div class="hright">
+      <button class="hback" id="sett-btn">&#9881; Settings</button>
+      <a href="index.html" class="hback">&#8592; Public Site</a>
+    </div>
   </header>
 
   <div class="stats">
@@ -106,6 +134,29 @@ video{width:100%;max-height:360px;background:#000;display:block}
   </div>
 </div>
 
+<!-- Settings modal -->
+<div class="sett-ov" id="sett-ov">
+  <div class="sett-card">
+    <h3>&#9881; Settings</h3>
+    <p class="hint">
+      <strong>AssemblyAI</strong> transcribes the video audio. Free account at <a href="https://www.assemblyai.com" target="_blank">assemblyai.com</a> — copy your key from the dashboard.<br><br>
+      <strong>Anthropic</strong> translates non-English transcripts to English. Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.
+    </p>
+    <div class="field">
+      <label>AssemblyAI API Key</label>
+      <input type="password" id="aai-key" placeholder="Paste your AssemblyAI key">
+    </div>
+    <div class="field">
+      <label>Anthropic API Key</label>
+      <input type="password" id="ant-key" placeholder="Paste your Anthropic key">
+    </div>
+    <div class="sett-row">
+      <button class="btn btn-f btn-sm" id="sett-save">Save</button>
+      <button class="btn btn-sm" style="background:var(--border);color:var(--mid)" id="sett-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -126,7 +177,7 @@ let filterLang = "all";
 
 const LANG_LABELS = {en:"English",es:"Spanish",pt:"Portuguese",fr:"French",ht:"Haitian Creole",ar:"Arabic",zh:"Chinese",hi:"Hindi",ro:"Romanian",wo:"Wolof"};
 
-// Login
+// ── Auth ──────────────────────────────────────────────
 function tryLogin() {
   if (document.getElementById("pw").value === PASS) {
     document.getElementById("gate").style.display = "none";
@@ -139,7 +190,25 @@ function tryLogin() {
 document.getElementById("btn-login").addEventListener("click", tryLogin);
 document.getElementById("pw").addEventListener("keydown", e => { if (e.key === "Enter") tryLogin(); });
 
-// Filters
+// ── Settings ──────────────────────────────────────────
+const getAAI = () => localStorage.getItem("f4nj_aai") || "";
+const getAnt = () => localStorage.getItem("f4nj_ant") || "";
+
+document.getElementById("sett-btn").addEventListener("click", () => {
+  document.getElementById("aai-key").value = getAAI();
+  document.getElementById("ant-key").value = getAnt();
+  document.getElementById("sett-ov").style.display = "flex";
+});
+document.getElementById("sett-save").addEventListener("click", () => {
+  localStorage.setItem("f4nj_aai", document.getElementById("aai-key").value.trim());
+  localStorage.setItem("f4nj_ant", document.getElementById("ant-key").value.trim());
+  document.getElementById("sett-ov").style.display = "none";
+});
+document.getElementById("sett-cancel").addEventListener("click", () => {
+  document.getElementById("sett-ov").style.display = "none";
+});
+
+// ── Filters ───────────────────────────────────────────
 document.getElementById("filters").addEventListener("click", e => {
   const btn = e.target.closest(".ftag");
   if (!btn) return;
@@ -149,7 +218,7 @@ document.getElementById("filters").addEventListener("click", e => {
   renderStories();
 });
 
-// Load from Firestore
+// ── Data ──────────────────────────────────────────────
 async function loadStories() {
   try {
     const snap = await getDocs(query(collection(db, "stories"), orderBy("createdAt", "desc")));
@@ -171,16 +240,16 @@ function updateStats() {
 function renderStories() {
   const list = filterLang === "all" ? allStories : allStories.filter(s => s.language === filterLang);
   const feed = document.getElementById("feed");
-  if (!list.length) {
-    feed.innerHTML = '<div class="empty">No stories yet.</div>';
-    return;
-  }
+  if (!list.length) { feed.innerHTML = '<div class="empty">No stories yet.</div>'; return; }
   feed.innerHTML = list.map(card).join("");
   feed.querySelectorAll("[data-flag]").forEach(btn =>
     btn.addEventListener("click", () => toggleFlag(btn.dataset.flag, btn.dataset.flagged === "true"))
   );
   feed.querySelectorAll("[data-del]").forEach(btn =>
     btn.addEventListener("click", () => deleteStory(btn.dataset.del))
+  );
+  feed.querySelectorAll("[data-transcribe]").forEach(btn =>
+    btn.addEventListener("click", () => transcribe(btn.dataset.transcribe, btn.dataset.video, btn.dataset.lang))
   );
 }
 
@@ -197,6 +266,7 @@ function card(s) {
           <div class="story-detail">${details}</div>
         </div>
         <div class="actions">
+          <button class="abtn" data-transcribe="${s.id}" data-video="${s.videoUrl || ''}" data-lang="${s.language || 'en'}">&#128221; Transcribe</button>
           <button class="abtn${s.flagged ? ' active' : ''}" data-flag="${s.id}" data-flagged="${!!s.flagged}">&#9873; ${s.flagged ? 'Flagged' : 'Flag'}</button>
           <button class="abtn del" data-del="${s.id}">Delete</button>
         </div>
@@ -205,9 +275,11 @@ function card(s) {
         ? `<video controls playsinline preload="none" src="${s.videoUrl}"></video>`
         : '<div style="padding:.5rem 1.25rem 1rem;font-size:.8rem;color:var(--light)">No video attached</div>'
       }
+      <div class="tx-panel" id="tx-${s.id}"></div>
     </div>`;
 }
 
+// ── Actions ───────────────────────────────────────────
 async function toggleFlag(id, currently) {
   const story = allStories.find(s => s.id === id);
   if (!story) return;
@@ -223,6 +295,98 @@ async function deleteStory(id) {
   allStories = allStories.filter(s => s.id !== id);
   updateStats();
   renderStories();
+}
+
+// ── Transcription ─────────────────────────────────────
+async function transcribe(id, videoUrl, lang) {
+  const aaiKey = getAAI();
+  if (!aaiKey) {
+    document.getElementById("sett-btn").click();
+    return;
+  }
+  if (!videoUrl) return;
+
+  const panel = document.getElementById(`tx-${id}`);
+  const btn = document.querySelector(`[data-transcribe="${id}"]`);
+  panel.style.display = "block";
+  panel.innerHTML = '<div class="tx-loading">&#8987; Transcribing&hellip; this usually takes 20&ndash;40 seconds.</div>';
+  btn.disabled = true;
+  btn.textContent = "Transcribing…";
+
+  try {
+    // 1. Submit to AssemblyAI
+    const submitRes = await fetch("https://api.assemblyai.com/v2/transcript", {
+      method: "POST",
+      headers: { "authorization": aaiKey, "content-type": "application/json" },
+      body: JSON.stringify({ audio_url: videoUrl, language_detection: true, speech_model: "universal-2" })
+    });
+    const submit = await submitRes.json();
+    if (submit.error) throw new Error(submit.error);
+
+    // 2. Poll until done
+    let result;
+    while (true) {
+      await new Promise(r => setTimeout(r, 3500));
+      const pollRes = await fetch(`https://api.assemblyai.com/v2/transcript/${submit.id}`, {
+        headers: { "authorization": aaiKey }
+      });
+      result = await pollRes.json();
+      if (result.status === "completed") break;
+      if (result.status === "error") throw new Error(result.error);
+    }
+
+    const transcript = result.text || "(No speech detected)";
+    const detectedLang = result.language_code;
+    const langLabel = LANG_LABELS[detectedLang] || detectedLang || "Unknown";
+    const isEnglish = !detectedLang || detectedLang === "en";
+
+    let html = `
+      <div class="tx-label">Transcript${!isEnglish ? ` &mdash; ${langLabel}` : ''}</div>
+      <div class="tx-text">${transcript}</div>`;
+
+    // 3. If non-English, translate via Claude
+    if (!isEnglish) {
+      const antKey = getAnt();
+      if (antKey) {
+        panel.innerHTML = html + '<div class="tx-divider"></div><div class="tx-loading">Translating to English&hellip;</div>';
+        const translation = await translateToEnglish(transcript, antKey);
+        html += `<div class="tx-divider"></div>
+          <div class="tx-label">English Translation</div>
+          <div class="tx-text">${translation}</div>`;
+      } else {
+        html += `<div class="tx-divider"></div><div class="tx-loading">Add an Anthropic key in &#9881; Settings to auto-translate.</div>`;
+      }
+    }
+
+    panel.innerHTML = html;
+    btn.textContent = "↺ Re-transcribe";
+    btn.disabled = false;
+
+  } catch(e) {
+    panel.innerHTML = `<div class="tx-error">&#9888; ${e.message}</div>`;
+    btn.textContent = "&#128221; Transcribe";
+    btn.disabled = false;
+  }
+}
+
+async function translateToEnglish(text, antKey) {
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "x-api-key": antKey,
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json",
+      "anthropic-dangerous-direct-browser-access": "true"
+    },
+    body: JSON.stringify({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 1024,
+      messages: [{ role: "user", content: `Translate the following to English. Return only the translation, no explanation:\n\n${text}` }]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content?.[0]?.text || "Translation unavailable.";
 }
 </script>
 </body>

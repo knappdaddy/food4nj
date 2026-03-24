@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food4NJ — Print QR Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── Screen wrapper ── */
+body{
+  font-family:"Jost",sans-serif;
+  background:#e8ede9;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+  gap:1.5rem;
+}
+
+.screen-label{
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#5a7a66;
+}
+
+/* ── Card ── */
+.card{
+  width:7.5in;
+  height:4in;
+  background:#1B3D30;
+  border-radius:18px;
+  display:flex;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.22);
+}
+
+/* Left text panel */
+.card-left{
+  flex:1;
+  padding:.55in .55in .5in .6in;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.c-logo{
+  font-family:"Cormorant Garamond",serif;
+  font-size:1rem;
+  color:rgba(255,255,255,.38);
+  font-weight:400;
+  letter-spacing:.06em;
+}
+.c-logo span{color:#52B788}
+
+.c-headline{
+  font-family:"Cormorant Garamond",serif;
+  font-size:2.9rem;
+  color:white;
+  line-height:1.05;
+  font-weight:400;
+  margin-top:.15in;
+}
+.c-headline em{color:#52B788;font-style:italic}
+
+.c-sub{
+  font-size:.72rem;
+  color:rgba(255,255,255,.38);
+  font-weight:300;
+  margin-top:.12in;
+  letter-spacing:.01em;
+}
+
+.c-langs{
+  display:flex;
+  flex-direction:column;
+  gap:.18rem;
+  margin-top:auto;
+}
+.c-lang{
+  font-size:.68rem;
+  color:rgba(255,255,255,.48);
+  font-weight:300;
+  line-height:1.5;
+}
+.c-lang strong{
+  color:rgba(255,255,255,.82);
+  font-weight:500;
+}
+
+/* Right QR panel */
+.card-right{
+  width:2.4in;
+  background:#122B21;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:.35rem;
+  padding:.4in .35in;
+  border-left:1px solid rgba(255,255,255,.06);
+}
+
+.qr-box{
+  background:white;
+  padding:10px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.qr-url{
+  font-size:.58rem;
+  color:rgba(255,255,255,.32);
+  text-align:center;
+  letter-spacing:.04em;
+  font-weight:400;
+}
+
+/* ── Print button ── */
+.print-btn{
+  background:#1B3D30;
+  color:white;
+  border:none;
+  padding:.75rem 2rem;
+  border-radius:10px;
+  font-family:"Jost",sans-serif;
+  font-size:.9rem;
+  font-weight:500;
+  cursor:pointer;
+  letter-spacing:.03em;
+  box-shadow:0 4px 16px rgba(27,61,48,.3);
+  transition:background .2s;
+}
+.print-btn:hover{background:#2D6A4F}
+
+/* ── Print styles ── */
+@media print{
+  @page{size:letter portrait;margin:.5in}
+  body{
+    background:white;
+    padding:0;
+    gap:.35in;
+    justify-content:flex-start;
+    padding-top:.1in;
+  }
+  .screen-label,.print-btn{display:none}
+  .card{
+    border-radius:12px;
+    width:100%;
+    height:auto;
+    box-shadow:none;
+    break-inside:avoid;
+  }
+  /* force two cards to fit on one page */
+  .card:first-of-type{margin-bottom:.2in}
+}
+</style>
+</head>
+<body>
+
+<div class="screen-label">Food4NJ · Printable QR Cards · 2 per page</div>
+
+<!-- Card 1 -->
+<div class="card">
+  <div class="card-left">
+    <div class="c-logo">&#127807; Food4<span>NJ</span></div>
+    <div>
+      <div class="c-headline">You are <em>not&nbsp;alone.</em></div>
+      <div class="c-sub">Food4NJ is here with you outside Delaney Hall.</div>
+    </div>
+    <div class="c-langs">
+      <div class="c-lang"><strong>🇺🇸 EN</strong>&nbsp;&nbsp;Scan to share your story</div>
+      <div class="c-lang"><strong>🇲🇽 ES</strong>&nbsp;&nbsp;Escanea para compartir tu historia</div>
+      <div class="c-lang"><strong>🇧🇷 PT</strong>&nbsp;&nbsp;Digitalize para compartilhar sua história</div>
+      <div class="c-lang"><strong>🇫🇷 FR</strong>&nbsp;&nbsp;Scannez pour partager votre histoire</div>
+      <div class="c-lang"><strong>🇭🇹 HT</strong>&nbsp;&nbsp;Eskane pou pataje istwa ou</div>
+    </div>
+  </div>
+  <div class="card-right">
+    <div class="qr-box"><canvas id="qr1"></canvas></div>
+    <div class="qr-url">tinyurl.com/food4nj</div>
+  </div>
+</div>
+
+<!-- Card 2 (identical — 2 per printed page) -->
+<div class="card">
+  <div class="card-left">
+    <div class="c-logo">&#127807; Food4<span>NJ</span></div>
+    <div>
+      <div class="c-headline">You are <em>not&nbsp;alone.</em></div>
+      <div class="c-sub">Food4NJ is here with you outside Delaney Hall.</div>
+    </div>
+    <div class="c-langs">
+      <div class="c-lang"><strong>🇺🇸 EN</strong>&nbsp;&nbsp;Scan to share your story</div>
+      <div class="c-lang"><strong>🇲🇽 ES</strong>&nbsp;&nbsp;Escanea para compartir tu historia</div>
+      <div class="c-lang"><strong>🇧🇷 PT</strong>&nbsp;&nbsp;Digitalize para compartilhar sua história</div>
+      <div class="c-lang"><strong>🇫🇷 FR</strong>&nbsp;&nbsp;Scannez pour partager votre histoire</div>
+      <div class="c-lang"><strong>🇭🇹 HT</strong>&nbsp;&nbsp;Eskane pou pataje istwa ou</div>
+    </div>
+  </div>
+  <div class="card-right">
+    <div class="qr-box"><canvas id="qr2"></canvas></div>
+    <div class="qr-url">tinyurl.com/food4nj</div>
+  </div>
+</div>
+
+<button class="print-btn" onclick="window.print()">&#128424; Print Cards</button>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script>
+const URL = "https://tinyurl.com/food4nj";
+const opts = { width:170, margin:1, color:{ dark:"#0D1F1A", light:"#ffffff" } };
+QRCode.toCanvas(document.getElementById("qr1"), URL, opts);
+QRCode.toCanvas(document.getElementById("qr2"), URL, opts);
+</script>
+</body>
+</html>
