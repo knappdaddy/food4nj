@@ -66,6 +66,21 @@ header{position:sticky;top:0;z-index:50;background:rgba(10,14,23,.9);
 .modebar button .dot{width:6px;height:6px;border-radius:50%;background:#f2683c;
   box-shadow:0 0 0 0 rgba(242,104,60,.6);animation:pulse 1.6s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,104,60,.6)}70%{box-shadow:0 0 0 7px rgba(242,104,60,0)}100%{box-shadow:0 0 0 0 rgba(242,104,60,0)}}
+.leaguebar{display:flex;gap:.4rem;margin-top:.6rem}
+.leaguebar button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--mid);padding:.5rem;
+  border-radius:10px;font-size:.82rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.4rem;transition:.15s}
+.leaguebar button.on{background:#1c6b58;border-color:#1c6b58;color:#fff;box-shadow:0 3px 12px rgba(45,212,167,.3)}
+.confwrap{display:flex;align-items:center;gap:.35rem;margin:.2rem 0 .8rem}
+.confarrow{flex:0 0 auto;width:28px;height:30px;border-radius:8px;background:var(--panel2);border:1px solid var(--line);
+  color:var(--mid);font-size:1rem;line-height:1;display:grid;place-items:center}
+.confarrow:active{transform:scale(.9)}
+.confbar{display:flex;gap:.4rem;overflow-x:auto;padding:.15rem 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.confbar::-webkit-scrollbar{display:none}
+.confpill{flex:0 0 auto;background:var(--panel2);border:1px solid var(--line);color:var(--mid);border-radius:20px;
+  padding:.35rem .8rem;font-size:.76rem;font-weight:600;white-space:nowrap;transition:.15s}
+.confpill.on{background:var(--under-d);border-color:#1c6b58;color:var(--under)}
+.rk{display:inline-block;font-size:.58rem;font-weight:700;color:var(--warn);background:#2a2410;border:1px solid #4a3d15;
+  border-radius:4px;padding:.03rem .28rem;vertical-align:middle;margin-right:.05rem;font-family:"Inter"}
 
 /* ---- tabs ---- */
 nav.tabs{display:flex;gap:.3rem;padding:.6rem 1rem 0}
@@ -277,6 +292,10 @@ main{padding:.4rem 1rem 3rem}
       </div>
     </div>
     <div class="dstat load" id="dstat"><span class="d"></span><span id="dstatTxt">Loading live data…</span></div>
+    <div class="leaguebar">
+      <button id="lNFL" class="on" onclick="setLeague('nfl')">🏈 NFL</button>
+      <button id="lCFB" onclick="setLeague('cfb')">🎓 College</button>
+    </div>
     <div class="modebar">
       <button id="mPre" class="on" onclick="setMode('pre')">📅 Pre-Game</button>
       <button id="mLive" onclick="setMode('live')"><span class="dot"></span> Live</button>
@@ -292,6 +311,11 @@ main{padding:.4rem 1rem 3rem}
   <main>
     <!-- GAMES TAB -->
     <section id="tab-games">
+      <div class="confwrap" id="confbar" style="display:none">
+        <button class="confarrow" onclick="cycleConf(-1)" aria-label="Previous conference">‹</button>
+        <div class="confbar" id="confPills"></div>
+        <button class="confarrow" onclick="cycleConf(1)" aria-label="Next conference">›</button>
+      </div>
       <div class="strip">
         <div class="stat"><div class="n" id="sGames">–</div><div class="l">Games</div></div>
         <div class="stat"><div class="n u" id="sUnders">–</div><div class="l">Weather Unders</div></div>
@@ -549,6 +573,15 @@ const VENUES = {
 
 /* ---------- LIVE DATA LAYER ---------- */
 const ESPN_URL = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+const CFB_URL  = 'https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard';
+const GEO_URL  = 'https://geocoding-api.open-meteo.com/v1/search';
+// ESPN conference "groups" ids; top25 = filter to AP-ranked games client-side
+const CONFERENCES = [
+  {id:'top25',name:'AP Top 25'}, {id:'8',name:'SEC'}, {id:'5',name:'Big Ten'},
+  {id:'4',name:'Big 12'}, {id:'1',name:'ACC'}, {id:'151',name:'American'},
+  {id:'17',name:'Mtn West'}, {id:'37',name:'Sun Belt'}, {id:'15',name:'MAC'},
+  {id:'12',name:'C-USA'}, {id:'18',name:'Independent'}, {id:'9',name:'Pac-12'}, {id:'80',name:'All FBS'}
+];
 
 function classifyPrecip(code, mm){
   const snow = [71,73,75,77,85,86].includes(code);
@@ -647,7 +680,8 @@ const normTeam = s => (s||'').toLowerCase().replace(/[^a-z]/g,'');
 async function applyOddsAPI(games){
   const key = localStorage.getItem('uc_oddskey'); if(!key) return null;
   const book = localStorage.getItem('uc_book') || 'fanduel';
-  const u = `https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/?apiKey=${encodeURIComponent(key)}`
+  const sport = LEAGUE==='cfb' ? 'americanfootball_ncaaf' : 'americanfootball_nfl';
+  const u = `https://api.the-odds-api.com/v4/sports/${sport}/odds/?apiKey=${encodeURIComponent(key)}`
     + `&regions=us&markets=totals&oddsFormat=american&bookmakers=${book}`;
   const arr = await fetchJSON(u);
   const map = {};
@@ -661,7 +695,83 @@ async function applyOddsAPI(games){
   return label;
 }
 
+/* ---------- COLLEGE FOOTBALL ---------- */
+function rankOf(cmp){ const r = cmp.curatedRank && cmp.curatedRank.current; return (r && r<=25) ? r : null; }
+function buildGamesFromCFB(d){
+  return (d.events||[]).map(ev=>{
+    const c = ev.competitions[0];
+    const home = c.competitors.find(x=>x.homeAway==='home') || c.competitors[0];
+    const away = c.competitors.find(x=>x.homeAway==='away') || c.competitors[1];
+    const venue = c.venue || {};
+    const roof = venue.indoor ? 'dome' : 'open';
+    const addr = venue.address || {};
+    const city = addr.city ? (addr.city + (addr.state ? ', ' + addr.state : '')) : '';
+    const odds = c.odds && c.odds[0];
+    const total = odds && odds.overUnder!=null ? +odds.overUnder : null;
+    const st = c.status.type.state;
+    const g = {
+      id: ev.id, league:'cfb', kickISO: ev.date, kick: fmtKick(ev.date), kickSort: new Date(ev.date).getTime(),
+      away: away.team.displayName, home: home.team.displayName,
+      awayAb: away.team.abbreviation || away.team.shortDisplayName,
+      homeAb: home.team.abbreviation || home.team.shortDisplayName,
+      awayRank: rankOf(away), homeRank: rankOf(home),
+      venue: venue.fullName || '', city, roof, lat:null, lon:null,
+      marketTotal: total, liveTotal: total,
+      book: odds && odds.provider ? odds.provider.name : 'Consensus', weather:null,
+      live: { state:st, period:c.status.period, clock:c.status.displayClock, homeScore:home.score, awayScore:away.score }
+    };
+    if(st==='in') Object.assign(g.live, livePace(c.status, home.score, away.score));
+    return g;
+  });
+}
+// Colleges have no fixed coord map — geocode the venue city (cached) via Open-Meteo's keyless geocoder.
+let GEO = {}; try{ GEO = JSON.parse(localStorage.getItem('uc_geo')||'{}'); }catch(e){ GEO = {}; }
+async function geocode(city, state){
+  const k = (city+'|'+(state||'')).toLowerCase();
+  if(GEO[k]) return GEO[k];
+  const d = await fetchJSON(`${GEO_URL}?name=${encodeURIComponent(city)}&count=5&language=en&format=json`, 9000);
+  let hits = (d.results||[]).filter(r=>r.country_code==='US');
+  if(!hits.length) hits = d.results||[];
+  let hit = hits[0];
+  if(state){ const m = hits.find(r=>(r.admin1_id&&r.admin1&&r.admin1.toLowerCase().startsWith(state.toLowerCase()))
+    || (US_STATE[state] && r.admin1===US_STATE[state])); if(m) hit = m; }
+  if(!hit) return null;
+  const res = {lat:hit.latitude, lon:hit.longitude};
+  GEO[k]=res; try{ localStorage.setItem('uc_geo', JSON.stringify(GEO)); }catch(e){}
+  return res;
+}
+const US_STATE = {AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',CT:'Connecticut',
+  DE:'Delaware',FL:'Florida',GA:'Georgia',HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',
+  KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',
+  MO:'Missouri',MT:'Montana',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NY:'New York',
+  NC:'North Carolina',ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',
+  SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',WA:'Washington',
+  WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming'};
+async function attachGeo(games){
+  await Promise.all(games.map(async g=>{
+    if(g.lat!=null || g.roof!=='open' || !g.city) return;
+    try{ const [c,s] = g.city.split(',').map(x=>x.trim()); const geo = await geocode(c, s); if(geo){ g.lat=geo.lat; g.lon=geo.lon; } }
+    catch(e){}
+  }));
+}
+
 /* ---------- SAMPLE fallback (used when live fetch is blocked) ---------- */
+function sampleCFB(){
+  const w=(tempF,windMph,gust,precipType,precipIntensity,precipProb,humidity,sky)=>({tempF,windMph,gust,precipType,precipIntensity,precipProb,humidity,sky});
+  const g=(aR,away,aAb,hR,home,hAb,venue,city,roof,kick,mkt,live,weather)=>
+    ({id:aAb+hAb,league:'cfb',away,home,awayAb:aAb,homeAb:hAb,awayRank:aR,homeRank:hR,venue,city,roof,kick,kickSort:0,
+      marketTotal:mkt,liveTotal:live,book:'Consensus',weather,live:{state:'pre'}});
+  return [
+    g(6,'Michigan','MICH',null,'Washington','WASH','Husky Stadium','Seattle, WA','open','Sat 3:30 PM ET',48.5,45.5, w(58,17,24,'rain','moderate',80,84,'Steady Seattle rain, breezy')),
+    g(7,'Oregon','ORE',10,'Penn State','PSU','Beaver Stadium','University Park, PA','open','Sat 7:30 PM ET',52.5,50.5, w(49,20,28,'rain','light',55,72,'White Out night, gusty & cool')),
+    g(1,'Georgia','UGA',12,'Tennessee','TENN','Neyland Stadium','Knoxville, TN','open','Sat 3:30 PM ET',53.5,52.5, w(72,8,12,'none','none',35,60,'Warm, partly cloudy')),
+    g(4,'Ohio State','OSU',3,'Texas','TEX','DKR-Texas Memorial','Austin, TX','open','Sat 12:00 PM ET',49.5,48.5, w(96,7,10,'none','none',20,55,'Hot early-season sun')),
+    g(9,'Ole Miss','MISS',20,'LSU','LSU','Tiger Stadium','Baton Rouge, LA','open','Sat 7:00 PM ET',58.5,57.5, w(88,6,9,'rain','light',45,82,'Muggy night, stray showers')),
+    g(5,'Alabama','ALA',null,'Missouri','MIZ','Faurot Field','Columbia, MO','open','Sat 12:00 PM ET',51.5,50.5, w(64,14,19,'none','none',25,58,'Breezy, clear')),
+    g(8,'Notre Dame','ND',15,'USC','USC','LA Memorial Coliseum','Los Angeles, CA','open','Sat 8:00 PM ET',55.5,54.5, w(78,5,7,'none','none',10,45,'Warm, calm SoCal evening')),
+    g(18,'Iowa','IOWA',null,'Syracuse','SYR','JMA Wireless Dome','Syracuse, NY','dome','Sat 12:00 PM ET',43.5,42.5, {indoorNeutral:true})
+  ];
+}
 function sampleGames(){
   const w=(tempF,windMph,gust,precipType,precipIntensity,precipProb,humidity,sky)=>
     ({tempF,windMph,gust,precipType,precipIntensity,precipProb,humidity,sky});
@@ -685,7 +795,7 @@ function sampleGames(){
 
 /* ---------- STATE ---------- */
 const STATE = { games:[], live:false, loading:true, err:null, week:null, season:null };
-let MODE='pre', TAB='games';
+let MODE='pre', TAB='games', LEAGUE='nfl', CONF='top25';
 
 function setLoading(on){
   STATE.loading = on;
@@ -695,25 +805,38 @@ function setLoading(on){
 }
 function setStatus(){
   const ds=document.getElementById('dstat'), txt=document.getElementById('dstatTxt');
+  const scope = LEAGUE==='cfb' ? ('College · ' + (CONFERENCES.find(c=>c.id===CONF)||{}).name) : 'NFL';
   if(STATE.live){ ds.className='dstat on';
-    txt.innerHTML = 'Live · <b>ESPN + Open-Meteo</b> · totals from ' + (STATE.games[0]?.book||'consensus'); }
+    txt.innerHTML = `<b>${scope}</b> · live ESPN + Open-Meteo`; }
   else { ds.className='dstat off';
-    txt.innerHTML = 'Sample slate · <b>deploy to your site for live data</b>'; }
+    txt.innerHTML = `<b>${scope}</b> · sample slate — deploy for live data`; }
 }
 
 async function loadData(){
   setLoading(true); renderSkeleton();
   try{
-    const d = await fetchJSON(ESPN_URL, 9000);
-    const games = buildGamesFromESPN(d);
-    if(!games.length) throw new Error('no games');
-    STATE.week = d.week && d.week.number; STATE.season = d.season && d.season.year;
-    await attachWeather(games);
+    let games;
+    if(LEAGUE==='cfb'){
+      const url = CFB_URL + (CONF==='top25' ? '?groups=80&limit=200' : `?groups=${CONF}&limit=200`);
+      const d = await fetchJSON(url, 10000);
+      games = buildGamesFromCFB(d);
+      if(CONF==='top25') games = games.filter(g=>g.awayRank || g.homeRank);
+      if(!games.length) throw new Error('no games');
+      STATE.week = d.week && d.week.number; STATE.season = d.season && d.season.year;
+      await attachGeo(games);
+      await attachWeather(games);
+    } else {
+      const d = await fetchJSON(ESPN_URL, 9000);
+      games = buildGamesFromESPN(d);
+      if(!games.length) throw new Error('no games');
+      STATE.week = d.week && d.week.number; STATE.season = d.season && d.season.year;
+      await attachWeather(games);
+    }
     try{ await applyOddsAPI(games); }catch(e){ /* keep consensus totals */ }
     STATE.games=games; STATE.live=true; STATE.err=null;
   }catch(e){
-    STATE.games = sampleGames(); STATE.live=false; STATE.err=e.message;
-    STATE.week=1; STATE.season=2026;
+    STATE.games = LEAGUE==='cfb' ? sampleCFB() : sampleGames();
+    STATE.live=false; STATE.err=e.message; STATE.week=null; STATE.season=2026;
   }
   setLoading(false);
   renderAll();
@@ -744,6 +867,29 @@ function setMode(m){
   document.getElementById('mLive').classList.toggle('on', m==='live');
   renderAll();
 }
+function setLeague(l){
+  if(l===LEAGUE) return;
+  LEAGUE=l;
+  document.getElementById('lNFL').classList.toggle('on', l==='nfl');
+  document.getElementById('lCFB').classList.toggle('on', l==='cfb');
+  document.getElementById('confbar').style.display = l==='cfb' ? 'flex' : 'none';
+  document.getElementById('sortSel').value = 'edge';
+  renderConfBar();
+  loadData();
+}
+function setConf(id){ if(id===CONF) return; CONF=id; renderConfBar(); loadData(); }
+function cycleConf(dir){
+  const i = CONFERENCES.findIndex(c=>c.id===CONF);
+  const n = (i + dir + CONFERENCES.length) % CONFERENCES.length;
+  setConf(CONFERENCES[n].id);
+}
+function renderConfBar(){
+  const bar = document.getElementById('confPills');
+  bar.innerHTML = CONFERENCES.map(c=>
+    `<button class="confpill ${c.id===CONF?'on':''}" onclick="setConf('${c.id}')">${c.name}</button>`).join('');
+  const on = bar.querySelector('.confpill.on'); if(on) on.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+}
+function rk(r){ return r ? `<span class="rk">${r}</span> ` : ''; }
 function setTab(t, btn){
   TAB=t;
   document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on'));
@@ -833,7 +979,7 @@ function gameCard(g){
   return `<div class="${cls}">
     <div class="g-top">
       <div class="g-main">
-        <div class="g-match">${g.awayAb} <span class="at">@</span> ${g.homeAb}
+        <div class="g-match">${rk(g.awayRank)}${g.awayAb} <span class="at">@</span> ${rk(g.homeRank)}${g.homeAb}
           ${liveTag?`<span class="sc">${liveTag}</span>`:''}</div>
         <div class="g-meta">
           <span>${g.kick}</span>
@@ -894,7 +1040,7 @@ function renderLocks(){
   const unders = evaluated().filter(g=>g.e.lean==='under').sort((a,b)=>b.e.penalty-a.e.penalty);
   document.getElementById('lockList').innerHTML = unders.length ? unders.map((g,i)=>`
     <div class="lock"><div class="rank">${i+1}</div>
-      <div class="li"><div class="lm">${g.awayAb} @ ${g.homeAb}</div>
+      <div class="li"><div class="lm">${rk(g.awayRank)}${g.awayAb} @ ${rk(g.homeRank)}${g.homeAb}</div>
         <div class="lsub">${g.kick} · ${g.venue} · −${g.e.penalty} pts weather</div>
         <div class="bet">▼ UNDER ${g.e.market} &nbsp;→&nbsp; model ${g.e.adjusted}</div></div>
       <div class="conv">${ring(g.e.conviction,'var(--under)')}<div class="cl">Conviction</div></div></div>`).join('')
@@ -921,6 +1067,7 @@ function renderAll(){
 }
 
 /* ---------- BOOT ---------- */
+renderConfBar();
 renderSkeleton();
 loadData();
 </script>

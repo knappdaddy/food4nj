@@ -45,6 +45,17 @@ The weather penalty is the sum of four transparent components (indoor / roof-clo
 A penalty ≥ 1.5 pts triggers an **UNDER** lean. Every number is shown in each game's "Why" panel.
 `computeEdge()` is a pure function — the same math runs on live and sample data.
 
+## Leagues: NFL & College
+
+Toggle between **🏈 NFL** and **🎓 College** in the header. College adds a scrollable **conference
+cycler** (‹ › arrows or tap) that **defaults to the AP Top 25** and includes the SEC, Big Ten, Big 12,
+ACC, and the Group of Five. Ranked teams show their AP number on the card.
+
+College schedules, venues, indoor flags, scores and totals come from ESPN's college-football
+scoreboard. Since colleges have no fixed coordinate map, each venue's city is geocoded once (via
+Open-Meteo's keyless geocoder, cached in the browser) to fetch stadium-area weather — so the weather
+model runs identically for both leagues.
+
 ## Features
 
 - **Games tab** — slate sorted by weather impact, market vs. adjusted total, expandable breakdown.
