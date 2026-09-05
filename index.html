@@ -385,7 +385,23 @@ main{padding:.4rem 1rem 3rem}
           <tr><td><b>&gt; 92°F</b></td><td>1.0</td></tr>
         </table>
         <p style="margin-top:.5rem">Extreme cold slows kicking and ball security; extreme heat drives
-          late-game fatigue and clock-milking. Both nudge totals down modestly.</p>
+          late-game fatigue and clock-milking. Both nudge totals down modestly. <b>Cold is scored on
+          the wind-chill "feels-like" temperature</b> — see below.</p>
+      </div>
+
+      <div class="method">
+        <h4>🥶 Wind chill — cold × wind</h4>
+        <p>Cold bites harder when it's windy. Rather than the raw thermometer reading, the cold
+          penalty uses the <b>"feels-like" temperature</b> from the National Weather Service
+          wind-chill formula — so a 30°F day at 20 mph (which feels like ~17°F) is scored as the
+          deep-freeze game it actually plays like.</p>
+        <p style="margin-top:.6rem;text-align:center;background:var(--panel2);border:1px solid var(--line);
+          border-radius:9px;padding:.7rem;color:var(--txt);font-size:.7rem">
+          <code>WC = 35.74 + 0.6215·T − 35.75·V^0.16 + 0.4275·T·V^0.16</code></p>
+        <p style="margin-top:.6rem;color:var(--dim);font-size:.74rem">T = temp °F, V = wind mph. Applied
+          only when it's cold (≤ 50°F) and breezy (≥ 3 mph), the range the formula is defined for.
+          Wind still carries its own separate penalty for its effect on passing and kicking — wind
+          chill only sharpens the <i>cold</i> component.</p>
       </div>
 
       <div class="method">
@@ -465,14 +481,24 @@ function precipPenalty(type, intensity){
 }
 function coldPenalty(f){ if(f>=32)return 0; if(f>=20)return 0.6; if(f>=10)return 1.1; return 1.7; }
 function heatPenalty(f){ if(f<=85)return 0; if(f<=92)return 0.5; return 1.0; }
+// NWS wind-chill "feels-like" (°F). Only defined for cold, breezy air; otherwise returns the raw temp.
+function windChill(tempF, windMph){
+  if(tempF==null || tempF>50 || windMph==null || windMph<3) return tempF;
+  const v = Math.pow(windMph, 0.16);
+  return 35.74 + 0.6215*tempF - 35.75*v + 0.4275*tempF*v;
+}
 
 function computeEdge(game){
   const indoor = game.roof !== 'open';
   const wx = game.weather || {};
-  const comps = (indoor || wx.unknown) ? {wind:0,precip:0,cold:0,heat:0} : {
+  const active = !(indoor || wx.unknown);
+  // Cold is scored on the wind-chill feels-like temp, not the raw thermometer.
+  const feelsF = active ? Math.round(windChill(wx.tempF, wx.windMph)) : (wx.tempF ?? null);
+  const chillApplied = active && wx.tempF!=null && (wx.tempF - feelsF) >= 1;
+  const comps = !active ? {wind:0,precip:0,cold:0,heat:0} : {
     wind:   windPenalty(wx.windMph),
     precip: precipPenalty(wx.precipType, wx.precipIntensity),
-    cold:   coldPenalty(wx.tempF),
+    cold:   coldPenalty(feelsF),
     heat:   heatPenalty(wx.tempF)
   };
   const penalty = +(comps.wind + comps.precip + comps.cold + comps.heat).toFixed(2);
@@ -482,7 +508,7 @@ function computeEdge(game){
   const adjusted = hasLine ? +(market - penalty).toFixed(1) : null;
   const lean = (hasLine && penalty >= 1.5) ? 'under' : 'none';
   const conviction = Math.round(50 + Math.min(penalty, 6) / 6 * 42);
-  return {indoor, comps, penalty, market, adjusted, hasLine, lean, conviction};
+  return {indoor, comps, penalty, market, adjusted, hasLine, lean, conviction, feelsF, chillApplied};
 }
 
 /* ---------- VENUES: home-team abbr → stadium ---------- */
@@ -744,7 +770,9 @@ function wxChips(g){
   if(w.unknown) return chip('indoor',false,'🌫️','Forecast unavailable');
   let out='';
   out += chip('wind', e.comps.wind>0, '🌬️', `${w.windMph} mph`+(w.gust>w.windMph?` · G${w.gust}`:''));
-  if(w.tempF<=32) out += chip('cold', e.comps.cold>0,'❄️',`${w.tempF}°F`);
+  const coldZone = e.feelsF<=34 || w.tempF<=32;
+  if(coldZone) out += chip('cold', e.comps.cold>0,'❄️',
+    e.chillApplied ? `${w.tempF}° · feels ${e.feelsF}°` : `${w.tempF}°F`);
   else if(w.tempF>=85) out += chip('hot', e.comps.heat>0,'🔥',`${w.tempF}°F`);
   else out += chip('',false,'🌡️',`${w.tempF}°F`);
   if(w.precipType==='rain') out += chip('rain', e.comps.precip>0,'🌧️',`${w.precipIntensity} rain`);
@@ -777,7 +805,9 @@ function whyHTML(g){
     ${compRow('🌬️','Wind',`${w.windMph} mph sustained`,e.comps.wind)}
     ${compRow(w.precipType==='snow'?'🌨️':'🌧️','Precip',
         w.precipType==='none'?'none':`${w.precipIntensity} ${w.precipType}`,e.comps.precip)}
-    ${compRow('❄️','Cold', w.tempF<32?`${w.tempF}°F`:'above 32°F', e.comps.cold)}
+    ${compRow('❄️','Cold',
+        e.chillApplied ? `feels ${e.feelsF}°F · wind chill from ${w.tempF}°`
+                       : (e.feelsF<32?`${w.tempF}°F`:'above 32°F'), e.comps.cold)}
     ${compRow('🔥','Heat', w.tempF>85?`${w.tempF}°F`:'below 85°F', e.comps.heat)}
     <div class="wsum">
       <span>Market <b style="color:var(--dim)">${e.hasLine?e.market:'—'}</b> − Penalty <b style="color:var(--under)">${e.penalty}</b></span>
