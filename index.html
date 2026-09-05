@@ -2,515 +2,706 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Food4NJ - You Are Not Alone</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e17">
+<title>WindEdge — NFL Weather Totals</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--night:#0D1F1A;--forest:#1B3D30;--moss:#2D6A4F;--sage:#52B788;--cream:#FAF7F1;--warm:#FFF9F2;--gold:#C8963E;--gold-l:#E8B86D;--mist:#E8F4EE;--border:#D4EAD9;--text:#1A1A1A;--mid:#4A5548;--light:#8A9E8F;--red:#C0392B;--r:16px;--rsm:10px}
+:root{
+  --bg:#0a0e17;--panel:#111725;--panel2:#161d2e;--line:#212a3d;--line2:#2c374f;
+  --txt:#eef2f9;--mid:#9aa7bf;--dim:#697590;
+  --under:#2dd4a7;--under-d:#0f3d33;--over:#5b6b8a;
+  --warn:#f5a524;--warn-d:#3d2f10;--hot:#f2683c;--cold:#5aa7ff;--wind:#f5a524;
+  --acc:#3d7dff;--r:16px;--rs:11px;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
-.lang-bar{position:sticky;top:0;z-index:100;background:var(--night);padding:.5rem 1.25rem;display:flex;justify-content:space-between;align-items:center}
-.ig-link{display:inline-flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.65);font-size:.8rem;font-family:"Jost",sans-serif;text-decoration:none;transition:color .2s}
-.ig-link:hover{color:white}
-.ig-link svg{width:16px;height:16px;fill:currentColor}
-.lang-select-wrap{position:relative;display:inline-flex;align-items:center}
-.lang-select-wrap select{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:white;padding:.35rem 2rem .35rem .75rem;border-radius:20px;font-size:.8rem;font-family:"Jost",sans-serif;cursor:pointer;appearance:none;-webkit-appearance:none;outline:none;transition:all .2s}
-.lang-select-wrap select:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.5)}
-.lang-select-wrap select option{background:#1a2e25;color:white}
-.lang-arrow{position:absolute;right:.55rem;color:rgba(255,255,255,.6);font-size:.65rem;pointer-events:none}
-.hero{min-height:100vh;background:var(--forest);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1.5rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 25%,rgba(82,183,136,.22),transparent 55%),radial-gradient(ellipse at 80% 75%,rgba(200,150,62,.12),transparent 50%),radial-gradient(ellipse at 65% 15%,rgba(82,183,136,.1),transparent 40%);pointer-events:none}
-.hero-blob{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;animation:drift 10s ease-in-out infinite}
-.hero-blob1{width:420px;height:420px;background:rgba(82,183,136,.11);top:-120px;right:-120px;animation-delay:0s}
-.hero-blob2{width:320px;height:320px;background:rgba(200,150,62,.09);bottom:-60px;left:-80px;animation-delay:-4s}
-.hero-blob3{width:220px;height:220px;background:rgba(82,183,136,.08);top:55%;left:60%;animation-delay:-7s}
-@keyframes drift{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.04)}}
-.hero-leaf{font-size:3rem;margin-bottom:1.5rem;animation:float 4s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(2.8rem,9vw,4.8rem);color:white;line-height:1.05;margin-bottom:1.1rem;font-weight:400}
-.hero h1 em{color:var(--sage);font-style:italic}
-.hero-sub{color:rgba(255,255,255,.6);font-size:clamp(.9rem,3vw,1.05rem);line-height:1.75;max-width:340px;margin:0 auto 2rem;font-weight:300}
-.hero-cta{display:inline-flex;align-items:center;gap:.6rem;background:var(--gold);color:white;padding:1.1rem 2.2rem;border-radius:50px;font-size:1rem;font-weight:500;box-shadow:0 8px 40px rgba(200,150,62,.45);border:none;cursor:pointer;font-family:"Jost",sans-serif;transition:all .25s;text-decoration:none}
-.hero-cta:hover{background:var(--gold-l);transform:translateY(-2px);box-shadow:0 12px 48px rgba(200,150,62,.55)}
-.hero-trust{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-top:1.75rem}
-.hero-trust span{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.6);font-size:.68rem;padding:.28rem .7rem;border-radius:20px;letter-spacing:.02em}
-.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.25);font-size:1.2rem;animation:bounce 2s infinite}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
-section{padding:4rem 1.5rem}
-.inner{max-width:640px;margin:0 auto}
-.stag{display:inline-block;font-size:.68rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--moss);background:var(--mist);border:1px solid var(--border);padding:.25rem .75rem;border-radius:20px;margin-bottom:1rem}
-h2.sh{font-family:"Cormorant Garamond",serif;font-size:clamp(1.8rem,5vw,2.4rem);color:var(--forest);line-height:1.2;margin-bottom:1rem;font-weight:400}
-p.sb{font-size:.95rem;color:var(--mid);line-height:1.75;font-weight:300}
-#about{background:var(--warm)}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-top:2rem}
-.card{background:white;border-radius:var(--r);padding:1.25rem 1.4rem;border:1px solid var(--border);display:flex;gap:1rem;align-items:flex-start}
-.cico{font-size:1.4rem;flex-shrink:0}
-.card h4{font-weight:500;color:var(--forest);font-size:.95rem;margin-bottom:.3rem}
-.card p{font-size:.84rem;color:var(--mid);line-height:1.55;font-weight:300}
-#safety{background:var(--forest)}
-#safety .stag{background:rgba(82,183,136,.15);border-color:rgba(82,183,136,.3);color:var(--sage)}
-#safety h2.sh{color:white}
-#safety p.sb{color:rgba(255,255,255,.6)}
-.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.75rem}
-.sitem{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:1.1rem}
-.sitem .ico{font-size:1.3rem;margin-bottom:.5rem}
-.sitem p{font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.5;font-weight:300}
-.promise{background:rgba(82,183,136,.12);border:1px solid rgba(82,183,136,.25);border-radius:var(--r);padding:1.25rem 1.4rem;margin-top:1.25rem;display:flex;gap:.85rem;align-items:flex-start}
-.promise p{font-size:.86rem;color:rgba(255,255,255,.75);line-height:1.6;font-weight:300}
-.promise strong{color:var(--sage);font-weight:500}
-#resources{background:var(--cream)}
-.rlist{margin-top:1.75rem;display:flex;flex-direction:column;gap:.75rem}
-.rc{background:white;border-radius:var(--r);border:1px solid var(--border);padding:1.1rem 1.3rem;display:flex;gap:1rem;align-items:center}
-.rcico{width:42px;height:42px;border-radius:10px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
-.rci{flex:1}
-.rci h4{font-weight:500;color:var(--forest);font-size:.9rem;margin-bottom:.2rem}
-.rci p{font-size:.78rem;color:var(--light);line-height:1.4}
-.rcl{font-size:.8rem;color:var(--moss);font-weight:500;flex-shrink:0}
-#story{background:var(--warm)}
-.fw{background:white;border-radius:20px;border:1px solid var(--border);overflow:hidden;margin-top:2rem;box-shadow:0 8px 40px rgba(27,61,48,.08)}
-.fprog{display:flex;gap:.35rem;padding:1.25rem 1.5rem .5rem}
-.fp{height:3px;border-radius:2px;flex:1;background:var(--border);transition:background .3s}
-.fp.done{background:var(--sage)}
-.fp.now{background:var(--gold)}
-.fbody{padding:1.5rem}
-.fstep{display:none}
-.fstep.on{display:block;animation:fadeUp .25s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.fstep h3{font-family:"Cormorant Garamond",serif;font-size:1.5rem;color:var(--forest);margin-bottom:.35rem;font-weight:600}
-.fstep>p{font-size:.87rem;color:var(--mid);line-height:1.55;margin-bottom:1.25rem;font-weight:300}
-.field{margin-bottom:.9rem}
-.field label{display:block;font-size:.7rem;font-weight:500;color:var(--moss);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
-.opt{font-size:.65rem;color:var(--light);font-weight:400;text-transform:none;letter-spacing:0;margin-left:.25rem}
-.field input,.field select{width:100%;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:"Jost",sans-serif;font-size:.92rem;color:var(--text);background:var(--cream);appearance:none;transition:border-color .2s}
-.field input:focus,.field select:focus{outline:none;border-color:var(--moss)}
-.field input::placeholder{color:var(--light)}
-.vzone{background:#0a0a0a;border-radius:var(--rsm);aspect-ratio:9/16;max-height:280px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:.85rem}
-.vzone video{width:100%;height:100%;object-fit:cover}
-.vph{text-align:center;color:rgba(255,255,255,.3);padding:1.5rem}
-.vph .vi{font-size:2.5rem;margin-bottom:.4rem}
-.vph p{font-size:.78rem;line-height:1.5}
-.rbadge{position:absolute;top:10px;left:10px;background:var(--red);color:white;font-size:.62rem;font-weight:600;padding:.2rem .5rem;border-radius:20px;display:none;align-items:center;gap:.25rem;animation:blink 1s infinite}
-.rdot{width:5px;height:5px;background:white;border-radius:50%}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
-.vtimer{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.55);color:white;font-size:.72rem;padding:.18rem .45rem;border-radius:6px;display:none}
-.vctrls{display:flex;gap:.6rem;margin-bottom:.85rem}
-.brec{flex:1;padding:.75rem;background:var(--forest);color:white;border:none;border-radius:var(--rsm);font-family:"Jost",sans-serif;font-size:.86rem;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;transition:all .2s}
-.brec.live{background:var(--red)}
-.bup{padding:.75rem .9rem;background:transparent;color:var(--mid);border:1.5px solid var(--border);border-radius:var(--rsm);font-family:"Jost",sans-serif;font-size:.86rem;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:all .2s}
-.bup:hover{border-color:var(--moss);color:var(--moss)}
-.upbar{display:none;background:var(--mist);border-radius:var(--rsm);padding:.85rem;margin-bottom:.85rem}
-.uplbl{font-size:.75rem;color:var(--mid);margin-bottom:.4rem}
-.uptrack{background:var(--border);border-radius:3px;height:4px;overflow:hidden}
-.upfill{height:100%;background:var(--sage);border-radius:3px;transition:width .35s;width:0%}
-.cbox{background:var(--mist);border:1px solid var(--border);border-radius:var(--rsm);padding:1.1rem 1.2rem;margin-bottom:1rem}
-.cbox h4{font-weight:500;font-size:.88rem;color:var(--forest);margin-bottom:.45rem}
-.cbox p{font-size:.81rem;color:var(--mid);line-height:1.6;font-weight:300}
-.cc{display:flex;gap:.7rem;align-items:flex-start;margin-top:.9rem}
-.cc input[type="checkbox"]{width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--moss);cursor:pointer}
-.cc label{font-size:.82rem;color:var(--text);line-height:1.5;cursor:pointer}
-.btn{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.9rem;border:none;border-radius:var(--rsm);font-family:"Jost",sans-serif;font-size:.96rem;font-weight:500;cursor:pointer;transition:all .2s}
-.btn-f{background:var(--forest);color:white}
-.btn-f:hover{background:var(--moss)}
-.btn-g{background:var(--gold);color:white;box-shadow:0 4px 18px rgba(200,150,62,.3)}
-.btn-g:hover{background:var(--gold-l)}
-.btn:disabled{opacity:.4;cursor:default}
-.sw{text-align:center;padding:3rem 1.5rem}
-.sr{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--moss));display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1.25rem;box-shadow:0 8px 30px rgba(45,106,79,.25);animation:popIn .5s cubic-bezier(.34,1.56,.64,1)}
-@keyframes popIn{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
-.sw h2{font-family:"Cormorant Garamond",serif;font-size:2rem;color:var(--forest);margin-bottom:.6rem;font-weight:400}
-.sw p{color:var(--mid);font-size:.9rem;line-height:1.65;font-weight:300;max-width:280px;margin:0 auto 1.5rem}
-footer{background:var(--night);padding:2.5rem 1.5rem;text-align:center}
-footer p{color:rgba(255,255,255,.35);font-size:.75rem;line-height:1.8}
-footer a{color:rgba(255,255,255,.5);text-decoration:none}
-.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:rot .65s linear infinite;vertical-align:middle}
-@keyframes rot{to{transform:rotate(360deg)}}
-.ov{display:none;position:fixed;inset:0;background:rgba(13,31,26,.95);z-index:999;align-items:center;justify-content:center;padding:1.5rem}
-.ovc{background:var(--warm);border-radius:var(--r);padding:2rem;width:100%;max-width:360px}
-.ovc h3{font-family:"Cormorant Garamond",serif;font-size:1.4rem;color:var(--forest);margin-bottom:.35rem}
-.ovc>p{font-size:.83rem;color:var(--mid);margin-bottom:1.25rem;font-weight:300}
-.emsg{color:var(--red);font-size:.78rem;margin-top:.3rem;display:none}
-@media(max-width:400px){.cards{grid-template-columns:1fr}.sgrid{grid-template-columns:1fr}}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--txt);
+  -webkit-font-smoothing:antialiased;line-height:1.4;overflow-x:hidden;
+  padding-bottom:env(safe-area-inset-bottom)}
+.cond{font-family:"Barlow Condensed",sans-serif;letter-spacing:.01em}
+button{font-family:inherit;cursor:pointer}
+.wrap{max-width:520px;margin:0 auto;min-height:100vh}
+
+/* ---- header ---- */
+header{position:sticky;top:0;z-index:50;background:rgba(10,14,23,.88);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+  padding:calc(env(safe-area-inset-top) + .7rem) 1rem .7rem}
+.brand{display:flex;align-items:center;gap:.55rem}
+.logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#3d7dff,#2dd4a7);
+  display:grid;place-items:center;font-size:1.15rem;flex-shrink:0;box-shadow:0 3px 14px rgba(61,125,255,.35)}
+.brand h1{font-family:"Barlow Condensed";font-size:1.5rem;font-weight:700;line-height:1;letter-spacing:.02em}
+.brand h1 b{color:var(--under)}
+.brand .tag{font-size:.64rem;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+.hd-top{display:flex;justify-content:space-between;align-items:center}
+.wk{display:flex;align-items:center;gap:.4rem;background:var(--panel2);border:1px solid var(--line);
+  border-radius:20px;padding:.35rem .7rem;font-size:.78rem;color:var(--mid)}
+.wk b{color:var(--txt)}
+
+/* ---- mode toggle ---- */
+.modebar{display:flex;gap:.4rem;margin-top:.7rem}
+.modebar button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--mid);
+  padding:.5rem;border-radius:10px;font-size:.8rem;font-weight:600;display:flex;align-items:center;
+  justify-content:center;gap:.35rem;transition:.15s}
+.modebar button.on{background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:0 3px 12px rgba(61,125,255,.35)}
+.modebar button .dot{width:6px;height:6px;border-radius:50%;background:#f2683c;
+  box-shadow:0 0 0 0 rgba(242,104,60,.6);animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,104,60,.6)}70%{box-shadow:0 0 0 7px rgba(242,104,60,0)}100%{box-shadow:0 0 0 0 rgba(242,104,60,0)}}
+
+/* ---- tabs ---- */
+nav.tabs{display:flex;gap:.3rem;padding:.6rem 1rem 0;position:sticky;top:0;z-index:40}
+.tabs button{flex:1;background:none;border:none;color:var(--dim);font-size:.82rem;font-weight:600;
+  padding:.55rem .2rem .7rem;position:relative;transition:.15s}
+.tabs button.on{color:var(--txt)}
+.tabs button.on::after{content:"";position:absolute;left:15%;right:15%;bottom:0;height:2.5px;
+  border-radius:3px;background:var(--under)}
+
+main{padding:.4rem 1rem 3rem}
+
+/* ---- summary strip ---- */
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.7rem 0 1rem}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--rs);padding:.7rem .6rem;text-align:center}
+.stat .n{font-family:"Barlow Condensed";font-size:1.7rem;font-weight:700;line-height:1}
+.stat .n.u{color:var(--under)}.stat .n.w{color:var(--warn)}
+.stat .l{font-size:.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem}
+
+.sortrow{display:flex;align-items:center;justify-content:space-between;margin:.2rem 0 .7rem}
+.sortrow .h{font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
+.sortrow select{background:var(--panel2);color:var(--txt);border:1px solid var(--line);
+  border-radius:8px;padding:.3rem .5rem;font-size:.75rem;font-family:inherit}
+
+/* ---- game card ---- */
+.game{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+  margin-bottom:.7rem;overflow:hidden;transition:.15s}
+.game.lean{border-color:var(--under-d)}
+.game.strong{border-color:#1c6b58;box-shadow:0 0 0 1px rgba(45,212,167,.15)}
+.g-top{padding:.85rem .9rem;display:flex;gap:.8rem;align-items:center}
+.g-main{flex:1;min-width:0}
+.g-match{display:flex;align-items:center;gap:.4rem;font-family:"Barlow Condensed";
+  font-size:1.15rem;font-weight:600;line-height:1}
+.g-match .at{color:var(--dim);font-size:.85rem;font-weight:500}
+.g-meta{font-size:.7rem;color:var(--dim);margin-top:.35rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.roofpill{font-size:.58rem;padding:.08rem .38rem;border-radius:5px;background:var(--panel2);
+  border:1px solid var(--line2);color:var(--mid);text-transform:uppercase;letter-spacing:.05em}
+
+/* weather chips */
+.wx{display:flex;gap:.35rem;margin-top:.55rem;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:.25rem;font-size:.7rem;font-weight:600;
+  padding:.22rem .5rem;border-radius:7px;background:var(--panel2);border:1px solid var(--line);color:var(--mid)}
+.chip.act{color:var(--txt)}
+.chip.wind.act{background:var(--warn-d);border-color:#5c4715;color:var(--warn)}
+.chip.hot.act{background:#3d1f14;border-color:#5c2e1c;color:var(--hot)}
+.chip.cold.act{background:#12294a;border-color:#1d3a63;color:var(--cold)}
+.chip.rain.act{background:#12233d;border-color:#1d3a63;color:#7fb3ff}
+.chip.snow.act{background:#1c2434;border-color:#33415c;color:#cfe0ff}
+.chip.indoor{background:var(--panel2);color:var(--dim)}
+
+/* edge readout */
+.g-edge{flex-shrink:0;text-align:right;min-width:78px}
+.g-edge .lbl{font-size:.55rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.totals{display:flex;align-items:baseline;gap:.35rem;justify-content:flex-end;margin-top:.1rem}
+.mkt{font-size:.85rem;color:var(--dim);text-decoration:line-through}
+.adj{font-family:"Barlow Condensed";font-size:1.7rem;font-weight:700;line-height:1}
+.adj.u{color:var(--under)}
+.leanpill{margin-top:.35rem;display:inline-flex;align-items:center;gap:.25rem;font-size:.62rem;
+  font-weight:700;padding:.18rem .45rem;border-radius:6px;text-transform:uppercase;letter-spacing:.04em}
+.leanpill.u{background:var(--under-d);color:var(--under)}
+.leanpill.n{background:var(--panel2);color:var(--dim)}
+
+/* edge bar */
+.edgebar{height:4px;background:var(--panel2);position:relative}
+.edgebar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#1c6b58,var(--under))}
+
+/* why breakdown */
+.why-btn{width:100%;background:var(--panel2);border:none;border-top:1px solid var(--line);
+  color:var(--mid);font-size:.72rem;font-weight:600;padding:.55rem;display:flex;
+  align-items:center;justify-content:center;gap:.35rem}
+.why-btn .cx{transition:.2s}
+.why{display:none;padding:.2rem .9rem .9rem;border-top:1px solid var(--line);background:var(--panel2)}
+.why.open{display:block}
+.why h5{font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin:.7rem 0 .5rem}
+.comp{display:flex;align-items:center;gap:.5rem;padding:.32rem 0;font-size:.78rem}
+.comp .ci{width:20px;text-align:center;flex-shrink:0}
+.comp .cn{flex:1;color:var(--mid)}
+.comp .cn b{color:var(--txt);font-weight:600}
+.comp .cv{font-family:"Barlow Condensed";font-weight:700;font-size:.95rem;flex-shrink:0}
+.comp .cv.neg{color:var(--under)}
+.comp .cv.zero{color:var(--dim)}
+.comp .track{flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden;max-width:70px}
+.comp .track i{display:block;height:100%;background:var(--under);border-radius:3px}
+.wsum{display:flex;justify-content:space-between;align-items:center;margin-top:.7rem;
+  padding-top:.6rem;border-top:1px dashed var(--line2);font-size:.8rem}
+.wsum b{font-family:"Barlow Condensed";font-size:1.15rem}
+.forecast{font-size:.72rem;color:var(--dim);margin-top:.55rem;line-height:1.5;font-style:italic}
+.livewrap{background:#2a1512;border:1px solid #4a231a;border-radius:9px;padding:.5rem .6rem;
+  margin-top:.6rem;font-size:.72rem;color:#ffb599;display:flex;gap:.4rem;align-items:flex-start}
+
+/* ---- locks & parlays ---- */
+.sec-h{font-family:"Barlow Condensed";font-size:1.35rem;font-weight:700;margin:.4rem 0 .2rem;
+  display:flex;align-items:center;gap:.45rem}
+.sec-sub{font-size:.76rem;color:var(--mid);margin-bottom:.9rem;line-height:1.5}
+.lock{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.65rem;display:flex;gap:.75rem;align-items:center}
+.lock .rank{font-family:"Barlow Condensed";font-size:1.5rem;font-weight:700;color:var(--under);
+  width:26px;text-align:center;flex-shrink:0}
+.lock .li{flex:1;min-width:0}
+.lock .lm{font-family:"Barlow Condensed";font-size:1.1rem;font-weight:600}
+.lock .lsub{font-size:.7rem;color:var(--dim);margin-top:.2rem}
+.lock .bet{margin-top:.4rem;font-size:.78rem;font-weight:600;color:var(--under)}
+.conv{flex-shrink:0;text-align:center;width:56px}
+.ring{width:48px;height:48px;margin:0 auto}
+.conv .cl{font-size:.55rem;color:var(--dim);margin-top:.15rem;text-transform:uppercase;letter-spacing:.05em}
+
+.parlay{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+  padding:.9rem;margin-bottom:.75rem}
+.parlay.feat{border-color:#1c6b58;box-shadow:0 0 0 1px rgba(45,212,167,.12)}
+.p-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.p-h .pt{font-family:"Barlow Condensed";font-size:1.15rem;font-weight:700}
+.p-h .pc{font-size:.7rem;font-weight:700;color:var(--under);background:var(--under-d);
+  padding:.25rem .55rem;border-radius:20px}
+.leg{display:flex;align-items:center;gap:.55rem;padding:.45rem 0;border-top:1px solid var(--line)}
+.leg .lg-i{width:22px;text-align:center;flex-shrink:0}
+.leg .lg-t{flex:1;font-size:.82rem}
+.leg .lg-t b{font-weight:600}
+.leg .lg-t span{color:var(--dim);font-size:.72rem}
+.leg .lg-b{font-size:.74rem;font-weight:700;color:var(--under);flex-shrink:0}
+.p-foot{display:flex;justify-content:space-between;margin-top:.6rem;padding-top:.55rem;
+  border-top:1px dashed var(--line2);font-size:.72rem;color:var(--mid)}
+.p-foot b{color:var(--txt);font-family:"Barlow Condensed";font-size:1rem}
+
+/* ---- methodology ---- */
+.method{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+  padding:1rem;margin-bottom:.8rem}
+.method h4{font-family:"Barlow Condensed";font-size:1.05rem;font-weight:600;margin-bottom:.4rem;
+  display:flex;align-items:center;gap:.4rem}
+.method p{font-size:.8rem;color:var(--mid);line-height:1.6}
+.method ul{margin:.5rem 0 0;padding-left:1.1rem}
+.method li{font-size:.78rem;color:var(--mid);line-height:1.65;margin-bottom:.3rem}
+.method code{background:var(--panel2);border:1px solid var(--line);border-radius:5px;
+  padding:.05rem .35rem;font-size:.72rem;color:var(--under);font-family:ui-monospace,monospace}
+.mtable{width:100%;border-collapse:collapse;margin-top:.5rem;font-size:.74rem}
+.mtable th{text-align:left;color:var(--dim);font-weight:600;font-size:.66rem;text-transform:uppercase;
+  letter-spacing:.05em;padding:.35rem .4rem;border-bottom:1px solid var(--line)}
+.mtable td{padding:.4rem .4rem;border-bottom:1px solid var(--line);color:var(--mid)}
+.mtable td b{color:var(--txt)}
+.mtable tr:last-child td{border-bottom:none}
+
+.disc{background:#1a1207;border:1px solid #3d2f10;border-radius:var(--r);padding:.9rem 1rem;
+  margin:.5rem 0 1rem;font-size:.74rem;color:#d9b878;line-height:1.6}
+.disc b{color:var(--warn)}
+.foot{text-align:center;font-size:.68rem;color:var(--dim);padding:1.5rem 1rem 2rem;line-height:1.7}
+.foot a{color:var(--mid)}
+.empty{text-align:center;color:var(--dim);padding:2.5rem 1rem;font-size:.85rem}
+.updated{font-size:.66rem;color:var(--dim);text-align:center;margin:.2rem 0 .8rem}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <div class="hd-top">
+      <div class="brand">
+        <div class="logo">🌬️</div>
+        <div>
+          <h1>WIND<b>EDGE</b></h1>
+          <div class="tag">Weather vs. the Book</div>
+        </div>
+      </div>
+      <div class="wk">Week <b id="wkNum">1</b> · <b id="wkSeason">2026</b></div>
+    </div>
+    <div class="modebar">
+      <button id="mPre" class="on" onclick="setMode('pre')">📅 Pre-Game Lines</button>
+      <button id="mLive" onclick="setMode('live')"><span class="dot"></span> Live Lines</button>
+    </div>
+  </header>
 
-<div class="lang-bar">
-  <a href="https://www.instagram.com/food4nj/?hl=en" target="_blank" rel="noopener" class="ig-link">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-    @food4nj
-  </a>
-  <div class="lang-select-wrap">
-    <select id="lang-select" aria-label="Select language">
-      <option value="en">&#127482;&#127480; English</option>
-      <option value="es">&#127474;&#127485; Español</option>
-      <option value="pt">&#127463;&#127479; Português</option>
-      <option value="fr">&#127467;&#127479; Français</option>
-      <option value="ht">&#127469;&#127481; Kreyòl Ayisyen</option>
-      <option value="ar">&#127462;&#127466; العربية</option>
-      <option value="zh">&#127464;&#127475; 中文</option>
-      <option value="hi">&#127470;&#127475; हिन्दी</option>
-      <option value="ro">&#127479;&#127476; Română</option>
-      <option value="wo">&#127480;&#127475; Wolof</option>
-    </select>
-    <span class="lang-arrow">&#9660;</span>
+  <nav class="tabs">
+    <button class="on" onclick="setTab('games',this)">Games</button>
+    <button onclick="setTab('locks',this)">Locks &amp; Parlays</button>
+    <button onclick="setTab('method',this)">How It Works</button>
+  </nav>
+
+  <main>
+    <!-- GAMES TAB -->
+    <section id="tab-games">
+      <div class="strip">
+        <div class="stat"><div class="n" id="sGames">–</div><div class="l">Games</div></div>
+        <div class="stat"><div class="n u" id="sUnders">–</div><div class="l">Weather Unders</div></div>
+        <div class="stat"><div class="n w" id="sBig">–</div><div class="l">Strong Edges</div></div>
+      </div>
+      <div class="updated" id="updated"></div>
+      <div class="sortrow">
+        <span class="h">Most weather-impacted first</span>
+        <select id="sortSel" onchange="renderGames()">
+          <option value="edge">Sort: Weather edge</option>
+          <option value="wind">Sort: Wind</option>
+          <option value="time">Sort: Kickoff</option>
+        </select>
+      </div>
+      <div id="gameList"></div>
+      <div class="disc">
+        <b>⚠️ For entertainment only.</b> WindEdge is a weather-based model, not betting advice
+        and not a guarantee. Lines and forecasts move — always confirm at your book before wagering.
+        Must be 21+. If gambling stops being fun, call <b>1-800-GAMBLER</b>.
+      </div>
+    </section>
+
+    <!-- LOCKS & PARLAYS TAB -->
+    <section id="tab-locks" style="display:none">
+      <h2 class="sec-h">🔒 Weather Locks</h2>
+      <p class="sec-sub">The individual unders where the weather model most disagrees with the
+        book. Ranked by model conviction — the bigger the gap, the stronger the lean.</p>
+      <div id="lockList"></div>
+
+      <h2 class="sec-h" style="margin-top:1.4rem">🎯 Model Parlays</h2>
+      <p class="sec-sub">Under legs stacked from the highest-conviction weather games.
+        Combined conviction is the model's estimate that <i>every</i> leg cashes — it drops fast
+        as you add legs, which is exactly why parlays are hard.</p>
+      <div id="parlayList"></div>
+      <div class="disc" style="margin-top:.3rem">
+        <b>Conviction ≠ a real probability.</b> It's a relative score from our weather model, scaled
+        for readability. Use it to compare our leans against each other, not as a true win rate.
+      </div>
+    </section>
+
+    <!-- METHOD TAB -->
+    <section id="tab-method" style="display:none">
+      <h2 class="sec-h" style="margin-bottom:.6rem">⚙️ How WindEdge Works</h2>
+      <div class="method">
+        <h4>🧮 The core idea</h4>
+        <p>Sportsbooks set a point total (over/under) for each game. Our thesis — and your
+          experience betting unders — is that books are <b>slow to fully price bad weather</b>,
+          leaving totals a little inflated. WindEdge estimates a weather penalty in points and
+          subtracts it from the market total:</p>
+        <p style="margin-top:.6rem;text-align:center;background:var(--panel2);border:1px solid var(--line);
+          border-radius:9px;padding:.7rem;color:var(--txt)">
+          <code>Adjusted&nbsp;Total = Market&nbsp;Total − Weather&nbsp;Penalty</code></p>
+        <p style="margin-top:.6rem">The <b>penalty</b> is the sum of four independent, transparent
+          components. When it's ≥ <b>1.5 pts</b>, we flag an <b style="color:var(--under)">UNDER</b>
+          lean. Indoor and roof-closed venues get a penalty of exactly 0.</p>
+      </div>
+
+      <div class="method">
+        <h4>🌬️ Wind — the heavyweight</h4>
+        <p>Wind is by far the most reliable weather factor for totals: it kills the deep passing
+          game and long field goals. Below ~10 mph there's little effect; it ramps up from there
+          and bites hard above 20 mph.</p>
+        <table class="mtable">
+          <tr><th>Sustained wind</th><th>Penalty</th></tr>
+          <tr><td><b>&lt; 10 mph</b></td><td>0 pts</td></tr>
+          <tr><td><b>10–20 mph</b></td><td>0.18 pt per mph over 10 <span style="color:var(--dim)">(up to 1.8)</span></td></tr>
+          <tr><td><b>&gt; 20 mph</b></td><td>1.8 + 0.32 pt per mph over 20</td></tr>
+        </table>
+      </div>
+
+      <div class="method">
+        <h4>🌧️ Precipitation</h4>
+        <p>Rain and snow reduce scoring through ball-handling, footing and passing. Snow hits
+          harder than rain at equal intensity.</p>
+        <table class="mtable">
+          <tr><th>Intensity</th><th>Rain</th><th>Snow</th></tr>
+          <tr><td><b>Light</b></td><td>0.6</td><td>1.4</td></tr>
+          <tr><td><b>Moderate</b></td><td>1.6</td><td>2.4</td></tr>
+          <tr><td><b>Heavy</b></td><td>2.6</td><td>3.6</td></tr>
+        </table>
+      </div>
+
+      <div class="method">
+        <h4>🌡️ Cold &amp; Heat</h4>
+        <table class="mtable">
+          <tr><th>Temperature</th><th>Penalty</th></tr>
+          <tr><td><b>≥ 32°F</b></td><td>0 (cold)</td></tr>
+          <tr><td><b>20–31°F</b></td><td>0.6</td></tr>
+          <tr><td><b>10–19°F</b></td><td>1.1</td></tr>
+          <tr><td><b>&lt; 10°F</b></td><td>1.7</td></tr>
+          <tr><td><b>85–92°F</b></td><td>0.5 (heat)</td></tr>
+          <tr><td><b>&gt; 92°F</b></td><td>1.0</td></tr>
+        </table>
+        <p style="margin-top:.5rem">Extreme cold slows kicking and ball security; extreme heat drives
+          late-game fatigue and clock-milking. Both nudge totals down modestly.</p>
+      </div>
+
+      <div class="method">
+        <h4>📡 Data &amp; going live</h4>
+        <p>This build ships with a realistic sample slate so you can see the model work end-to-end.
+          To run it on real games, wire two feeds into the <code>GAMES</code> data layer:</p>
+        <ul>
+          <li><b>Lines</b> — a sportsbook odds API (e.g. The Odds API) for FanDuel / DraftKings
+            pre-game <i>and</i> live totals.</li>
+          <li><b>Weather</b> — a forecast API (OpenWeather, Tomorrow.io, NWS) keyed to each
+            venue's lat/long and kickoff time.</li>
+        </ul>
+        <p style="margin-top:.5rem">The model function <code>computeEdge()</code> is pure and
+          isolated — swap the data source and everything else just works.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="foot">
+    WindEdge · Weather-adjusted NFL totals model<br>
+    Model estimates for entertainment · Not affiliated with any sportsbook · 21+ · 1-800-GAMBLER
   </div>
 </div>
 
-<section class="hero">
-  <div class="hero-blob hero-blob1"></div>
-  <div class="hero-blob hero-blob2"></div>
-  <div class="hero-blob hero-blob3"></div>
-  <div class="hero-leaf">&#127807;</div>
-  <h1><span id="H-title">You are </span><em id="H-em">not alone.</em></h1>
-  <p class="hero-sub" id="H-sub">Food4NJ is here with you outside Delaney Hall. We see you. We want to hear your story.</p>
-  <a href="#story" class="hero-cta">
-    &#127909; <span id="H-cta">Share Your Story</span>
-  </a>
-  <div class="hero-trust">
-    <span>&#128274; 100% Private</span>
-    <span>&#10003; Not connected to ICE</span>
-    <span>&#127807; Nonprofit</span>
-  </div>
-  <div class="scroll-hint">&#8595;</div>
-</section>
+<script>
+/* =========================================================================
+   WINDEDGE — weather-adjusted NFL totals model
+   -------------------------------------------------------------------------
+   Data layer: replace GAMES with live feeds (odds API + weather API).
+   Model layer: computeEdge() is pure — same math for demo & live data.
+   ========================================================================= */
 
-<section id="about">
-  <div class="inner">
-    <div class="stag" id="A-tag">Who we are</div>
-    <h2 class="sh" id="A-title">Food4NJ is a community, not a government agency.</h2>
-    <p class="sb" id="A-body">We are volunteers and neighbors who come to Delaney Hall to stand with families. We bring groceries, gift cards, and support. We are a 501(c)(3) nonprofit with no connection to ICE, law enforcement, or any government agency.</p>
-    <div class="cards">
-      <div class="card"><div class="cico">&#128717;</div><div><h4 id="AC1-h">Free groceries &amp; gift cards</h4><p id="AC1-p">We pack bags of food and distribute grocery store gift cards to families as they leave visits.</p></div></div>
-      <div class="card"><div class="cico">&#128203;</div><div><h4 id="AC2-h">Preserving your story</h4><p id="AC2-p">We record and protect the stories of families affected by detention so the world knows what is happening here.</p></div></div>
-      <div class="card"><div class="cico">&#129309;</div><div><h4 id="AC3-h">No judgment, no reporting</h4><p id="AC3-p">We are here only to help. We will never share your information with authorities.</p></div></div>
-      <div class="card"><div class="cico">&#127759;</div><div><h4 id="AC4-h">All languages welcome</h4><p id="AC4-p">You do not need to speak English. Share your story in any language.</p></div></div>
+/* ---------- MODEL: transparent weather penalty ---------- */
+function windPenalty(w){
+  if(w < 10) return 0;
+  let p = (Math.min(w,20) - 10) * 0.18;      // 10–20 mph ramp (→ up to 1.8)
+  if(w > 20) p += (w - 20) * 0.32;           // steeper above 20
+  return Math.min(p, 5.5);
+}
+function precipPenalty(type, intensity){
+  const t = {
+    rain: {light:0.6, moderate:1.6, heavy:2.6},
+    snow: {light:1.4, moderate:2.4, heavy:3.6}
+  };
+  if(!type || type==='none' || !t[type]) return 0;
+  return t[type][intensity] || 0;
+}
+function coldPenalty(f){
+  if(f >= 32) return 0;
+  if(f >= 20) return 0.6;
+  if(f >= 10) return 1.1;
+  return 1.7;
+}
+function heatPenalty(f){
+  if(f <= 85) return 0;
+  if(f <= 92) return 0.5;
+  return 1.0;
+}
+
+// Returns the full breakdown for one game (pure function of its inputs).
+function computeEdge(game){
+  const indoor = game.roof !== 'open';
+  const wx = game.weather;
+  const comps = indoor ? {wind:0,precip:0,cold:0,heat:0} : {
+    wind:   windPenalty(wx.windMph),
+    precip: precipPenalty(wx.precipType, wx.precipIntensity),
+    cold:   coldPenalty(wx.tempF),
+    heat:   heatPenalty(wx.tempF)
+  };
+  const penalty = +(comps.wind + comps.precip + comps.cold + comps.heat).toFixed(2);
+  const market = game.mode==='live' ? game.liveTotal : game.marketTotal;
+  const adjusted = +(market - penalty).toFixed(1);
+  const lean = penalty >= 1.5 ? 'under' : 'none';
+  // Conviction: relative score 50–92 scaled from penalty (NOT a true probability)
+  const conviction = Math.round(50 + Math.min(penalty, 6) / 6 * 42);
+  return {indoor, comps, penalty, market, adjusted, lean, conviction};
+}
+
+/* ---------- DATA: sample Week 1 slate (replace with live feeds) ---------- */
+const SEASON = 2026, WEEK = 1;
+const GAMES = [
+  { id:'buf-nyj', away:'Jets', home:'Bills', awayAb:'NYJ', homeAb:'BUF',
+    venue:'Highmark Stadium', city:'Orchard Park, NY', roof:'open',
+    kick:'Sun 1:00 PM ET', kickSort:1300,
+    marketTotal:45.5, liveTotal:41.5,
+    weather:{tempF:58, windMph:24, gust:33, precipType:'rain', precipIntensity:'light',
+      precipProb:55, humidity:78, sky:'Windy, showers off Lake Erie'} },
+
+  { id:'cle-cin', away:'Bengals', home:'Browns', awayAb:'CIN', homeAb:'CLE',
+    venue:'Huntington Bank Field', city:'Cleveland, OH', roof:'open',
+    kick:'Sun 1:00 PM ET', kickSort:1300,
+    marketTotal:46.5, liveTotal:44.5,
+    weather:{tempF:61, windMph:19, gust:26, precipType:'none', precipIntensity:'none',
+      precipProb:15, humidity:64, sky:'Breezy lakefront, clouds'} },
+
+  { id:'chi-gb', away:'Packers', home:'Bears', awayAb:'GB', homeAb:'CHI',
+    venue:'Soldier Field', city:'Chicago, IL', roof:'open',
+    kick:'Sun 1:00 PM ET', kickSort:1300,
+    marketTotal:43.5, liveTotal:42.5,
+    weather:{tempF:66, windMph:16, gust:22, precipType:'rain', precipIntensity:'light',
+      precipProb:40, humidity:70, sky:'Gusty off the lake, passing showers'} },
+
+  { id:'mia-jax', away:'Dolphins', home:'Jaguars', awayAb:'MIA', homeAb:'JAX',
+    venue:'EverBank Stadium', city:'Jacksonville, FL', roof:'open',
+    kick:'Sun 1:00 PM ET', kickSort:1300,
+    marketTotal:48.5, liveTotal:47.5,
+    weather:{tempF:94, windMph:6, gust:9, precipType:'none', precipIntensity:'none',
+      precipProb:20, humidity:74, sky:'Hot & humid, midday sun'} },
+
+  { id:'was-tb', away:'Commanders', home:'Buccaneers', awayAb:'WAS', homeAb:'TB',
+    venue:'Raymond James Stadium', city:'Tampa, FL', roof:'open',
+    kick:'Sun 4:05 PM ET', kickSort:1605,
+    marketTotal:49.5, liveTotal:48.5,
+    weather:{tempF:91, windMph:11, gust:15, precipType:'rain', precipIntensity:'moderate',
+      precipProb:65, humidity:80, sky:'Afternoon thunderstorms, humid'} },
+
+  { id:'den-sea', away:'Broncos', home:'Seahawks', awayAb:'DEN', homeAb:'SEA',
+    venue:'Lumen Field', city:'Seattle, WA', roof:'open',
+    kick:'Sun 4:25 PM ET', kickSort:1625,
+    marketTotal:44.5, liveTotal:43.5,
+    weather:{tempF:60, windMph:13, gust:18, precipType:'rain', precipIntensity:'moderate',
+      precipProb:70, humidity:82, sky:'Steady Pacific NW rain'} },
+
+  { id:'pit-nyg', away:'Steelers', home:'Giants', awayAb:'PIT', homeAb:'NYG',
+    venue:'MetLife Stadium', city:'East Rutherford, NJ', roof:'open',
+    kick:'Sun 1:00 PM ET', kickSort:1300,
+    marketTotal:41.5, liveTotal:40.5,
+    weather:{tempF:69, windMph:12, gust:17, precipType:'none', precipIntensity:'none',
+      precipProb:10, humidity:58, sky:'Partly cloudy, light breeze'} },
+
+  { id:'kc-lac', away:'Chiefs', home:'Chargers', awayAb:'KC', homeAb:'LAC',
+    venue:'SoFi Stadium', city:'Inglewood, CA', roof:'fixed',
+    kick:'Sun 8:20 PM ET', kickSort:2020,
+    marketTotal:47.5, liveTotal:46.5,
+    weather:{tempF:74, windMph:0, gust:0, precipType:'none', precipIntensity:'none',
+      precipProb:0, humidity:50, sky:'Fixed roof — climate controlled'} },
+
+  { id:'no-atl', away:'Saints', home:'Falcons', awayAb:'NO', homeAb:'ATL',
+    venue:'Mercedes-Benz Stadium', city:'Atlanta, GA', roof:'retractable',
+    kick:'Sun 1:00 PM ET', kickSort:1300,
+    marketTotal:43.5, liveTotal:42.5,
+    weather:{tempF:88, windMph:9, gust:12, precipType:'rain', precipIntensity:'light',
+      precipProb:50, humidity:72, sky:'Roof closed — weather sealed out'} },
+
+  { id:'det-min', away:'Lions', home:'Vikings', awayAb:'DET', homeAb:'MIN',
+    venue:'U.S. Bank Stadium', city:'Minneapolis, MN', roof:'dome',
+    kick:'Sun 1:00 PM ET', kickSort:1300,
+    marketTotal:51.5, liveTotal:50.5,
+    weather:{tempF:72, windMph:0, gust:0, precipType:'none', precipIntensity:'none',
+      precipProb:0, humidity:45, sky:'Indoor dome'} },
+
+  { id:'ne-lv', away:'Patriots', home:'Raiders', awayAb:'NE', homeAb:'LV',
+    venue:'Allegiant Stadium', city:'Las Vegas, NV', roof:'dome',
+    kick:'Sun 4:05 PM ET', kickSort:1605,
+    marketTotal:44.5, liveTotal:43.5,
+    weather:{tempF:99, windMph:8, gust:11, precipType:'none', precipIntensity:'none',
+      precipProb:0, humidity:20, sky:'Dome — desert heat sealed out'} },
+
+  { id:'car-ari', away:'Panthers', home:'Cardinals', awayAb:'CAR', homeAb:'ARI',
+    venue:'State Farm Stadium', city:'Glendale, AZ', roof:'retractable',
+    kick:'Sun 4:25 PM ET', kickSort:1625,
+    marketTotal:45.5, liveTotal:44.5,
+    weather:{tempF:104, windMph:7, gust:10, precipType:'none', precipIntensity:'none',
+      precipProb:0, humidity:14, sky:'Roof closed — extreme desert heat outside'} },
+
+  { id:'phi-dal', away:'Eagles', home:'Cowboys', awayAb:'PHI', homeAb:'DAL',
+    venue:'AT&T Stadium', city:'Arlington, TX', roof:'retractable',
+    kick:'Sun 8:20 PM ET', kickSort:2020,
+    marketTotal:49.5, liveTotal:48.5,
+    weather:{tempF:95, windMph:10, gust:14, precipType:'none', precipIntensity:'none',
+      precipProb:5, humidity:40, sky:'Roof typically closed in heat'} }
+];
+
+/* ---------- STATE + RENDER ---------- */
+let MODE = 'pre';   // 'pre' | 'live'
+let TAB = 'games';
+
+function setMode(m){
+  MODE = m;
+  document.getElementById('mPre').classList.toggle('on', m==='pre');
+  document.getElementById('mLive').classList.toggle('on', m==='live');
+  renderAll();
+}
+function setTab(t, btn){
+  TAB = t;
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ['games','locks','method'].forEach(x=>{
+    document.getElementById('tab-'+x).style.display = (x===t)?'block':'none';
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// enrich each game with its computed edge for the current mode
+function evaluated(){
+  return GAMES.map(g => {
+    const e = computeEdge({...g, mode:MODE});
+    return {...g, e};
+  });
+}
+
+function chip(cls, active, icon, text){
+  return `<span class="chip ${cls} ${active?'act':''}">${icon} ${text}</span>`;
+}
+
+function wxChips(g){
+  const w = g.weather, e = g.e;
+  if(e.indoor){
+    const label = g.roof==='dome' ? 'Indoor dome'
+      : g.roof==='fixed' ? 'Fixed roof' : 'Roof closed';
+    return chip('indoor', false, '🏟️', label + ' · weather neutral');
+  }
+  let out = '';
+  out += chip('wind', e.comps.wind>0, '🌬️', `${w.windMph} mph` + (w.gust>w.windMph?` · G${w.gust}`:''));
+  if(w.tempF <= 32) out += chip('cold', e.comps.cold>0, '❄️', `${w.tempF}°F`);
+  else if(w.tempF >= 85) out += chip('hot', e.comps.heat>0, '🔥', `${w.tempF}°F`);
+  else out += chip('', false, '🌡️', `${w.tempF}°F`);
+  if(w.precipType==='rain') out += chip('rain', e.comps.precip>0, '🌧️', `${w.precipIntensity} rain`);
+  else if(w.precipType==='snow') out += chip('snow', e.comps.precip>0, '🌨️', `${w.precipIntensity} snow`);
+  return out;
+}
+
+function compRow(icon, name, detail, val){
+  const active = val > 0;
+  const pct = Math.min(val/3.6*100, 100);
+  return `<div class="comp">
+    <span class="ci">${icon}</span>
+    <span class="cn"><b>${name}</b> ${detail?`· ${detail}`:''}</span>
+    ${active?`<span class="track"><i style="width:${pct}%"></i></span>`:''}
+    <span class="cv ${active?'neg':'zero'}">${active?'−'+val.toFixed(1):'0'}</span>
+  </div>`;
+}
+
+function whyHTML(g){
+  const e = g.e, w = g.weather;
+  if(e.indoor){
+    return `<div class="why" id="why-${g.id}">
+      <h5>Why — weather breakdown</h5>
+      <div class="comp"><span class="ci">🏟️</span><span class="cn">
+        Venue is ${g.roof==='dome'?'a dome':g.roof==='fixed'?'a fixed-roof stadium':'roof-closed'}.
+        Weather is sealed out, so the model applies <b>no adjustment</b>.</span>
+        <span class="cv zero">0</span></div>
+      <div class="wsum"><span>Adjusted total</span>
+        <b>${e.adjusted} <span style="color:var(--dim);font-size:.8rem">(no edge)</span></b></div>
+    </div>`;
+  }
+  const live = MODE==='live'
+    ? `<div class="livewrap">⚡ <span>Live line has moved to <b>${e.market}</b> from a
+        pre-game ${g.marketTotal}. Model still sees weather worth <b>−${e.penalty}</b> pts.</span></div>`
+    : '';
+  return `<div class="why" id="why-${g.id}">
+    <h5>Why — weather breakdown</h5>
+    ${compRow('🌬️','Wind', `${w.windMph} mph sustained`, e.comps.wind)}
+    ${compRow(w.precipType==='snow'?'🌨️':'🌧️','Precip',
+        w.precipType==='none'?'none':`${w.precipIntensity} ${w.precipType}`, e.comps.precip)}
+    ${compRow('❄️','Cold', w.tempF<32?`${w.tempF}°F`:'above 32°F', e.comps.cold)}
+    ${compRow('🔥','Heat', w.tempF>85?`${w.tempF}°F`:'below 85°F', e.comps.heat)}
+    <div class="wsum">
+      <span>Market <b style="color:var(--dim)">${e.market}</b> − Penalty <b style="color:var(--under)">${e.penalty}</b></span>
+      <b class="cond">= ${e.adjusted}</b>
     </div>
-  </div>
-</section>
+    <div class="forecast">📡 ${w.sky} · ${w.precipProb}% precip · ${w.humidity}% humidity</div>
+    ${live}
+  </div>`;
+}
 
-<section id="safety">
-  <div class="inner">
-    <div class="stag" id="S-tag">Your safety</div>
-    <h2 class="sh" id="S-title">Your privacy is our promise.</h2>
-    <p class="sb" id="S-body">We understand you may be afraid. Here is exactly how we protect you.</p>
-    <div class="sgrid">
-      <div class="sitem"><div class="ico">&#128274;</div><p id="SG1">Your video is stored on secure servers. Only our small team can access it.</p></div>
-      <div class="sitem"><div class="ico">&#128683;</div><p id="SG2">We will NEVER share your story with ICE, police, or any government agency.</p></div>
-      <div class="sitem"><div class="ico">&#128465;</div><p id="SG3">You can request your video be deleted at any time by emailing us.</p></div>
-      <div class="sitem"><div class="ico">&#9997;&#65039;</div><p id="SG4">We will only share your story publicly with your explicit written permission.</p></div>
-    </div>
-    <div class="promise"><span style="font-size:1.4rem;flex-shrink:0;">&#128154;</span><p><strong>Our promise: </strong><span id="SP">Food4NJ exists to support families, not to report them. Your trust is everything to us.</span></p></div>
-  </div>
-</section>
-
-<section id="resources">
-  <div class="inner">
-    <div class="stag" id="R-tag">Support resources</div>
-    <h2 class="sh" id="R-title">Help available near you</h2>
-    <p class="sb" id="R-body">These organizations provide free legal help and support for immigrant families in New Jersey.</p>
-    <div class="rlist">
-      <div class="rc"><div class="rcico">&#9878;&#65039;</div><div class="rci"><h4 id="RC1-h">American Friends Service Committee NJ</h4><p id="RC1-p">Immigration legal support &amp; detention advocacy</p></div><div class="rcl">afsc.org/nj</div></div>
-      <div class="rc"><div class="rcico">&#127968;</div><div class="rci"><h4 id="RC2-h">NJ Alliance for Immigrant Justice</h4><p id="RC2-p">Advocacy, resources &amp; community support</p></div><div class="rcl">njaij.org</div></div>
-      <div class="rc"><div class="rcico">&#128222;</div><div class="rci"><h4 id="RC3-h">Make the Road NJ</h4><p id="RC3-p">Legal aid, know-your-rights workshops</p></div><div class="rcl">maketheroadnj.org</div></div>
-      <div class="rc"><div class="rcico">&#128138;</div><div class="rci"><h4 id="RC4-h">La Casa de Don Pedro</h4><p id="RC4-p">Food, housing &amp; social services in Newark</p></div><div class="rcl">(973) 485-5636</div></div>
-      <div class="rc"><div class="rcico">&#127384;</div><div class="rci"><h4 id="RC5-h">NJ Immigrant Bail Fund</h4><p id="RC5-p">Help paying immigration bond for detained loved ones</p></div><div class="rcl">njimmigrantbailfund.org</div></div>
-    </div>
-  </div>
-</section>
-
-<section id="story">
-  <div class="inner">
-    <div class="stag" id="F-tag">Share your story</div>
-    <h2 class="sh" id="F-title">Your voice matters. We are listening.</h2>
-    <p class="sb" id="F-body">Record a short video in any language. Tell us why you are here and what you want the world to know.</p>
-    <div class="fw" id="form-wrap">
-      <div class="fprog"><div class="fp now" id="fp0"></div><div class="fp" id="fp1"></div><div class="fp" id="fp2"></div></div>
-      <div class="fbody">
-
-        <div class="fstep on" id="fs0">
-          <h3 id="FS0-h">A little about you</h3>
-          <p id="FS0-p">Everything is optional. Share only what you are comfortable with.</p>
-          <div class="field"><label id="FL-name">First Name <span class="opt">(optional)</span></label><input id="f-name" type="text" placeholder="Maria" autocomplete="off"></div>
-          <div class="field"><label id="FL-country">Country of Origin <span class="opt">(optional)</span></label><input id="f-country" type="text" placeholder="Honduras" autocomplete="off"></div>
-          <div class="field"><label id="FL-relation">Relation to Detainee <span class="opt">(optional)</span></label>
-            <select id="f-relation">
-              <option value="">Select...</option>
-              <option value="spouse">Spouse / Partner</option>
-              <option value="child">Child</option>
-              <option value="parent">Parent</option>
-              <option value="sibling">Sibling</option>
-              <option value="friend">Friend</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <button class="btn btn-f" id="btn-s0"><span id="FS0-btn">Continue</span> &#8594;</button>
+function gameCard(g){
+  const e = g.e;
+  const cls = e.lean==='under' ? (e.penalty>=3?'game lean strong':'game lean') : 'game';
+  const barPct = Math.min(e.penalty/5*100, 100);
+  const leanPill = e.lean==='under'
+    ? `<span class="leanpill u">▼ Under</span>`
+    : `<span class="leanpill n">No edge</span>`;
+  return `<div class="${cls}">
+    <div class="g-top">
+      <div class="g-main">
+        <div class="g-match">${g.awayAb} <span class="at">@</span> ${g.homeAb}</div>
+        <div class="g-meta">
+          <span>${g.kick}</span>
+          <span class="roofpill">${g.roof==='open'?'Outdoor':g.roof==='dome'?'Dome':g.roof==='fixed'?'Fixed roof':'Retractable'}</span>
+          <span>${g.venue}</span>
         </div>
-
-        <div class="fstep" id="fs1">
-          <h3 id="FS1-h">Record your video</h3>
-          <p id="FS1-p">Speak in any language. Tell us what you want people to know.</p>
-          <div class="vzone">
-            <div id="vph" class="vph"><div class="vi">&#128249;</div><p id="VH-hint">Tap Start Recording or upload a video from your phone.</p></div>
-            <video id="vlive" autoplay muted playsinline style="display:none;"></video>
-            <video id="vplay" controls playsinline style="display:none;"></video>
-            <div class="rbadge" id="rbadge"><div class="rdot"></div>REC</div>
-            <div class="vtimer" id="vtimer">0:00</div>
-          </div>
-          <div class="vctrls">
-            <button class="brec" id="btn-rec"><span id="REC-btn">&#9654; Start Recording</span></button>
-            <label class="bup" style="cursor:pointer;"><span id="UP-btn">&#128193; Upload</span><input type="file" id="fupload" accept="video/*" style="display:none;"></label>
-          </div>
-          <div class="upbar" id="upbar"><div class="uplbl" id="uplbl">Uploading...</div><div class="uptrack"><div class="upfill" id="upfill"></div></div></div>
-          <button class="btn btn-f" id="btn-s1" disabled><span id="FS1-btn">Continue</span> &#8594;</button>
+        <div class="wx">${wxChips(g)}</div>
+      </div>
+      <div class="g-edge">
+        <div class="lbl">Adj / Mkt</div>
+        <div class="totals">
+          ${e.penalty>0?`<span class="mkt">${e.market}</span>`:''}
+          <span class="adj ${e.lean==='under'?'u':''}">${e.adjusted}</span>
         </div>
-
-        <div class="fstep" id="fs2">
-          <h3 id="FS2-h">Before we save your story</h3>
-          <p id="FS2-p">Please read carefully.</p>
-          <div class="cbox">
-            <h4 id="CB-h">How we use your story</h4>
-            <p id="CB-body">Your video will be stored securely by Food4NJ.org, a 501(c)(3) nonprofit. It will only be accessed by our small team for advocacy and documentation. We will never share your story publicly, with law enforcement, or with any government agency without your explicit written consent. You may request deletion at any time by emailing <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b7d1d8d8d383f9fdf7c7d2d2d5dbd2c499d9d2c3">[email&#160;protected]</a>.</p>
-            <div class="cc"><input type="checkbox" id="ccb"><label for="ccb" id="CB-label">I understand and agree. I am sharing this story voluntarily.</label></div>
-          </div>
-          <button class="btn btn-g" id="btn-submit" disabled><span id="FS2-btn">Submit My Story &#10003;</span></button>
-        </div>
-
-        <div class="fstep" id="fs-success">
-          <div class="sw">
-            <div class="sr">&#10003;</div>
-            <h2 id="SUC-h">Thank you</h2>
-            <p id="SUC-p">Your story has been received and saved. Food4NJ will keep this record safe. You are not alone.</p>
-            <button class="btn btn-f" style="max-width:200px;margin:0 auto;" id="btn-done"><span id="SUC-btn">Done</span></button>
-          </div>
-        </div>
-
+        ${leanPill}
       </div>
     </div>
-  </div>
-</section>
+    <div class="edgebar"><i style="width:${barPct}%"></i></div>
+    <button class="why-btn" onclick="toggleWhy('${g.id}',this)">
+      ${e.penalty>0?`Weather edge −${e.penalty} pts`:'No weather edge'} · Why
+      <span class="cx">▾</span></button>
+    ${whyHTML(g)}
+  </div>`;
+}
 
-<footer>
-  <p>&#127807; Food4NJ.org &nbsp;&middot;&nbsp; 501(c)(3) Nonprofit &nbsp;&middot;&nbsp; Tax ID: 39-4811176<br>
-  <a href="admin.html">Team Login</a></p>
-</footer>
+function toggleWhy(id, btn){
+  const el = document.getElementById('why-'+id);
+  el.classList.toggle('open');
+  btn.querySelector('.cx').style.transform = el.classList.contains('open')?'rotate(180deg)':'';
+}
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-try {
-  const app = initializeApp({
-    apiKey: "AIzaSyBJ2URua1lEEqrDbyMlu0lYcWzzau6JTgg",
-    authDomain: "food-c9f70.firebaseapp.com",
-    projectId: "food-c9f70",
-    storageBucket: "food-c9f70.firebasestorage.app",
-    messagingSenderId: "996978971379",
-    appId: "1:996978971379:web:320daa6c3af43857ab1d86"
+function renderGames(){
+  const list = evaluated();
+  const sort = document.getElementById('sortSel').value;
+  list.sort((a,b)=>{
+    if(sort==='wind') return b.weather.windMph - a.weather.windMph;
+    if(sort==='time') return a.kickSort - b.kickSort;
+    return b.e.penalty - a.e.penalty;   // edge (default)
   });
-  const db = getFirestore(app);
-  const st = getStorage(app);
-  window._upload = async function(blob, meta, onPct) {
-    const r = ref(st, "stories/story_" + Date.now() + ".webm");
-    const task = uploadBytesResumable(r, blob);
-    return new Promise((res, rej) => {
-      task.on("state_changed",
-        s => onPct(Math.round(s.bytesTransferred / s.totalBytes * 80)),
-        rej,
-        async () => {
-          const url = await getDownloadURL(task.snapshot.ref);
-          onPct(90);
-          await addDoc(collection(db, "stories"), { ...meta, videoUrl: url, createdAt: new Date() });
-          onPct(100); res(url);
-        }
-      );
-    });
-  };
-} catch(e) { console.error("Firebase init error:", e); }
-</script>
+  document.getElementById('gameList').innerHTML =
+    list.map(gameCard).join('') || '<div class="empty">No games loaded.</div>';
 
-<script>
-var T = {
-  en:{ht:"You are ",he:"not alone.",hs:"Food4NJ is here with you outside Delaney Hall. We see you. We want to hear your story.",hc:"Share Your Story",at:"Who we are",ati:"Food4NJ is a community, not a government agency.",ab:"We are volunteers and neighbors who come to Delaney Hall to stand with families. We bring groceries, gift cards, and support. We are a 501(c)(3) nonprofit with no connection to ICE, law enforcement, or any government agency.",a1h:"Free groceries & gift cards",a1p:"We pack bags of food and distribute grocery store gift cards to families as they leave visits.",a2h:"Preserving your story",a2p:"We record and protect the stories of families affected by detention so the world knows what is happening here.",a3h:"No judgment, no reporting",a3p:"We are here only to help. We will never share your information with authorities.",a4h:"All languages welcome",a4p:"You do not need to speak English. Share your story in any language.",st:"Your safety",sti:"Your privacy is our promise.",sb:"We understand you may be afraid. Here is exactly how we protect you.",g1:"Your video is stored on secure servers. Only our small team can access it.",g2:"We will NEVER share your story with ICE, police, or any government agency.",g3:"You can request your video be deleted at any time by emailing us.",g4:"We will only share your story publicly with your explicit written permission.",sp:"Food4NJ exists to support families - not to report them. Your trust is everything to us.",rt:"Support resources",rti:"Help available near you",rb:"These organizations provide free legal help and support for immigrant families in New Jersey.",r1h:"American Friends Service Committee NJ",r1p:"Immigration legal support & detention advocacy",r2h:"NJ Alliance for Immigrant Justice",r2p:"Advocacy, resources & community support",r3h:"Make the Road NJ",r3p:"Legal aid, know-your-rights workshops",r4h:"La Casa de Don Pedro",r4p:"Food, housing & social services in Newark",r5h:"NJ Immigrant Bail Fund",r5p:"Help paying immigration bond for detained loved ones",ft:"Share your story",fti:"Your voice matters. We are listening.",fb:"Record a short video in any language. Tell us why you are here and what you want the world to know.",s0h:"A little about you",s0p:"Everything is optional. Share only what you are comfortable with.",ln:"First Name",lc:"Country of Origin",lr:"Relation to Detainee",s0b:"Continue",s1h:"Record your video",s1p:"Speak in any language. Tell us what you want people to know.",vh:"Tap Start Recording or upload a video from your phone.",rb1:"Start Recording",rb2:"Stop Recording",ub:"Upload",s1b:"Continue",s2h:"Before we save your story",s2p:"Please read carefully.",cbh:"How we use your story",cbb:"Your video will be stored securely by Food4NJ.org, a 501(c)(3) nonprofit. It will only be accessed by our small team for advocacy and documentation. We will never share your story publicly, with law enforcement, or with any government agency without your explicit written consent. You may request deletion at any time by emailing food4NJ[at]peebles.net.",cbl:"I understand and agree. I am sharing this story voluntarily.",s2b:"Submit My Story",sh:"Thank you",sp2:"Your story has been received and saved. Food4NJ will keep this record safe. You are not alone.",sdb:"Done"},
-  es:{ht:"No estas ",he:"solo/a.",hs:"Food4NJ esta aqui contigo afuera de Delaney Hall. Te vemos. Queremos escuchar tu historia.",hc:"Comparte Tu Historia",at:"Quienes somos",ati:"Food4NJ es una comunidad, no una agencia gubernamental.",ab:"Somos voluntarios y vecinos que venimos a Delaney Hall para apoyar a las familias. Somos una organizacion sin fines de lucro 501(c)(3), sin conexion con ICE ni ninguna agencia gubernamental.",a1h:"Comestibles y tarjetas de regalo",a1p:"Empacamos bolsas de comida y distribuimos tarjetas de tiendas de comestibles a las familias.",a2h:"Preservando tu historia",a2p:"Grabamos y protegemos las historias de las familias afectadas por la detencion.",a3h:"Sin juicios, sin reportes",a3p:"Estamos aqui solo para ayudar. Nunca compartiremos tu informacion con las autoridades.",a4h:"Todos los idiomas bienvenidos",a4p:"No necesitas hablar ingles. Comparte tu historia en cualquier idioma.",st:"Tu seguridad",sti:"Tu privacidad es nuestra promesa.",sb:"Entendemos que puedes tener miedo. Asi es como te protegemos.",g1:"Tu video se almacena en servidores seguros. Solo nuestro equipo puede acceder.",g2:"NUNCA compartiremos tu historia con ICE, la policia, ni ninguna agencia gubernamental.",g3:"Puedes pedir que borren tu video en cualquier momento por correo.",g4:"Solo compartiremos tu historia publicamente con tu permiso escrito.",sp:"Food4NJ existe para apoyar a las familias, no para reportarlas. Tu confianza lo es todo.",rt:"Recursos de apoyo",rti:"Ayuda disponible cerca de ti",rb:"Estas organizaciones brindan ayuda legal gratuita para familias inmigrantes en Nueva Jersey.",r1h:"American Friends Service Committee NJ",r1p:"Apoyo legal de inmigracion y defensa",r2h:"NJ Alliance for Immigrant Justice",r2p:"Defensa, recursos y apoyo comunitario",r3h:"Make the Road NJ",r3p:"Ayuda legal, talleres de derechos",r4h:"La Casa de Don Pedro",r4p:"Comida, vivienda y servicios en Newark",r5h:"NJ Immigrant Bail Fund",r5p:"Ayuda para pagar fianza de inmigracion",ft:"Comparte tu historia",fti:"Tu voz importa. Estamos escuchando.",fb:"Graba un breve video en cualquier idioma. Cuentanos por que estas aqui y lo que quieres que el mundo sepa.",s0h:"Un poco sobre ti",s0p:"Todo es opcional. Comparte solo lo que te sientas comodo.",ln:"Nombre",lc:"Pais de Origen",lr:"Relacion con el Detenido",s0b:"Continuar",s1h:"Graba tu video",s1p:"Habla en cualquier idioma.",vh:"Toca Iniciar Grabacion o sube un video desde tu telefono.",rb1:"Iniciar Grabacion",rb2:"Detener Grabacion",ub:"Subir",s1b:"Continuar",s2h:"Antes de guardar tu historia",s2p:"Por favor lee con atencion.",cbh:"Como usamos tu historia",cbb:"Tu video sera almacenado de forma segura por Food4NJ.org. Nunca compartiremos tu historia con las fuerzas del orden ni con ninguna agencia gubernamental sin tu consentimiento escrito.",cbl:"Entiendo y acepto. Estoy compartiendo esta historia voluntariamente.",s2b:"Enviar Mi Historia",sh:"Gracias",sp2:"Tu historia ha sido recibida y guardada. Food4NJ mantendra este registro seguro. No estas solo/a.",sdb:"Listo"},
-  pt:{ht:"Voce nao esta ",he:"sozinho/a.",hs:"A Food4NJ esta aqui com voce do lado de fora de Delaney Hall. Nos te vemos. Queremos ouvir sua historia.",hc:"Compartilhe Sua Historia",at:"Quem somos",ati:"A Food4NJ e uma comunidade, nao uma agencia governamental.",ab:"Somos voluntarios e vizinhos que vem a Delaney Hall para apoiar as familias. Somos uma organizacao sem fins lucrativos 501(c)(3), sem conexao com o ICE ou qualquer agencia governamental.",a1h:"Mantimentos e cartoes-presente",a1p:"Embalamos sacolas de comida e distribuimos cartoes de supermercado para as familias.",a2h:"Preservando sua historia",a2p:"Gravamos e protegemos as historias de familias afetadas pela detencao.",a3h:"Sem julgamentos, sem denuncias",a3p:"Estamos aqui apenas para ajudar. Nunca compartilharemos suas informacoes com as autoridades.",a4h:"Todos os idiomas sao bem-vindos",a4p:"Voce nao precisa falar ingles. Compartilhe sua historia em qualquer idioma.",st:"Sua seguranca",sti:"Sua privacidade e nossa promessa.",sb:"Entendemos que voce pode estar com medo. Veja como te protegemos.",g1:"Seu video e armazenado em servidores seguros. Apenas nossa equipe pode acessa-lo.",g2:"NUNCA compartilharemos sua historia com o ICE, a policia ou qualquer agencia governamental.",g3:"Voce pode solicitar a exclusao do seu video a qualquer momento.",g4:"So compartilharemos sua historia com sua permissao escrita explicita.",sp:"A Food4NJ existe para apoiar as familias, nao para denuncia-las. Sua confianca e tudo para nos.",rt:"Recursos de apoio",rti:"Ajuda disponivel perto de voce",rb:"Essas organizacoes fornecem ajuda juridica gratuita para familias imigrantes em Nova Jersey.",r1h:"American Friends Service Committee NJ",r1p:"Suporte juridico de imigracao e defesa",r2h:"NJ Alliance for Immigrant Justice",r2p:"Defesa, recursos e apoio comunitario",r3h:"Make the Road NJ",r3p:"Assistencia juridica, workshops de direitos",r4h:"La Casa de Don Pedro",r4p:"Comida, moradia e servicos em Newark",r5h:"NJ Immigrant Bail Fund",r5p:"Ajuda para pagar fianca de imigracao",ft:"Compartilhe sua historia",fti:"Sua voz importa. Estamos ouvindo.",fb:"Grave um curto video em qualquer idioma. Conte por que voce esta aqui e o que quer que o mundo saiba.",s0h:"Um pouco sobre voce",s0p:"Tudo e opcional. Compartilhe apenas o que se sentir confortavel.",ln:"Nome",lc:"Pais de Origem",lr:"Relacao com o Detento",s0b:"Continuar",s1h:"Grave seu video",s1p:"Fale em qualquer idioma.",vh:"Toque em Iniciar Gravacao ou faca upload de um video.",rb1:"Iniciar Gravacao",rb2:"Parar Gravacao",ub:"Enviar",s1b:"Continuar",s2h:"Antes de salvar sua historia",s2p:"Por favor leia com atencao.",cbh:"Como usamos sua historia",cbb:"Seu video sera armazenado com seguranca pela Food4NJ.org. Nunca compartilharemos sua historia sem seu consentimento escrito explicito.",cbl:"Entendo e concordo. Estou compartilhando esta historia voluntariamente.",s2b:"Enviar Minha Historia",sh:"Obrigado",sp2:"Sua historia foi recebida e salva. A Food4NJ mantera este registro em seguranca. Voce nao esta sozinho/a.",sdb:"Concluido"},
-  fr:{ht:"Vous n etes pas ",he:"seul(e).",hs:"Food4NJ est ici avec vous devant Delaney Hall. Nous vous voyons. Nous voulons entendre votre histoire.",hc:"Partagez Votre Histoire",at:"Qui nous sommes",ati:"Food4NJ est une communaute, pas une agence gouvernementale.",ab:"Nous sommes des benevoles et des voisins qui viennent a Delaney Hall pour soutenir les familles. Nous sommes un organisme a but non lucratif 501(c)(3), sans lien avec l ICE ou toute agence gouvernementale.",a1h:"Epicerie et cartes-cadeaux",a1p:"Nous preparons des sacs de nourriture et distribuons des cartes de supermarche aux familles.",a2h:"Preserver votre histoire",a2p:"Nous enregistrons et protegeons les histoires des familles touchees par la detention.",a3h:"Sans jugement, sans signalement",a3p:"Nous sommes ici uniquement pour aider. Nous ne partagerons jamais vos informations avec les autorites.",a4h:"Toutes les langues bienvenues",a4p:"Vous n avez pas besoin de parler anglais. Partagez votre histoire dans n importe quelle langue.",st:"Votre securite",sti:"Votre vie privee est notre promesse.",sb:"Nous comprenons que vous pouvez avoir peur. Voici comment nous vous protegeons.",g1:"Votre video est stockee sur des serveurs securises. Seule notre equipe peut y acceder.",g2:"Nous ne partagerons JAMAIS votre histoire avec l ICE, la police ou toute agence gouvernementale.",g3:"Vous pouvez demander la suppression de votre video a tout moment.",g4:"Nous ne partagerons votre histoire qu avec votre permission ecrite explicite.",sp:"Food4NJ existe pour soutenir les familles, pas pour les signaler. Votre confiance est tout pour nous.",rt:"Ressources de soutien",rti:"Aide disponible pres de vous",rb:"Ces organisations fournissent une aide juridique gratuite pour les familles immigrantes au New Jersey.",r1h:"American Friends Service Committee NJ",r1p:"Soutien juridique en immigration et defense",r2h:"NJ Alliance for Immigrant Justice",r2p:"Plaidoyer, ressources et soutien communautaire",r3h:"Make the Road NJ",r3p:"Aide juridique, ateliers sur vos droits",r4h:"La Casa de Don Pedro",r4p:"Nourriture, logement et services a Newark",r5h:"NJ Immigrant Bail Fund",r5p:"Aide pour payer la caution d immigration",ft:"Partagez votre histoire",fti:"Votre voix compte. Nous ecoutons.",fb:"Enregistrez une courte video dans n importe quelle langue. Dites pourquoi vous etes ici et ce que vous voulez que le monde sache.",s0h:"Un peu sur vous",s0p:"Tout est optionnel. Partagez uniquement ce avec quoi vous etes a l aise.",ln:"Prenom",lc:"Pays d Origine",lr:"Relation avec le Detenu",s0b:"Continuer",s1h:"Enregistrez votre video",s1p:"Parlez dans n importe quelle langue.",vh:"Appuyez sur Commencer ou telechargez une video.",rb1:"Commencer l enregistrement",rb2:"Arreter l enregistrement",ub:"Telecharger",s1b:"Continuer",s2h:"Avant de sauvegarder votre histoire",s2p:"Veuillez lire attentivement.",cbh:"Comment nous utilisons votre histoire",cbb:"Votre video sera stockee en toute securite par Food4NJ.org. Nous ne partagerons jamais votre histoire sans votre consentement ecrit explicite.",cbl:"Je comprends et j accepte. Je partage cette histoire volontairement.",s2b:"Soumettre Mon Histoire",sh:"Merci",sp2:"Votre histoire a ete recue. Food4NJ gardera cet enregistrement en securite. Vous n etes pas seul(e).",sdb:"Termine"},
-  ht:{ht:"Ou pa ",he:"poukont ou.",hs:"Food4NJ la avek ou devan Delaney Hall. Nou we ou. Nou vle tande istwa ou.",hc:"Pataje Istwa Ou",at:"Ki moun nou ye",ati:"Food4NJ se yon kominote, pa yon ajans gouveman.",ab:"Nou se volonte ak vwazen ki vin Delaney Hall pou sipote fanmi yo. Nou se yon òganizsyon 501(c)(3) san bi likratif, nou pa gen okenn koneksyon ak ICE oswa lapolis.",a1h:"Episri ak kat kado gratis",a1p:"Nou pakèt sak manje epi nou distribiye kat sipèmache bay fanmi yo.",a2h:"Konsève istwa ou",a2p:"Nou anrejistre epi pwoteje istwa fanmi ki afekte pa detansyon.",a3h:"San jijman, san rapò",a3p:"Nou la sèlman pou ede. Nou pa ap janm pataje enfòmasyon ou ak otorite yo.",a4h:"Tout lang yo akeyi",a4p:"Ou pa bezwen pale angle. Pataje istwa ou nan nenpot lang.",st:"Sekirite ou",sti:"Konfidansyalite ou se pwomes nou.",sb:"Nou konprann ou ka pe. Men kijan nou pwoteje ou.",g1:"Videyo ou a estoke sou sevè sekirize. Sèlman ekip nou ki ka jwenn li.",g2:"Nou pa ap JANM pataje istwa ou ak ICE, lapolis, oswa nenpot ajans gouvèman.",g3:"Ou ka mande pou yo efase videyo ou nenpot ki lè.",g4:"Nou pa ap pataje istwa ou piblikman sèlman ak pèmisyon ekri ou.",sp:"Food4NJ egziste pou sipote fanmi yo, pa pou rapote yo. Konfyans ou se tout bagay pou nou.",rt:"Resous sipò",rti:"Ed disponib toupre ou",rb:"Òganizsyon sa yo bay èd legal gratis pou fanmi imigran nan New Jersey.",r1h:"American Friends Service Committee NJ",r1p:"Sipò legal imigrasyon ak defans deteni",r2h:"NJ Alliance for Immigrant Justice",r2p:"Defans, resous ak sipò kominotè",r3h:"Make the Road NJ",r3p:"Ed legal, atelye sou dwa ou yo",r4h:"La Casa de Don Pedro",r4p:"Manje, lojman ak sèvis nan Newark",r5h:"NJ Immigrant Bail Fund",r5p:"Ed pou peye karisyon imigrasyon",ft:"Pataje istwa ou",fti:"Vwa ou enpòtan. Nou ap koute.",fb:"Anrejistre yon kout videyo nan nenpot lang. Di nou poukisa ou la ak sa ou vle mond lan konnen.",s0h:"Yon ti kras sou ou",s0p:"Tout bagay opsyonèl. Pataje sèlman sa ou alèz ak li.",ln:"Prenon",lc:"Peyi Orijin",lr:"Relasyon ak Detni a",s0b:"Kontinye",s1h:"Anrejistre videyo ou",s1p:"Pale nan nenpot lang.",vh:"Tape Komanse Anrejistreman oswa telechaje yon videyo.",rb1:"Komanse Anrejistreman",rb2:"Kanpe Anrejistreman",ub:"Telechaje",s1b:"Kontinye",s2h:"Anvan nou sove istwa ou",s2p:"Tanpri li avek atansyon.",cbh:"Kijan nou itilize istwa ou",cbb:"Videyo ou a pral estoke an sekirite pa Food4NJ.org. Nou pa ap janm pataje istwa ou san konsantman alekri eksplis ou.",cbl:"Mwen konprann epi dako. M ap pataje istwa sa volonteman.",s2b:"Soumèt Istwa Mwen",sh:"Mesi",sp2:"Istwa ou a te resevwa epi sove. Food4NJ pral kenbe dosye sa an sekirite. Ou pa poukont ou.",sdb:"Fini"},
-  ar:{ht:"لست ",he:"وحدك.",hs:"Food4NJ هنا معك خارج مركز احتجاز ديلاني هول. نراك. نريد سماع قصتك.",hc:"شارك قصتك",at:"من نحن",ati:"Food4NJ مجتمع وليست وكالة حكومية.",ab:"نحن متطوعون وجيران نأتي إلى ديلاني هول لندعم العائلات. نحن منظمة غير ربحية 501(c)(3) ولا علاقة لنا بـ ICE أو أي جهة حكومية.",a1h:"بقالة مجانية وبطاقات هدايا",a1p:"نعبئ أكياس طعام ونوزع بطاقات السوبرماركت على العائلات.",a2h:"حفظ قصتك",a2p:"نسجل ونحمي قصص العائلات حتى يعرف العالم ما يحدث هنا.",a3h:"بلا حكم، بلا إبلاغ",a3p:"نحن هنا للمساعدة فقط. لن نشارك معلوماتك مع السلطات أبداً.",a4h:"جميع اللغات مرحب بها",a4p:"لست بحاجة للتحدث بالإنجليزية. شارك قصتك بأي لغة.",st:"سلامتك",sti:"خصوصيتك هي وعدنا.",sb:"نفهم أنك قد تكون خائفاً. إليك كيف نحميك.",g1:"مقطعك مخزن على خوادم آمنة. فقط فريقنا الصغير يمكنه الوصول إليه.",g2:"لن نشارك قصتك أبداً مع ICE أو الشرطة أو أي جهة حكومية.",g3:"يمكنك طلب حذف مقطعك في أي وقت عبر البريد الإلكتروني.",g4:"لن نشارك قصتك علناً إلا بإذنك الكتابي الصريح.",sp:"Food4NJ موجودة لدعم العائلات وليس للإبلاغ عنها. ثقتك هي كل شيء.",rt:"موارد الدعم",rti:"المساعدة متاحة بالقرب منك",rb:"تقدم هذه المنظمات مساعدة قانونية مجانية للعائلات المهاجرة في نيوجيرسي.",r1h:"لجنة خدمة الأصدقاء الأمريكيين NJ",r1p:"دعم قانوني للهجرة والمناصرة في مجال الاحتجاز",r2h:"تحالف نيوجيرسي لعدالة المهاجرين",r2p:"المناصرة والموارد ودعم المجتمع",r3h:"Make the Road NJ",r3p:"المساعدة القانونية وورش حقوقية",r4h:"La Casa de Don Pedro",r4p:"الغذاء والسكن والخدمات الاجتماعية في نيوارك",r5h:"صندوق كفالة المهاجرين NJ",r5p:"المساعدة في دفع كفالة الهجرة",ft:"شارك قصتك",fti:"صوتك مهم. نحن نستمع.",fb:"سجل مقطعاً قصيراً بأي لغة. أخبرنا لماذا أنت هنا وما تريد أن يعرفه العالم.",s0h:"قليل عنك",s0p:"كل شيء اختياري. شارك فقط ما تشعر بالراحة تجاهه.",ln:"الاسم الأول",lc:"بلد الأصل",lr:"علاقتك بالمحتجز",s0b:"متابعة",s1h:"سجل مقطعك",s1p:"تحدث بأي لغة. أخبرنا ما تريد أن يعرفه الناس.",vh:"اضغط بدء التسجيل أو ارفع مقطعاً من هاتفك.",rb1:"بدء التسجيل",rb2:"إيقاف التسجيل",ub:"رفع",s1b:"متابعة",s2h:"قبل حفظ قصتك",s2p:"يرجى القراءة بعناية.",cbh:"كيف نستخدم قصتك",cbb:"سيتم تخزين مقطعك بأمان من قبل Food4NJ.org. لن نشارك قصتك مع أي جهة حكومية دون موافقتك الكتابية الصريحة. يمكنك طلب الحذف في أي وقت عبر food4NJ[at]peebles.net.",cbl:"أفهم وأوافق. أنا أشارك هذه القصة طوعاً.",s2b:"إرسال قصتي",sh:"شكراً لك",sp2:"تم استلام قصتك وحفظها. ستحافظ Food4NJ على هذا السجل بأمان. لست وحدك.",sdb:"تم"},
-  zh:{ht:"你",he:"并不孤单。",hs:"Food4NJ在Delaney Hall外陪伴着你。我们看见你。我们想听你的故事。",hc:"分享你的故事",at:"我们是谁",ati:"Food4NJ是一个社区，不是政府机构。",ab:"我们是志愿者和邻居，来到Delaney Hall支持各个家庭。我们是501(c)(3)非营利组织，与ICE或任何政府机构无关。",a1h:"免费食品和礼品卡",a1p:"我们打包食品袋并在家人探视结束时分发超市礼品卡。",a2h:"保存你的故事",a2p:"我们记录并保护被拘留影响的家庭的故事，让世界了解这里发生的事情。",a3h:"不评判，不举报",a3p:"我们来这里只是为了帮助。我们绝不会与当局共享您的信息。",a4h:"欢迎所有语言",a4p:"您不需要说英语。用任何语言分享您的故事。",st:"您的安全",sti:"您的隐私是我们的承诺。",sb:"我们理解您可能感到害怕。以下是我们如何保护您。",g1:"您的视频存储在安全服务器上。只有我们的小团队可以访问。",g2:"我们绝不会与ICE、警察或任何政府机构共享您的故事。",g3:"您可以随时通过电子邮件申请删除您的视频。",g4:"我们只会在您明确书面许可的情况下公开分享您的故事。",sp:"Food4NJ的存在是为了支持家庭，而不是举报他们。您的信任对我们至关重要。",rt:"支持资源",rti:"您附近的帮助",rb:"这些组织为新泽西州的移民家庭提供免费法律援助和支持。",r1h:"美国公谊服务委员会NJ",r1p:"移民法律支持与拘留倡导",r2h:"新泽西移民正义联盟",r2p:"倡导、资源和社区支持",r3h:"Make the Road NJ",r3p:"法律援助、了解权利研讨会",r4h:"La Casa de Don Pedro",r4p:"纽瓦克的食物、住房和社会服务",r5h:"新泽西移民保释基金",r5p:"帮助支付被拘留亲人的移民保证金",ft:"分享你的故事",fti:"你的声音很重要。我们在倾听。",fb:"用任何语言录制一段短视频。告诉我们您为什么在这里和您希望世界了解的事情。",s0h:"关于你的一些信息",s0p:"所有内容都是可选的。只分享您觉得舒适的内容。",ln:"名字",lc:"原籍国",lr:"与被拘留者的关系",s0b:"继续",s1h:"录制您的视频",s1p:"用任何语言说话。告诉我们您希望人们知道的事情。",vh:"点击开始录制或从手机上传视频。",rb1:"开始录制",rb2:"停止录制",ub:"上传",s1b:"继续",s2h:"在保存您的故事之前",s2p:"请仔细阅读。",cbh:"我们如何使用您的故事",cbb:"您的视频将由Food4NJ.org安全存储。我们绝不会在没有您明确书面同意的情况下与任何政府机构共享。您可以随时发送电子邮件至food4NJ[at]peebles.net申请删除。",cbl:"我理解并同意。我是自愿分享这个故事的。",s2b:"提交我的故事",sh:"谢谢你",sp2:"您的故事已收到并保存。Food4NJ将安全保存此记录。您并不孤单。",sdb:"完成"},
-  hi:{ht:"आप ",he:"अकेले नहीं हैं।",hs:"Food4NJ, Delaney Hall के बाहर आपके साथ है। हम आपको देखते हैं। हम आपकी कहानी सुनना चाहते हैं।",hc:"अपनी कहानी साझा करें",at:"हम कौन हैं",ati:"Food4NJ एक समुदाय है, कोई सरकारी एजेंसी नहीं।",ab:"हम स्वयंसेवक हैं जो परिवारों का साथ देने के लिए Delaney Hall आते हैं। हम 501(c)(3) गैर-लाभकारी संगठन हैं, ICE या किसी भी सरकारी एजेंसी से हमारा कोई संबंध नहीं है।",a1h:"मुफ्त किराने का सामान और गिफ्ट कार्ड",a1p:"हम खाने के थैले पैक करते हैं और परिवारों को सुपरमार्केट गिफ्ट कार्ड वितरित करते हैं।",a2h:"आपकी कहानी सुरक्षित रखना",a2p:"हम हिरासत से प्रभावित परिवारों की कहानियां रिकॉर्ड करते हैं ताकि दुनिया जान सके।",a3h:"कोई निर्णय नहीं, कोई रिपोर्टिंग नहीं",a3p:"हम केवल मदद के लिए यहां हैं। हम कभी भी आपकी जानकारी अधिकारियों के साथ साझा नहीं करेंगे।",a4h:"सभी भाषाओं का स्वागत है",a4p:"आपको अंग्रेजी बोलने की जरूरत नहीं है। किसी भी भाषा में अपनी कहानी साझा करें।",st:"आपकी सुरक्षा",sti:"आपकी गोपनीयता हमारा वादा है।",sb:"हम समझते हैं कि आप डरे हुए हो सकते हैं। यहां बताया गया है कि हम आपकी सुरक्षा कैसे करते हैं।",g1:"आपका वीडियो सुरक्षित सर्वर पर संग्रहीत है। केवल हमारी छोटी टीम ही इसे एक्सेस कर सकती है।",g2:"हम आपकी कहानी ICE, पुलिस या किसी भी सरकारी एजेंसी के साथ कभी साझा नहीं करेंगे।",g3:"आप किसी भी समय ईमेल करके अपना वीडियो हटाने का अनुरोध कर सकते हैं।",g4:"हम आपकी स्पष्ट लिखित अनुमति से ही आपकी कहानी सार्वजनिक रूप से साझा करेंगे।",sp:"Food4NJ परिवारों का समर्थन करने के लिए मौजूद है, उनकी रिपोर्ट करने के लिए नहीं।",rt:"सहायता संसाधन",rti:"आपके पास उपलब्ध सहायता",rb:"ये संगठन न्यू जर्सी में प्रवासी परिवारों को मुफ्त कानूनी सहायता प्रदान करते हैं।",r1h:"अमेरिकन फ्रेंड्स सर्विस कमेटी NJ",r1p:"आव्रजन कानूनी सहायता और हिरासत वकालत",r2h:"NJ अलायंस फॉर इमिग्रेंट जस्टिस",r2p:"वकालत, संसाधन और सामुदायिक सहायता",r3h:"Make the Road NJ",r3p:"कानूनी सहायता, अधिकार कार्यशालाएं",r4h:"La Casa de Don Pedro",r4p:"नेवार्क में भोजन, आवास और सामाजिक सेवाएं",r5h:"NJ इमिग्रेंट बेल फंड",r5p:"हिरासत में लिए गए प्रियजनों की जमानत में मदद",ft:"अपनी कहानी साझा करें",fti:"आपकी आवाज मायने रखती है। हम सुन रहे हैं।",fb:"किसी भी भाषा में एक छोटा वीडियो रिकॉर्ड करें। हमें बताएं कि आप यहां क्यों हैं और आप दुनिया को क्या जानना चाहते हैं।",s0h:"आपके बारे में थोड़ा",s0p:"सब कुछ वैकल्पिक है। केवल वही साझा करें जो आप सहज महसूस करते हों।",ln:"पहला नाम",lc:"मूल देश",lr:"हिरासत में लिए गए से संबंध",s0b:"जारी रखें",s1h:"अपना वीडियो रिकॉर्ड करें",s1p:"किसी भी भाषा में बोलें।",vh:"रिकॉर्डिंग शुरू करें पर टैप करें या अपने फोन से वीडियो अपलोड करें।",rb1:"रिकॉर्डिंग शुरू करें",rb2:"रिकॉर्डिंग रोकें",ub:"अपलोड करें",s1b:"जारी रखें",s2h:"आपकी कहानी सहेजने से पहले",s2p:"कृपया ध्यान से पढ़ें।",cbh:"हम आपकी कहानी का उपयोग कैसे करते हैं",cbb:"आपका वीडियो Food4NJ.org द्वारा सुरक्षित रूप से संग्रहीत किया जाएगा। हम आपकी स्पष्ट लिखित सहमति के बिना कभी भी आपकी कहानी किसी सरकारी एजेंसी के साथ साझा नहीं करेंगे। आप food4NJ[at]peebles.net पर ईमेल करके हटाने का अनुरोध कर सकते हैं।",cbl:"मैं समझता/समझती हूं और सहमत हूं। मैं यह कहानी स्वेच्छा से साझा कर रहा/रही हूं।",s2b:"मेरी कहानी जमा करें",sh:"धन्यवाद",sp2:"आपकी कहानी प्राप्त हो गई है और सहेज ली गई है। Food4NJ इस रिकॉर्ड को सुरक्षित रखेगा। आप अकेले नहीं हैं।",sdb:"हो गया"},
-  ro:{ht:"Nu esti ",he:"singur/a.",hs:"Food4NJ este alaturi de tine in fata Delaney Hall. Te vedem. Vrem sa iti auzim povestea.",hc:"Impartaseste povestea ta",at:"Cine suntem",ati:"Food4NJ este o comunitate, nu o agentie guvernamentala.",ab:"Suntem voluntari si vecini care vin la Delaney Hall pentru a sprijini familiile. Suntem o organizatie nonprofit 501(c)(3), fara nicio legatura cu ICE sau vreo agentie guvernamentala.",a1h:"Alimente si carduri cadou gratuite",a1p:"Pregatim pungi cu alimente si distribuim carduri de supermarket familiilor cand pleaca de la vizite.",a2h:"Pastrarea povestii tale",a2p:"Inregistram si protejam povestile familiilor afectate de detentie, pentru ca lumea sa stie ce se intampla aici.",a3h:"Fara judecata, fara raportare",a3p:"Suntem aici doar pentru a ajuta. Nu vom impartasi niciodata informatiile tale cu autoritatile.",a4h:"Toate limbile sunt binevenite",a4p:"Nu trebuie sa vorbesti engleza. Impartaseste povestea ta in orice limba.",st:"Siguranta ta",sti:"Confidentialitatea ta este promisiunea noastra.",sb:"Intelegem ca poti fi speriat/a. Iata exact cum te protejam.",g1:"Videoclipul tau este stocat pe servere securizate. Doar echipa noastra mica il poate accesa.",g2:"NU vom impartasi NICIODATA povestea ta cu ICE, politia sau vreo agentie guvernamentala.",g3:"Poti solicita stergerea videoclipului tau oricand prin e-mail.",g4:"Vom impartasi povestea ta public doar cu permisiunea ta scrisa explicita.",sp:"Food4NJ exista pentru a sprijini familiile, nu pentru a le raporta. Increderea ta inseamna totul pentru noi.",rt:"Resurse de sprijin",rti:"Ajutor disponibil langa tine",rb:"Aceste organizatii ofera asistenta juridica gratuita pentru familiile de imigranti din New Jersey.",r1h:"American Friends Service Committee NJ",r1p:"Asistenta juridica pentru imigrare si advocacy pentru detentie",r2h:"NJ Alliance for Immigrant Justice",r2p:"Advocacy, resurse si sprijin comunitar",r3h:"Make the Road NJ",r3p:"Asistenta juridica, ateliere privind drepturile",r4h:"La Casa de Don Pedro",r4p:"Alimente, locuinte si servicii sociale in Newark",r5h:"NJ Immigrant Bail Fund",r5p:"Ajutor pentru plata cautiunii de imigrare",ft:"Impartaseste povestea ta",fti:"Vocea ta conteaza. Ascultam.",fb:"Inregistreaza un scurt videoclip in orice limba. Spune-ne de ce esti aici si ce vrei sa stie lumea.",s0h:"Putin despre tine",s0p:"Totul este optional. Impartaseste doar ce te simti confortabil.",ln:"Prenume",lc:"Tara de origine",lr:"Relatia cu detinutul",s0b:"Continua",s1h:"Inregistreaza videoclipul tau",s1p:"Vorbeste in orice limba. Spune-ne ce vrei ca oamenii sa stie.",vh:"Apasa Incepe inregistrarea sau incarca un videoclip de pe telefon.",rb1:"Incepe inregistrarea",rb2:"Opreste inregistrarea",ub:"Incarca",s1b:"Continua",s2h:"Inainte sa salvam povestea ta",s2p:"Te rugam sa citesti cu atentie.",cbh:"Cum folosim povestea ta",cbb:"Videoclipul tau va fi stocat in siguranta de Food4NJ.org. Nu vom impartasi niciodata povestea ta cu vreo agentie guvernamentala fara consimtamantul tau scris explicit. Poti solicita stergerea oricand la food4NJ[at]peebles.net.",cbl:"Inteleg si sunt de acord. Impartasesc aceasta poveste voluntar.",s2b:"Trimite povestea mea",sh:"Multumesc",sp2:"Povestea ta a fost primita si salvata. Food4NJ va pastra aceasta inregistrare in siguranta. Nu esti singur/a.",sdb:"Gata"},
-  wo:{ht:"Yow du ",he:"yëngël ci sa bop.",hs:"Food4NJ nekk ak yow ci kanam Delaney Hall. Dangay gis. Dañu bëgg xam sa xibaar.",hc:"Joxe Sa Xibaar",at:"Xam nanu ken la nu",ati:"Food4NJ dafa ci kaw kër gi, du aaministrasion.",ab:"Nu ñu bëgg-bëgg ak xarit yi dañuy dem Delaney Hall ngir sos jëkkër yi. Nu ñu ñëp 501(c)(3) - mànkoo du am ak ICE walla kenn ci aaministrasion.",a1h:"Lekk ak kart kado ab yëkëtul",a1p:"Dañuy tëj sak yi lekk ak yóbbu kart supermarché yi jëkkër yi bi ñuy dem.",a2h:"Waral sa xibaar",a2p:"Dañuy bind ak dëkk xibaar yi jëkkër yi ku mën da ko faale ngir aduna xam luy dëkk fi.",a3h:"Sàqq benn doom, def rapporte benn",a3p:"Dangay nekk fi ci kanam ngir ndimbëlante. Dinañu mànkoo jox sa xibaar ci mbindëfkat yi.",a4h:"Làkk yëp dallu ko",a4p:"Mën nga wax anglais wala mën du. Joxe sa xibaar ci kenn làkk.",st:"Sa sàkkal",sti:"Sa diisoo mooy sa promees.",sb:"Dañu xam ne mën nga dëkk-dëkk. Fi ngay gis nuy dëfal ko.",g1:"Sa video dëkk ci serveur bu dëkk. Ekip bi topp bi rekk mën ko yëgël.",g2:"Dinañu MÀNKOO jox sa xibaar ci ICE, polis, walla kenn ci aaministrasion.",g3:"Mën nga dëmë joxe sa video ci kenn waxtu ni.",g4:"Dinañu jox sa xibaar ci dëkk rekk ak sa mbindëf bu ndimba bu xëtëw.",sp:"Food4NJ nekk ngir jëlal jëkkër yi, du rapporte leen. Sa yëgëlaat mooy dëkk ci nun.",rt:"Mbindëf yu ndimbël",rti:"Ndimbël bi ay ci sa kanam",rb:"Ñii aaministrasion yep dañuy may ndimbël juridique ci kaw bu yëkëtul ngir jëkkër yi ay imigran ci New Jersey.",r1h:"American Friends Service Committee NJ",r1p:"Ndimbël juridique ci imigrasion ak advocacy ci detansion",r2h:"NJ Alliance for Immigrant Justice",r2p:"Advocacy, mbindëf, ak ndimbël kër gi",r3h:"Make the Road NJ",r3p:"Ndimbël juridique, atelier ci sa yëgëlaat",r4h:"La Casa de Don Pedro",r4p:"Lekk, dëkk ak sërvisiis sociale ci Newark",r5h:"NJ Immigrant Bail Fund",r5p:"Ndimbël ngir fay kaution imigrasion",ft:"Joxe sa xibaar",fti:"Sa baat dafa am solo. Dañuy xam.",fb:"Bind video bu yomb ci kenn làkk. Waxal nu lan ngay dëkk fi ak luy bëgg aduna xam.",s0h:"Dëkk ci sa bop",s0p:"Dëkk yëp ndimba. Joxe rekk luy mën nga.",ln:"Turu jëkkër",lc:"Pays bu jog",lr:"Yëgëlaat ak ku dëkk ci kanam",s0b:"Jeex na",s1h:"Bind sa video",s1p:"Wax ci kenn làkk. Waxal nu li bëgg nga mën yi xam.",vh:"Dugg ci Tànn Enregistrement walla yóbbu video yi jën sa telefon.",rb1:"Tànn Enregistrement",rb2:"Taxaw Enregistrement",ub:"Yóbbu",s1b:"Jeex na",s2h:"Ci kanam nga waral sa xibaar",s2p:"Jox xam-xam bu bees.",cbh:"Naka dañuy jëfandikoo sa xibaar",cbb:"Sa video dinaa ko dëkk ci yëgëlaat ci Food4NJ.org. Dinañu mànkoo jox sa xibaar ci mbindëfkat yi walla kenn ci aaministrasion sans sa xëtëw bu ndimba bu mbindëf. Mën nga dëmë joxe ci food4NJ[at]peebles.net.",cbl:"Dëkk naa ak man naa. Daa jox xibaar bi ci sa bëgg.",s2b:"Yóbbu sa Xibaar",sh:"Jërejëf",sp2:"Sa xibaar gënnël nga ko ci dëkk. Food4NJ dinaa ko dëkk ci yëgëlaat. Yow du yëngël ci sa bop.",sdb:"Jeex na"}
-};
-
-var lang = "en";
-var recording = false;
-var stream = null, recorder = null, chunks = [], blob = null, fblob = null, ticker = null, secs = 0;
-
-function setTxt(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
-
-function applyLang(l) {
-  var t = T[l] || T.en;
-  setTxt("H-title", t.ht); setTxt("H-em", t.he); setTxt("H-sub", t.hs); setTxt("H-cta", t.hc);
-  setTxt("A-tag", t.at); setTxt("A-title", t.ati); setTxt("A-body", t.ab);
-  setTxt("AC1-h", t.a1h); setTxt("AC1-p", t.a1p); setTxt("AC2-h", t.a2h); setTxt("AC2-p", t.a2p);
-  setTxt("AC3-h", t.a3h); setTxt("AC3-p", t.a3p); setTxt("AC4-h", t.a4h); setTxt("AC4-p", t.a4p);
-  setTxt("S-tag", t.st); setTxt("S-title", t.sti); setTxt("S-body", t.sb);
-  setTxt("SG1", t.g1); setTxt("SG2", t.g2); setTxt("SG3", t.g3); setTxt("SG4", t.g4); setTxt("SP", t.sp);
-  setTxt("R-tag", t.rt); setTxt("R-title", t.rti); setTxt("R-body", t.rb);
-  setTxt("RC1-h", t.r1h); setTxt("RC1-p", t.r1p); setTxt("RC2-h", t.r2h); setTxt("RC2-p", t.r2p);
-  setTxt("RC3-h", t.r3h); setTxt("RC3-p", t.r3p); setTxt("RC4-h", t.r4h); setTxt("RC4-p", t.r4p);
-  setTxt("RC5-h", t.r5h); setTxt("RC5-p", t.r5p);
-  setTxt("F-tag", t.ft); setTxt("F-title", t.fti); setTxt("F-body", t.fb);
-  setTxt("FS0-h", t.s0h); setTxt("FS0-p", t.s0p);
-  setTxt("FL-name", t.ln); setTxt("FL-country", t.lc); setTxt("FL-relation", t.lr);
-  setTxt("FS0-btn", t.s0b); setTxt("FS1-h", t.s1h); setTxt("FS1-p", t.s1p);
-  setTxt("VH-hint", t.vh); setTxt("FS1-btn", t.s1b);
-  setTxt("FS2-h", t.s2h); setTxt("FS2-p", t.s2p);
-  setTxt("CB-h", t.cbh); setTxt("CB-body", t.cbb); setTxt("CB-label", t.cbl); setTxt("FS2-btn", t.s2b);
-  setTxt("SUC-h", t.sh); setTxt("SUC-p", t.sp2); setTxt("SUC-btn", t.sdb);
-  if (!recording) setTxt("REC-btn", t.rb1);
-  setTxt("UP-btn", t.ub);
+  const unders = list.filter(g=>g.e.lean==='under');
+  document.getElementById('sGames').textContent = list.length;
+  document.getElementById('sUnders').textContent = unders.length;
+  document.getElementById('sBig').textContent = list.filter(g=>g.e.penalty>=3).length;
 }
 
-// Language dropdown
-document.getElementById("lang-select").addEventListener("change", function() {
-  lang = this.value;
-  applyLang(lang);
-  // RTL support for Arabic
-  document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-  // RTL support for Arabic
-  document.body.style.direction = (lang === "ar") ? "rtl" : "ltr";
-});
-
-// Form steps
-function goStep(n) {
-  document.querySelectorAll(".fstep").forEach(function(e, i) { e.classList.toggle("on", i === n); });
-  ["fp0","fp1","fp2"].forEach(function(id, i) {
-    var el = document.getElementById(id);
-    el.classList.toggle("done", i < n);
-    el.classList.toggle("now", i === n);
-  });
-  document.getElementById("form-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
-}
-document.getElementById("btn-s0").addEventListener("click", function() { goStep(1); });
-document.getElementById("btn-s1").addEventListener("click", function() { goStep(2); });
-document.getElementById("btn-done").addEventListener("click", resetForm);
-
-// Recording
-document.getElementById("btn-rec").addEventListener("click", function() {
-  recording ? stopRec() : startRec();
-});
-document.getElementById("fupload").addEventListener("change", function(e) {
-  var f = e.target.files[0]; if (!f) return;
-  fblob = f; blob = null;
-  var vp = document.getElementById("vplay");
-  vp.src = URL.createObjectURL(f); vp.style.display = "block";
-  document.getElementById("vph").style.display = "none";
-  document.getElementById("vlive").style.display = "none";
-  document.getElementById("btn-s1").disabled = false;
-});
-
-function startRec() {
-  navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: true })
-    .then(function(s) {
-      stream = s;
-      var lv = document.getElementById("vlive");
-      lv.srcObject = s; lv.style.display = "block";
-      document.getElementById("vph").style.display = "none";
-      document.getElementById("vplay").style.display = "none";
-      chunks = []; recorder = new MediaRecorder(s);
-      recorder.ondataavailable = function(e) { if (e.data.size > 0) chunks.push(e.data); };
-      recorder.onstop = function() {
-        blob = new Blob(chunks, { type: "video/webm" });
-        var vp = document.getElementById("vplay");
-        vp.src = URL.createObjectURL(blob); vp.style.display = "block"; lv.style.display = "none";
-        document.getElementById("btn-s1").disabled = false;
-        document.getElementById("rbadge").style.display = "none";
-        document.getElementById("vtimer").style.display = "none";
-        clearInterval(ticker);
-      };
-      recorder.start(); recording = true;
-      document.getElementById("btn-rec").classList.add("live");
-      setTxt("REC-btn", (T[lang]||T.en).rb2);
-      document.getElementById("rbadge").style.display = "flex";
-      secs = 0; document.getElementById("vtimer").style.display = "block";
-      ticker = setInterval(function() {
-        secs++;
-        document.getElementById("vtimer").textContent = Math.floor(secs/60) + ":" + String(secs%60).padStart(2,"0");
-        if (secs >= 180) stopRec();
-      }, 1000);
-    })
-    .catch(function() { alert("Camera access denied. Please use the Upload option."); });
+function ring(pct, color){
+  const r=20, c=2*Math.PI*r, off=c*(1-pct/100);
+  return `<svg class="ring" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="${r}" fill="none" stroke="var(--panel2)" stroke-width="5"/>
+    <circle cx="24" cy="24" r="${r}" fill="none" stroke="${color}" stroke-width="5"
+      stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}"
+      transform="rotate(-90 24 24)"/>
+    <text x="24" y="28" text-anchor="middle" fill="var(--txt)" font-size="13"
+      font-family="Barlow Condensed" font-weight="700">${pct}</text></svg>`;
 }
 
-function stopRec() {
-  if (recorder) recorder.stop();
-  if (stream) stream.getTracks().forEach(function(t) { t.stop(); });
-  recording = false;
-  document.getElementById("btn-rec").classList.remove("live");
-  setTxt("REC-btn", (T[lang]||T.en).rb1);
-  clearInterval(ticker);
+function renderLocks(){
+  const unders = evaluated().filter(g=>g.e.lean==='under')
+    .sort((a,b)=>b.e.penalty - a.e.penalty);
+
+  // Locks
+  document.getElementById('lockList').innerHTML = unders.length ? unders.map((g,i)=>`
+    <div class="lock">
+      <div class="rank">${i+1}</div>
+      <div class="li">
+        <div class="lm">${g.awayAb} @ ${g.homeAb}</div>
+        <div class="lsub">${g.kick} · ${g.venue} · −${g.e.penalty} pts weather</div>
+        <div class="bet">▼ UNDER ${g.e.market} &nbsp;→&nbsp; model ${g.e.adjusted}</div>
+      </div>
+      <div class="conv">${ring(g.e.conviction,'var(--under)')}<div class="cl">Conviction</div></div>
+    </div>`).join('')
+    : '<div class="empty">No weather unders on this slate. Clean-air week — the model stands down.</div>';
+
+  // Parlays: top-2 and top-3 legs
+  const box = document.getElementById('parlayList');
+  const combos = [];
+  if(unders.length>=2) combos.push({name:'2-Leg Weather Under', legs:unders.slice(0,2), feat:true});
+  if(unders.length>=3) combos.push({name:'3-Leg Weather Under', legs:unders.slice(0,3), feat:false});
+  box.innerHTML = combos.length ? combos.map(c=>{
+    const conv = Math.round(c.legs.reduce((p,g)=>p*(g.e.conviction/100),1)*100);
+    return `<div class="parlay ${c.feat?'feat':''}">
+      <div class="p-h"><span class="pt">${c.name}</span>
+        <span class="pc">${conv}% combined</span></div>
+      ${c.legs.map(g=>`<div class="leg">
+        <span class="lg-i">🌬️</span>
+        <span class="lg-t"><b>${g.awayAb} @ ${g.homeAb}</b> <span>· ${g.venue}</span></span>
+        <span class="lg-b">U ${g.e.market}</span></div>`).join('')}
+      <div class="p-foot"><span>Weather points on this ticket</span>
+        <b>−${c.legs.reduce((s,g)=>s+g.e.penalty,0).toFixed(1)} pts total</b></div>
+    </div>`;
+  }).join('') : '<div class="empty">Need at least 2 weather unders to build a parlay.</div>';
 }
 
-document.getElementById("ccb").addEventListener("change", function() {
-  document.getElementById("btn-submit").disabled = !this.checked;
-});
-
-document.getElementById("btn-submit").addEventListener("click", function() {
-  var btn = this;
-  btn.disabled = true; btn.innerHTML = "<span class=\"spin\"></span> Saving...";
-  var vblob = blob || fblob;
-  if (!vblob) { alert("No video found."); btn.disabled = false; return; }
-  document.getElementById("upbar").style.display = "block";
-  var meta = {
-    name: document.getElementById("f-name").value.trim() || null,
-    country: document.getElementById("f-country").value.trim() || null,
-    relation: document.getElementById("f-relation").value || null,
-    language: lang
-  };
-  window._upload(vblob, meta, function(pct) {
-    document.getElementById("upfill").style.width = pct + "%";
-    document.getElementById("uplbl").textContent = pct < 90 ? "Uploading video..." : "Saving record...";
-  }).then(function() {
-    document.getElementById("upbar").style.display = "none";
-    document.querySelectorAll(".fstep").forEach(function(e) { e.classList.remove("on"); });
-    document.getElementById("fs-success").classList.add("on");
-    document.querySelectorAll(".fp").forEach(function(fp) { fp.classList.add("done"); });
-  }).catch(function(err) {
-    document.getElementById("upbar").style.display = "none";
-    alert("Upload failed: " + err.message);
-    btn.disabled = false; btn.innerHTML = "<span id=\"FS2-btn\">" + (T[lang]||T.en).s2b + "</span>";
-  });
-});
-
-function resetForm() {
-  if (stream) stream.getTracks().forEach(function(t) { t.stop(); });
-  stream = null; recorder = null; blob = null; fblob = null; recording = false; clearInterval(ticker);
-  document.getElementById("vlive").style.display = "none";
-  document.getElementById("vplay").style.display = "none";
-  document.getElementById("vph").style.display = "flex";
-  document.getElementById("btn-s1").disabled = true;
-  document.getElementById("ccb").checked = false;
-  document.getElementById("btn-submit").disabled = true;
-  document.getElementById("f-name").value = "";
-  document.getElementById("f-country").value = "";
-  document.getElementById("f-relation").value = "";
-  goStep(0);
+function renderAll(){
+  document.getElementById('wkNum').textContent = WEEK;
+  document.getElementById('wkSeason').textContent = SEASON;
+  document.getElementById('updated').textContent =
+    (MODE==='live'?'⚡ Live lines · ':'📅 Pre-game lines · ') +
+    'Sample slate — wire an odds + weather API to go live';
+  renderGames();
+  renderLocks();
 }
-
-
-T.ar={ht:"\u0644\u0633\u062a ",he:"\u0648\u062d\u062f\u0643.",hs:"Food4NJ \u0645\u0648\u062c\u0648\u062f\u0629 \u0645\u0639\u0643 \u062e\u0627\u0631\u062c Delaney Hall. \u0646\u0631\u0627\u0643. \u0646\u0631\u064a\u062f \u0633\u0645\u0627\u0639 \u0642\u0635\u062a\u0643.",hc:"\u0634\u0627\u0631\u0643\u0646\u0627 \u0642\u0635\u062a\u0643",at:"\u0645\u0646 \u0646\u062d\u0646",ati:"Food4NJ \u0645\u062c\u062a\u0645\u0639 \u0648\u0644\u064a\u0633\u062a \u0648\u0643\u0627\u0644\u0629 \u062d\u0643\u0648\u0645\u064a\u0629.",ab:"\u0646\u062d\u0646 \u0645\u062a\u0637\u0648\u0639\u0648\u0646 \u0628\u0644\u0627 \u0635\u0644\u0629 \u0628\u0640 ICE \u0623\u0648 \u0623\u064a \u062c\u0647\u0629 \u062d\u0643\u0648\u0645\u064a\u0629.",a1h:"\u0628\u0642\u0627\u0644\u0629 \u0648\u0628\u0637\u0627\u0642\u0627\u062a \u0647\u062f\u0627\u064a\u0627 \u0645\u062c\u0627\u0646\u064a\u0629",a1p:"\u0646\u062d\u0632\u0645 \u0623\u0643\u064a\u0627\u0633 \u0637\u0639\u0627\u0645 \u0648\u0646\u0648\u0632\u0639 \u0628\u0637\u0627\u0642\u0627\u062a \u0627\u0644\u0645\u062a\u0627\u062c\u0631 \u0639\u0644\u0649 \u0627\u0644\u0639\u0627\u0626\u0644\u0627\u062a.",a2h:"\u0627\u0644\u062d\u0641\u0627\u0638 \u0639\u0644\u0649 \u0642\u0635\u062a\u0643",a2p:"\u0646\u0633\u062c\u0644 \u0648\u0646\u062d\u0645\u064a \u0642\u0635\u0635 \u0627\u0644\u0639\u0627\u0626\u0644\u0627\u062a \u0627\u0644\u0645\u062a\u0636\u0631\u0631\u0629 \u0645\u0646 \u0627\u0644\u0627\u062d\u062a\u062c\u0627\u0632.",a3h:"\u0644\u0627 \u062d\u0643\u0645 \u0648\u0644\u0627 \u062a\u0628\u0644\u064a\u063a",a3p:"\u0646\u062d\u0646 \u0647\u0646\u0627 \u0644\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0641\u0642\u0637. \u0644\u0646 \u0646\u0634\u0627\u0631\u0643 \u0645\u0639\u0644\u0648\u0645\u0627\u062a\u0643 \u0645\u0639 \u0627\u0644\u0633\u0644\u0637\u0627\u062a.",a4h:"\u062c\u0645\u064a\u0639 \u0627\u0644\u0644\u063a\u0627\u062a \u0645\u0631\u062d\u0628 \u0628\u0647\u0627",a4p:"\u0644\u0633\u062a \u0628\u062d\u0627\u062c\u0629 \u0644\u062a\u062a\u0643\u0644\u0645 \u0625\u0646\u062c\u0644\u064a\u0632\u064a. \u0634\u0627\u0631\u0643 \u0642\u0635\u062a\u0643 \u0628\u0623\u064a \u0644\u063a\u0629.",st:"\u0633\u0644\u0627\u0645\u062a\u0643",sti:"\u062e\u0635\u0648\u0635\u064a\u062a\u0643 \u0647\u064a \u0648\u0639\u062f\u0646\u0627.",sb:"\u0646\u0641\u0647\u0645 \u0623\u0646\u0643 \u0642\u062f \u062a\u0643\u0648\u0646 \u062e\u0627\u0626\u0641\u064b\u0627. \u0625\u0644\u064a\u0643 \u0643\u064a\u0641 \u0646\u062d\u0645\u064a\u0643.",g1:"\u0627\u0644\u0641\u064a\u062f\u064a\u0648 \u0645\u062e\u0632\u0646 \u0639\u0644\u0649 \u062e\u0648\u0627\u062f\u0645 \u0622\u0645\u0646\u0629. \u0641\u0631\u064a\u0642\u0646\u0627 \u0641\u0642\u0637 \u064a\u0633\u062a\u0637\u064a\u0639 \u0627\u0644\u0648\u0635\u0648\u0644.",g2:"\u0644\u0646 \u0646\u0634\u0627\u0631\u0643 \u0642\u0635\u062a\u0643 \u0645\u0639 ICE \u0623\u0648 \u0627\u0644\u0634\u0631\u0637\u0629 \u0623\u0628\u062f\u064b\u0627.",g3:"\u064a\u0645\u0643\u0646\u0643 \u0637\u0644\u0628 \u062d\u0630\u0641 \u0627\u0644\u0641\u064a\u062f\u064a\u0648 \u0641\u064a \u0623\u064a \u0648\u0642\u062a.",g4:"\u0644\u0646 \u0646\u0634\u0627\u0631\u0643 \u0642\u0635\u062a\u0643 \u0639\u0644\u0646\u064b\u0627 \u0625\u0644\u0627 \u0628\u0625\u0630\u0646\u0643 \u0627\u0644\u0643\u062a\u0627\u0628\u064a.",sp:"Food4NJ \u0645\u0648\u062c\u0648\u062f\u0629 \u0644\u062f\u0639\u0645 \u0627\u0644\u0639\u0627\u0626\u0644\u0627\u062a \u0644\u0627 \u0644\u0644\u062a\u0628\u0644\u064a\u063a \u0639\u0646\u0647\u0627.",rt:"\u0645\u0648\u0627\u0631\u062f \u0627\u0644\u062f\u0639\u0645",rti:"\u0645\u0633\u0627\u0639\u062f\u0629 \u0642\u0631\u064a\u0628\u0629 \u0645\u0646\u0643",rb:"\u0647\u0630\u0647 \u0627\u0644\u0645\u0646\u0638\u0645\u0627\u062a \u062a\u0642\u062f\u0645 \u0645\u0633\u0627\u0639\u062f\u0629 \u0642\u0627\u0646\u0648\u0646\u064a\u0629 \u0645\u062c\u0627\u0646\u064a\u0629 \u0641\u064a \u0646\u064a\u0648 \u062c\u064a\u0631\u0633\u064a.",r1h:"American Friends Service Committee NJ",r1p:"\u062f\u0639\u0645 \u0642\u0627\u0646\u0648\u0646\u064a \u0644\u0644\u0647\u062c\u0631\u0629",r2h:"NJ Alliance for Immigrant Justice",r2p:"\u0645\u0646\u0627\u0635\u0631\u0629 \u0648\u062f\u0639\u0645 \u0645\u062c\u062a\u0645\u0639\u064a",r3h:"Make the Road NJ",r3p:"\u0645\u0633\u0627\u0639\u062f\u0629 \u0642\u0627\u0646\u0648\u0646\u064a\u0629 \u0648\u0648\u0631\u0634 \u062d\u0642\u0648\u0642\u064a\u0629",r4h:"La Casa de Don Pedro",r4p:"\u0637\u0639\u0627\u0645 \u0648\u062e\u062f\u0645\u0627\u062a \u0641\u064a \u0646\u064a\u0648\u0627\u0631\u0643",r5h:"NJ Immigrant Bail Fund",r5p:"\u0645\u0633\u0627\u0639\u062f\u0629 \u0641\u064a \u062f\u0641\u0639 \u0643\u0641\u0627\u0644\u0629 \u0627\u0644\u0647\u062c\u0631\u0629",ft:"\u0634\u0627\u0631\u0643 \u0642\u0635\u062a\u0643",fti:"\u0635\u0648\u062a\u0643 \u0645\u0647\u0645. \u0646\u062d\u0646 \u0646\u0633\u062a\u0645\u0639.",fb:"\u0633\u062c\u0644 \u0641\u064a\u062f\u064a\u0648 \u0642\u0635\u064a\u0631\u064b\u0627 \u0628\u0623\u064a \u0644\u063a\u0629. \u0623\u062e\u0628\u0631\u0646\u0627 \u0644\u0645\u0627\u0630\u0627 \u0623\u0646\u062a \u0647\u0646\u0627.",s0h:"\u0642\u0644\u064a\u0644 \u0639\u0646\u0643",s0p:"\u0643\u0644 \u0634\u064a\u0621 \u0627\u062e\u062a\u064a\u0627\u0631\u064a.",ln:"\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0623\u0648\u0644",lc:"\u0628\u0644\u062f \u0627\u0644\u0623\u0635\u0644",lr:"\u0639\u0644\u0627\u0642\u062a\u0643 \u0628\u0627\u0644\u0645\u062d\u062a\u062c\u0632",s0b:"\u0645\u062a\u0627\u0628\u0639\u0629",s1h:"\u0633\u062c\u0644 \u0641\u064a\u062f\u064a\u0648\u0643",s1p:"\u062a\u062d\u062f\u062b \u0628\u0623\u064a \u0644\u063a\u0629.",vh:"\u0627\u0636\u063a\u0637 \u0628\u062f\u0621 \u0627\u0644\u062a\u0633\u062c\u064a\u0644 \u0623\u0648 \u0627\u0631\u0641\u0639 \u0641\u064a\u062f\u064a\u0648.",rb1:"\u0628\u062f\u0621 \u0627\u0644\u062a\u0633\u062c\u064a\u0644",rb2:"\u0625\u064a\u0642\u0627\u0641 \u0627\u0644\u062a\u0633\u062c\u064a\u0644",ub:"\u0631\u0641\u0639",s1b:"\u0645\u062a\u0627\u0628\u0639\u0629",s2h:"\u0642\u0628\u0644 \u062d\u0641\u0638 \u0642\u0635\u062a\u0643",s2p:"\u064a\u0631\u062c\u0649 \u0627\u0644\u0642\u0631\u0627\u0621\u0629 \u0628\u0639\u0646\u0627\u064a\u0629.",cbh:"\u0643\u064a\u0641 \u0646\u0633\u062a\u062e\u062f\u0645 \u0642\u0635\u062a\u0643",cbb:"\u0633\u064a\u062a\u0645 \u062a\u062e\u0632\u064a\u0646 \u0627\u0644\u0641\u064a\u062f\u064a\u0648 \u0628\u0623\u0645\u0627\u0646 \u0628\u0648\u0627\u0633\u0637\u0629 Food4NJ.org. \u0644\u0646 \u0646\u0634\u0627\u0631\u0643\u0647 \u062f\u0648\u0646 \u0645\u0648\u0627\u0641\u0642\u062a\u0643.",cbl:"\u0623\u0641\u0647\u0645 \u0648\u0623\u0648\u0627\u0641\u0642. \u0623\u0634\u0627\u0631\u0643 \u0647\u0630\u0647 \u0627\u0644\u0642\u0635\u0629 \u0637\u0648\u0639\u064b\u0627.",s2b:"\u0625\u0631\u0633\u0627\u0644 \u0642\u0635\u062a\u064a",sh:"\u0634\u0643\u0631\u064b\u0627 \u0644\u0643",sp2:"\u062a\u0645 \u0627\u0633\u062a\u0644\u0627\u0645 \u0642\u0635\u062a\u0643. \u0633\u062a\u062d\u0627\u0641\u0638 Food4NJ \u0639\u0644\u0649 \u0647\u0630\u0627 \u0627\u0644\u0633\u062c\u0644 \u0628\u0623\u0645\u0627\u0646. \u0644\u0633\u062a \u0648\u062d\u062f\u0643.",sdb:"\u062a\u0645"};
-
-T.zh={ht:"\u60A8",he:"\u5E76\u4E0D\u5B64\u5355\u3002",hs:"Food4NJ\u5728Delaney Hall\u5916\u966A\u4F34\u7740\u60A8\u3002\u6211\u4EEC\u770B\u89C1\u60A8\u3002\u6211\u4EEC\u60F3\u542C\u60A8\u7684\u6545\u4E8B\u3002",hc:"\u5206\u4EAB\u60A8\u7684\u6545\u4E8B",at:"\u6211\u4EEC\u662F\u8C01",ati:"Food4NJ\u662F\u793E\u533A\uFF0C\u4E0D\u662F\u653F\u5E9C\u673A\u6784\u3002",ab:"\u6211\u4EEC\u662F\u5FD7\u613F\u8005\uFF0C\u6765\u5230Delaney Hall\u652F\u6301\u5BB6\u5EAD\u3002\u6211\u4EEC\u662F501(c)(3)\u975E\u8425\u5229\u7EC4\u7EC7\uFF0C\u4E0EICE\u6CA1\u6709\u4EFB\u4F55\u8054\u7CFB\u3002",a1h:"\u514D\u8D39\u98DF\u54C1\u548C\u793C\u54C1\u5361",a1p:"\u6211\u4EEC\u6253\u5305\u98DF\u54C1\u888B\uFF0C\u5206\u53D1\u8D85\u5E02\u793C\u54C1\u5361\u7ED9\u5BB6\u5EAD\u3002",a2h:"\u4FDD\u5B58\u60A8\u7684\u6545\u4E8B",a2p:"\u6211\u4EEC\u8BB0\u5F55\u5E76\u4FDD\u62A4\u53D7\u62D8\u7559\u5F71\u54CD\u7684\u5BB6\u5EAD\u7684\u6545\u4E8B\u3002",a3h:"\u4E0D\u8BC4\u5224\uFF0C\u4E0D\u4E3E\u62A5",a3p:"\u6211\u4EEC\u53EA\u662F\u6765\u5E2E\u5FD9\u7684\u3002\u6211\u4EEC\u6C38\u8FDC\u4E0D\u4F1A\u5411\u5F53\u5C40\u5206\u4EAB\u60A8\u7684\u4FE1\u606F\u3002",a4h:"\u6B22\u8FCE\u6240\u6709\u8BED\u8A00",a4p:"\u60A8\u4E0D\u9700\u8981\u8BF4\u82F1\u8BED\u3002\u7528\u4EFB\u4F55\u8BED\u8A00\u5206\u4EAB\u60A8\u7684\u6545\u4E8B\u3002",st:"\u60A8\u7684\u5B89\u5168",sti:"\u4FDD\u62A4\u60A8\u7684\u9690\u79C1\u662F\u6211\u4EEC\u7684\u627F\u8BFA\u3002",sb:"\u6211\u4EEC\u7406\u89E3\u60A8\u53EF\u80FD\u611F\u5230\u6050\u60E7\u3002\u4EE5\u4E0B\u662F\u6211\u4EEC\u4FDD\u62A4\u60A8\u7684\u65B9\u5F0F\u3002",g1:"\u60A8\u7684\u89C6\u9891\u5B58\u50A8\u5728\u5B89\u5168\u670D\u52A1\u5668\u4E0A\u3002\u53EA\u6709\u6211\u4EEC\u7684\u5C0F\u56E2\u961F\u53EF\u4EE5\u8BBF\u95EE\u3002",g2:"\u6211\u4EEC\u7EDD\u4E0D\u4F1A\u4E0EICE\u3001\u8B66\u5BDF\u6216\u4EFB\u4F55\u653F\u5E9C\u673A\u6784\u5206\u4EAB\u60A8\u7684\u6545\u4E8B\u3002",g3:"\u60A8\u53EF\u4EE5\u968F\u65F6\u901A\u8FC7\u7535\u5B50\u90AE\u4EF6\u8BF7\u6C42\u5220\u9664\u60A8\u7684\u89C6\u9891\u3002",g4:"\u53EA\u6709\u5728\u60A8\u660E\u786E\u4E66\u9762\u6388\u6743\u7684\u60C5\u51B5\u4E0B\uFF0C\u6211\u4EEC\u624D\u4F1A\u516C\u5F00\u5206\u4EAB\u60A8\u7684\u6545\u4E8B\u3002",sp:"Food4NJ\u7684\u5B58\u5728\u662F\u4E3A\u4E86\u652F\u6301\u5BB6\u5EAD\uFF0C\u800C\u4E0D\u662F\u4E3E\u62A5\u4ED6\u4EEC\u3002",rt:"\u652F\u6301\u8D44\u6E90",rti:"\u9644\u8FD1\u7684\u5E2E\u52A9",rb:"\u8FD9\u4E9B\u7EC4\u7EC7\u4E3A\u65B0\u6CFD\u897F\u5DDE\u7684\u79FB\u6C11\u5BB6\u5EAD\u63D0\u4F9B\u514D\u8D39\u6CD5\u5F8B\u63F4\u52A9\u3002",r1h:"American Friends Service Committee NJ",r1p:"\u79FB\u6C11\u6CD5\u5F8B\u652F\u6301",r2h:"NJ Alliance for Immigrant Justice",r2p:"\u5021\u5BFC\u548C\u793E\u533A\u652F\u6301",r3h:"Make the Road NJ",r3p:"\u6CD5\u5F8B\u63F4\u52A9\uFF0C\u4E86\u89E3\u60A8\u7684\u6743\u5229",r4h:"La Casa de Don Pedro",r4p:"\u7EBD\u74E6\u514B\u7684\u98DF\u54C1\u548C\u793E\u4F1A\u670D\u52A1",r5h:"NJ Immigrant Bail Fund",r5p:"\u5E2E\u52A9\u652F\u4ED8\u79FB\u6C11\u4FDD\u91CA\u91D1",ft:"\u5206\u4EAB\u60A8\u7684\u6545\u4E8B",fti:"\u60A8\u7684\u58F0\u97F3\u5F88\u91CD\u8981\u3002\u6211\u4EEC\u5728\u503E\u542C\u3002",fb:"\u7528\u4EFB\u4F55\u8BED\u8A00\u5F55\u5236\u4E00\u6BB5\u77ED\u89C6\u9891\u3002\u544A\u8BC9\u6211\u4EEC\u60A8\u4E3A\u4EC0\u4E48\u5728\u8FD9\u91CC\u3002",s0h:"\u5173\u4E8E\u60A8",s0p:"\u6240\u6709\u5185\u5BB9\u5747\u4E3A\u53EF\u9009\u3002",ln:"\u540D\u5B57",lc:"\u539F\u7C4D\u56FD",lr:"\u4E0E\u88AB\u62D8\u7559\u8005\u7684\u5173\u7CFB",s0b:"\u7EE7\u7EED",s1h:"\u5F55\u5236\u60A8\u7684\u89C6\u9891",s1p:"\u7528\u4EFB\u4F55\u8BED\u8A00\u8BF4\u8BDD\u3002",vh:"\u70B9\u51FB\u5F00\u59CB\u5F55\u5236\u6216\u4E0A\u4F20\u89C6\u9891\u3002",rb1:"\u5F00\u59CB\u5F55\u5236",rb2:"\u505C\u6B62\u5F55\u5236",ub:"\u4E0A\u4F20",s1b:"\u7EE7\u7EED",s2h:"\u4FDD\u5B58\u60A8\u7684\u6545\u4E8B\u4E4B\u524D",s2p:"\u8BF7\u4ED4\u7EC6\u9605\u8BFB\u3002",cbh:"\u6211\u4EEC\u5982\u4F55\u4F7F\u7528\u60A8\u7684\u6545\u4E8B",cbb:"\u60A8\u7684\u89C6\u9891\u5C06\u7531Food4NJ.org\u5B89\u5168\u5B58\u50A8\u3002\u672A\u7ECF\u60A8\u660E\u786E\u4E66\u9762\u540C\u610F\uFF0C\u6211\u4EEC\u7EDD\u4E0D\u4F1A\u5206\u4EAB\u3002",cbl:"\u6211\u7406\u89E3\u5E76\u540C\u610F\u3002\u6211\u662F\u81EA\u613F\u5206\u4EAB\u8FD9\u4E2A\u6545\u4E8B\u7684\u3002",s2b:"\u63D0\u4EA4\u6211\u7684\u6545\u4E8B",sh:"\u8C22\u8C22\u60A8",sp2:"\u60A8\u7684\u6545\u4E8B\u5DF2\u6536\u5230\u5E76\u4FDD\u5B58\u3002Food4NJ\u5C06\u5B89\u5168\u4FDD\u5B58\u8FD9\u4EFD\u8BB0\u5F55\u3002\u60A8\u5E76\u4E0D\u5B64\u5355\u3002",sdb:"\u5B8C\u6210"};
-
-T.hi={ht:"\u0906\u092A ",he:"\u0905\u0915\u0947\u0932\u0947 \u0928\u0939\u0940\u0902 \u0939\u0948\u0902\u0964",hs:"Food4NJ Delaney Hall \u0915\u0947 \u092C\u093E\u0939\u0930 \u0906\u092A\u0915\u0947 \u0938\u093E\u0925 \u0939\u0948\u0964 \u0939\u092E \u0906\u092A\u0915\u0940 \u0915\u0939\u093E\u0928\u0940 \u0938\u0941\u0928\u0928\u093E \u091A\u093E\u0939\u0924\u0947 \u0939\u0948\u0902\u0964",hc:"\u0905\u092A\u0928\u0940 \u0915\u0939\u093E\u0928\u0940 \u0938\u093E\u091D\u093E \u0915\u0930\u0947\u0902",at:"\u0939\u092E \u0915\u094C\u0928 \u0939\u0948\u0902",ati:"Food4NJ \u090F\u0915 \u0938\u092E\u0941\u0926\u093E\u092F \u0939\u0948, \u0938\u0930\u0915\u093E\u0930\u0940 \u090F\u091C\u0947\u0902\u0938\u0940 \u0928\u0939\u0940\u0902\u0964",ab:"\u0939\u092E \u0938\u094D\u0935\u092F\u0902\u0938\u0947\u0935\u0915 \u0939\u0948\u0902 \u091C\u094B ICE \u0938\u0947 \u092C\u093F\u0932\u094D\u0915\u0941\u0932 \u0905\u0932\u0917 \u0939\u0948\u0902\u0964",a1h:"\u092E\u0941\u092B\u094D\u0924 \u0916\u093E\u0926\u094D\u092F \u0914\u0930 \u0909\u092A\u0939\u093E\u0930 \u0915\u093E\u0930\u094D\u0921",a1p:"\u0939\u092E \u092D\u094B\u091C\u0928 \u0915\u0940 \u0925\u0948\u0932\u093F\u092F\u093E\u0902 \u092A\u0948\u0915 \u0915\u0930\u0924\u0947 \u0939\u0948\u0902\u0964",a2h:"\u0906\u092A\u0915\u0940 \u0915\u0939\u093E\u0928\u0940 \u0938\u0941\u0930\u0915\u094D\u0937\u093F\u0924 \u0915\u0930\u0928\u093E",a2p:"\u0939\u092E \u092A\u0930\u093F\u0935\u093E\u0930\u094B\u0902 \u0915\u0940 \u0915\u0939\u093E\u0928\u093F\u092F\u093E\u0902 \u0930\u093F\u0915\u0949\u0930\u094D\u0921 \u0915\u0930\u0924\u0947 \u0939\u0948\u0902\u0964",a3h:"\u0915\u094B\u0908 \u0928\u093F\u0930\u094D\u0923\u092F \u0928\u0939\u0940\u0902, \u0915\u094B\u0908 \u0930\u093F\u092A\u094B\u0930\u094D\u091F \u0928\u0939\u0940\u0902",a3p:"\u0939\u092E \u0915\u0947\u0935\u0932 \u092E\u0926\u0926 \u0915\u0947 \u0932\u093F\u090F \u0939\u0948\u0902\u0964",a4h:"\u0938\u092D\u0940 \u092D\u093E\u0937\u093E\u090F\u0902 \u0938\u094D\u0935\u093E\u0917\u0924 \u092F\u094B\u0917\u094D\u092F",a4p:"\u0905\u0902\u0917\u094D\u0930\u0947\u091C\u0940 \u092C\u094B\u0932\u0928\u0947 \u0915\u0940 \u091C\u0930\u0942\u0930\u0924 \u0928\u0939\u0940\u0902\u0964",st:"\u0906\u092A\u0915\u0940 \u0938\u0941\u0930\u0915\u094D\u0937\u093E",sti:"\u0906\u092A\u0915\u0940 \u0917\u094B\u092A\u0928\u0940\u092F\u0924\u093E \u0939\u092E\u093E\u0930\u093E \u0935\u093E\u0926\u093E \u0939\u0948\u0964",sb:"\u0939\u092E \u0938\u092E\u091D\u0924\u0947 \u0939\u0948\u0902 \u0906\u092A \u0921\u0930\u0947 \u0939\u094B \u0938\u0915\u0924\u0947 \u0939\u0948\u0902\u0964",g1:"\u0906\u092A\u0915\u093E \u0935\u0940\u0921\u093F\u092F\u094B \u0938\u0941\u0930\u0915\u094D\u0937\u093F\u0924 \u0938\u0930\u094D\u0935\u0930 \u092A\u0930 \u0939\u0948\u0964",g2:"\u0939\u092E ICE \u092F\u093E \u092A\u0941\u0932\u093F\u0938 \u0915\u094B \u0906\u092A\u0915\u0940 \u0915\u0939\u093E\u0928\u0940 \u0915\u092D\u0940 \u0928\u0939\u0940\u0902 \u0926\u0947\u0902\u0917\u0947\u0964",g3:"\u0906\u092A \u0915\u092D\u0940 \u092D\u0940 \u0935\u0940\u0921\u093F\u092F\u094B \u0939\u091F\u093E\u0928\u0947 \u0915\u0940 \u0905\u0928\u0941\u0930\u094B\u0927 \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902\u0964",g4:"\u0906\u092A\u0915\u0940 \u0905\u0928\u0941\u092E\u0924\u093F \u0915\u0947 \u092C\u093F\u0928\u093E \u0915\u0939\u093E\u0928\u0940 \u0938\u093E\u0930\u094D\u0935\u091C\u0928\u093F\u0915 \u0928\u0939\u0940\u0902 \u0915\u0930\u0947\u0902\u0917\u0947\u0964",sp:"Food4NJ \u092A\u0930\u093F\u0935\u093E\u0930\u094B\u0902 \u0915\u093E \u0938\u092E\u0930\u094D\u0925\u0928 \u0915\u0930\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u0939\u0948\u0964",rt:"\u0938\u0939\u093E\u092F\u0924\u093E \u0938\u0902\u0938\u093E\u0927\u0928",rti:"\u0906\u092A\u0915\u0947 \u092A\u093E\u0938 \u0909\u092A\u0932\u092C\u094D\u0927 \u0938\u0939\u093E\u092F\u0924\u093E",rb:"\u092F\u0947 \u0938\u0902\u0917\u0920\u0928 \u0928\u094D\u092F\u0942 \u091C\u0930\u094D\u0938\u0940 \u092E\u0947\u0902 \u092E\u0941\u092B\u094D\u0924 \u0915\u093E\u0928\u0942\u0928\u0940 \u0938\u0939\u093E\u092F\u0924\u093E \u0926\u0947\u0924\u0947 \u0939\u0948\u0902\u0964",r1h:"American Friends Service Committee NJ",r1p:"\u0906\u0935\u094D\u0930\u091C\u0928 \u0915\u093E\u0928\u0942\u0928\u0940 \u0938\u0939\u093E\u092F\u0924\u093E",r2h:"NJ Alliance for Immigrant Justice",r2p:"\u0935\u0915\u093E\u0932\u0924 \u0914\u0930 \u0938\u093E\u092E\u0941\u0926\u093E\u092F\u093F\u0915 \u0938\u0939\u093E\u092F\u0924\u093E",r3h:"Make the Road NJ",r3p:"\u0915\u093E\u0928\u0942\u0928\u0940 \u0938\u0939\u093E\u092F\u0924\u093E, \u0905\u0927\u093F\u0915\u093E\u0930 \u0915\u093E\u0930\u094D\u092F\u0936\u093E\u0932\u093E\u090F\u0902",r4h:"La Casa de Don Pedro",r4p:"\u0928\u0947\u0935\u093E\u0930\u094D\u0915 \u092E\u0947\u0902 \u092D\u094B\u091C\u0928 \u0914\u0930 \u0938\u093E\u092E\u093E\u091C\u093F\u0915 \u0938\u0947\u0935\u093E\u090F\u0902",r5h:"NJ Immigrant Bail Fund",r5p:"\u091C\u092E\u093E\u0928\u0924 \u092D\u0930\u0928\u0947 \u092E\u0947\u0902 \u0938\u0939\u093E\u092F\u0924\u093E",ft:"\u0905\u092A\u0928\u0940 \u0915\u0939\u093E\u0928\u0940 \u0938\u093E\u091D\u093E \u0915\u0930\u0947\u0902",fti:"\u0906\u092A\u0915\u0940 \u0906\u0935\u093E\u091C \u092E\u0939\u0924\u094D\u0935\u092A\u0942\u0930\u094D\u0923 \u0939\u0948\u0964",fb:"\u0915\u093F\u0938\u0940 \u092D\u0940 \u092D\u093E\u0937\u093E \u092E\u0947\u0902 \u0935\u0940\u0921\u093F\u092F\u094B \u0930\u093F\u0915\u0949\u0930\u094D\u0921 \u0915\u0930\u0947\u0902\u0964",s0h:"\u0906\u092A\u0915\u0947 \u092C\u093E\u0930\u0947 \u092E\u0947\u0902",s0p:"\u0938\u092C \u0935\u0948\u0915\u0932\u094D\u092A\u093F\u0915 \u0939\u0948\u0964",ln:"\u092A\u0939\u0932\u093E \u0928\u093E\u092E",lc:"\u092E\u0942\u0932 \u0926\u0947\u0936",lr:"\u0939\u093F\u0930\u093E\u0938\u0924 \u092E\u0947\u0902 \u0932\u093F\u090F \u0917\u090F \u0938\u0947 \u0938\u0902\u092C\u0902\u0927",s0b:"\u091C\u093E\u0930\u0940 \u0930\u0916\u0947\u0902",s1h:"\u0935\u0940\u0921\u093F\u092F\u094B \u0930\u093F\u0915\u0949\u0930\u094D\u0921 \u0915\u0930\u0947\u0902",s1p:"\u0915\u093F\u0938\u0940 \u092D\u0940 \u092D\u093E\u0937\u093E \u092E\u0947\u0902 \u092C\u094B\u0932\u0947\u0902\u0964",vh:"\u0930\u093F\u0915\u0949\u0930\u094D\u0921\u093F\u0902\u0917 \u0936\u0941\u0930\u0942 \u0915\u0930\u0947\u0902 \u092F\u093E \u092B\u094B\u0928 \u0938\u0947 \u0935\u0940\u0921\u093F\u092F\u094B \u0905\u092A\u0932\u094B\u0921 \u0915\u0930\u0947\u0902\u0964",rb1:"\u0930\u093F\u0915\u0949\u0930\u094D\u0921\u093F\u0902\u0917 \u0936\u0941\u0930\u0942 \u0915\u0930\u0947\u0902",rb2:"\u0930\u093F\u0915\u0949\u0930\u094D\u0921\u093F\u0902\u0917 \u092C\u0902\u0926 \u0915\u0930\u0947\u0902",ub:"\u0905\u092A\u0932\u094B\u0921",s1b:"\u091C\u093E\u0930\u0940 \u0930\u0916\u0947\u0902",s2h:"\u0915\u0939\u093E\u0928\u0940 \u0938\u0939\u0947\u091C\u0928\u0947 \u0938\u0947 \u092A\u0939\u0932\u0947",s2p:"\u0915\u0943\u092A\u092F\u093E \u0927\u094D\u092F\u093E\u0928 \u0938\u0947 \u092A\u0922\u093C\u0947\u0902\u0964",cbh:"\u0939\u092E \u0906\u092A\u0915\u0940 \u0915\u0939\u093E\u0928\u0940 \u0915\u093E \u0909\u092A\u092F\u094B\u0917 \u0915\u0948\u0938\u0947 \u0915\u0930\u0924\u0947 \u0939\u0948\u0902",cbb:"\u0906\u092A\u0915\u0940 \u0938\u0939\u092E\u0924\u093F \u0915\u0947 \u092C\u093F\u0928\u093E \u0915\u0939\u093E\u0928\u0940 \u0938\u093E\u091D\u093E \u0928\u0939\u0940\u0902 \u0915\u0930\u0947\u0902\u0917\u0947\u0964",cbl:"\u092E\u0948\u0902 \u0938\u092E\u091D\u0924\u093E \u0939\u0942\u0902 \u0914\u0930 \u0938\u0939\u092E\u0924 \u0939\u0942\u0902\u0964",s2b:"\u0915\u0939\u093E\u0928\u0940 \u091C\u092E\u093E \u0915\u0930\u0947\u0902",sh:"\u0927\u0928\u094D\u092F\u0935\u093E\u0926",sp2:"\u0906\u092A\u0915\u0940 \u0915\u0939\u093E\u0928\u0940 \u092A\u094D\u0930\u093E\u092A\u094D\u0924 \u0939\u0941\u0908\u0964 Food4NJ \u0907\u0938\u0947 \u0938\u0941\u0930\u0915\u094D\u0937\u093F\u0924 \u0930\u0916\u0947\u0917\u093E\u0964 \u0906\u092A \u0905\u0915\u0947\u0932\u0947 \u0928\u0939\u0940\u0902 \u0939\u0948\u0902\u0964",sdb:"\u0939\u094B \u0917\u092F\u093E"};
-
-T.ro={ht:"Nu esti ",he:"singur/a.",hs:"Food4NJ este aici cu tine la Delaney Hall. Te vedem. Vrem sa-ti auzim povestea.",hc:"Impartaseste-ti povestea",at:"Cine suntem",ati:"Food4NJ este o comunitate, nu o agentie guvernamentala.",ab:"Suntem voluntari care vin la Delaney Hall pentru a sprijini familiile. Suntem o organizatie nonprofit 501(c)(3) fara nicio legatura cu ICE.",a1h:"Alimente si carduri cadou gratuite",a1p:"Ambalăm pungi cu alimente si distribuim carduri de supermarket familiilor.",a2h:"Pastrea povestii tale",a2p:"Inregistram si protejam povestile familiilor afectate de detentie.",a3h:"Fara judecati, fara raportari",a3p:"Suntem aici doar pentru a ajuta. Nu vom impartasi niciodata informatiile tale.",a4h:"Toate limbile sunt binevenite",a4p:"Nu trebuie sa vorbesti engleza. Impartaseste-ti povestea in orice limba.",st:"Siguranta ta",sti:"Confidentialitatea ta este promisiunea noastra.",sb:"Intelegem ca poti fi speriat. Iata cum te protejam.",g1:"Videoclipul tau este stocat pe servere securizate. Doar echipa noastra il poate accesa.",g2:"Nu vom impartasi NICIODATA povestea ta cu ICE, politia sau vreo agentie guvernamentala.",g3:"Poti solicita stergerea videoclipului in orice moment.",g4:"Vom impartasi povestea ta public doar cu permisiunea ta scrisa.",sp:"Food4NJ exista pentru a sprijini familiile, nu pentru a le raporta.",rt:"Resurse de sprijin",rti:"Ajutor disponibil in apropierea ta",rb:"Aceste organizatii ofera ajutor juridic gratuit pentru familiile de imigranti din New Jersey.",r1h:"American Friends Service Committee NJ",r1p:"Sprijin juridic pentru imigratie",r2h:"NJ Alliance for Immigrant Justice",r2p:"Advocacy si sprijin comunitar",r3h:"Make the Road NJ",r3p:"Ajutor juridic, ateliere despre drepturi",r4h:"La Casa de Don Pedro",r4p:"Alimente si servicii sociale in Newark",r5h:"NJ Immigrant Bail Fund",r5p:"Ajutor pentru plata cautiunii de imigrare",ft:"Impartaseste-ti povestea",fti:"Vocea ta conteaza. Ascultam.",fb:"Inregistreaza un scurt videoclip in orice limba. Spune-ne de ce esti aici.",s0h:"Putin despre tine",s0p:"Totul este optional.",ln:"Prenume",lc:"Tara de origine",lr:"Relatia cu detinutal",s0b:"Continua",s1h:"Inregistreaza videoclipul tau",s1p:"Vorbeste in orice limba.",vh:"Apasa Incepe inregistrarea sau incarca un videoclip.",rb1:"Incepe inregistrarea",rb2:"Opreste inregistrarea",ub:"Incarca",s1b:"Continua",s2h:"Inainte de a-ti salva povestea",s2p:"Te rugam sa citesti cu atentie.",cbh:"Cum folosim povestea ta",cbb:"Videoclipul tau va fi stocat in siguranta de Food4NJ.org. Nu vom impartasi niciodata fara consimtamantul tau.",cbl:"Inteleg si sunt de acord. Impartasesc aceasta poveste in mod voluntar.",s2b:"Trimite povestea mea",sh:"Multumesc",sp2:"Povestea ta a fost primita si salvata. Nu esti singur/a.",sdb:"Gata"};
-
-T.wo={ht:"Yow ",he:"menul xam xam.",hs:"Food4NJ dafa nekk ak yow ci kanam Delaney Hall. Dangay gis. Danu begg soob jang sa wallu wax.",hc:"Bind sa wallu wax",at:"Kan lanu",ati:"Food4NJ dafa ci kaddu jefandikukat, du reew.",ab:"Nunuy xalaat ak san-san yi nu jem Delaney Hall ngir seddoo ak mbokk yi. Nuñu ci biir 501(c)(3) amul yëgël ci ICE.",a1h:"Men a jox ndox ak carte cadeau",a1p:"Nuñu bind sac ak naan di jef, di jox mbokk yi carte supermarche.",a2h:"Degeluy sa wallu wax",a2p:"Nuñu bind ak dekkante wallu wax mbokk yi.",a3h:"Amul xepp, amul wax ci kanam",a3p:"Nuñu nekk fii ngir seddoo ak yow. Amul yegeluy sa xam xam ci dekk bi.",a4h:"Lakk yepp dafa sopp",a4p:"Men ul wax angale. Bind sa wallu wax ci lakk bu ngem.",st:"Sa securite",sti:"Sa yegeluy dafa topp sa promesse.",sb:"Nuñu xam nga men a ragal. Lii la nu def ngir dekkante sa.",g1:"Sa video dafa stocke ci serveur yu securise. Sax team bi rekk men ko yegel.",g2:"Amul yegeluy sa wallu wax ci ICE, police, wala reew.",g3:"Men a soxor ci email ngir efface sa video.",g4:"Amul yegeluy sa wallu wax ci kanam sax permission bi.",sp:"Food4NJ dafa nekkee ngir seddoo mbokk yi, du yegeluy ko.",rt:"Resources yu seddoo",rti:"Seddoo bi ci kanam yow",rb:"Ci biir organisation yii nu jox seddoo ak mbokk yi imigrant ci New Jersey.",r1h:"American Friends Service Committee NJ",r1p:"Seddoo juridique immigration",r2h:"NJ Alliance for Immigrant Justice",r2p:"Defense ak seddoo communautaire",r3h:"Make the Road NJ",r3p:"Seddoo juridique, atelier ci sa droits",r4h:"La Casa de Don Pedro",r4p:"Lekk ak services ci Newark",r5h:"NJ Immigrant Bail Fund",r5p:"Seddoo ngir degg caution immigration",ft:"Bind sa wallu wax",fti:"Sa wax dafa am solo. Nuñu soob.",fb:"Bind video bu ndaw ci lakk bu ngem. Wax ma naka la nekk fii.",s0h:"Dogo wax ci yow",s0p:"Yepp du obligatoire.",ln:"Tur",lc:"Reew mi nga jem",lr:"Sa yegel ci celui bi detenu",s0b:"Jemaat",s1h:"Bind sa video",s1p:"Wax ci lakk bu ngem.",vh:"Daanoo Commencer ou yegel video bi.",rb1:"Commencer",rb2:"Arreter",ub:"Yegel",s1b:"Jemaat",s2h:"Ci kanam degeluy sa wallu wax",s2p:"Jox ci kanam ba nyepp.",cbh:"Naka nu jefandiku sa wallu wax",cbb:"Sa video dafa stocke ci securite par Food4NJ.org. Amul yegeluy sax permission bi.",cbl:"Xammoon la, newoon ci kanam. Dingo bind sa wallu wax bu ngem.",s2b:"Yonnee sa wallu wax",sh:"Jerejef",sp2:"Sa wallu wax dafa yegel. Food4NJ defal ko en securite. Menul xam xam.",sdb:"Dem"};
-
+renderAll();
 </script>
 </body>
 </html>
