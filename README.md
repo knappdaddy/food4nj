@@ -7,7 +7,42 @@ weather** at the venue, and leans **UNDER** when the model disagrees with the sp
 
 Open `index.html` in a browser (or serve it) — it's a single, dependency-free file.
 
-## Live data (no API key required)
+## Two independent edges
+
+UnderCast flags totals sitting **above fair value** for two separate reasons, shown separately:
+
+```
+Fair = Book − Inflation − (unpriced Weather)
+```
+
+### 1. Inflation Score (pre-weather, betting-market weighted heaviest)
+
+How far your book's number sits above fair, driven mostly by market signals:
+
+| Signal | Meaning | Weight |
+| --- | --- | --- |
+| **Book vs. Sharp** | your book's total − a sharp book (Pinnacle); pure, weather-neutral inflation | ×1.0 |
+| **Line move** | drift up since the opener | ×0.6 |
+| **Primetime** | SNF/MNF/TNF public over-lean | +0.4 |
+| **Public team** | marquee offenses draw over money | +0.15–0.3 |
+| **Division game** | rivals trend lower-scoring | +0.3 |
+| **Big favorite** | blowout clock-control | +0.2 |
+| **West→East early** | body-clock disadvantage | +0.3 |
+| **Short week** | Thursday sloppiness | +0.2 |
+
+Book-vs-sharp and line move dwarf the situational nudges by design. Because both books see the same
+forecast, `Book − Sharp` cancels out weather — **no double-counting** with the weather edge.
+
+### 2. Weather (the part the market misses)
+
+The weather model (wind, precip, cold w/ wind chill, heat) still runs, but since sharp books already
+price most weather, only the unpriced fraction is added back: `unpriced = weather penalty × 40%`.
+
+A game leans **UNDER** when Inflation + unpriced Weather ≥ 1.5 pts. When the market *and* the weather
+both point under, it's flagged **🔥 Stacked** — the highest-conviction spot on the board. Conviction is
+market-weighted.
+
+## Live data (no API key required for the basics)
 
 When deployed to a real web host, UnderCast pulls live data from two free, key-free sources:
 

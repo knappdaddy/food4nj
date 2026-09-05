@@ -13,22 +13,21 @@
   --bg:#0a0e17;--panel:#111725;--panel2:#161d2e;--line:#212a3d;--line2:#2c374f;
   --txt:#eef2f9;--mid:#9aa7bf;--dim:#697590;
   --under:#2dd4a7;--under-d:#0f3d33;--over:#5b6b8a;
-  --warn:#f5a524;--warn-d:#3d2f10;--hot:#f2683c;--cold:#5aa7ff;--wind:#f5a524;
+  --infl:#e879c6;--infl-d:#3a1330;--infl-b:#5c1d4a;   /* inflation = magenta, distinct from under-green */
+  --warn:#f5a524;--warn-d:#3d2f10;--hot:#f2683c;--cold:#5aa7ff;--wind:#f5a524;--stack:#ff6b6b;
   --acc:#3d7dff;--r:16px;--rs:11px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--txt);
-  -webkit-font-smoothing:antialiased;line-height:1.4;overflow-x:hidden;
-  padding-bottom:env(safe-area-inset-bottom)}
+  -webkit-font-smoothing:antialiased;line-height:1.4;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
 .cond{font-family:"Barlow Condensed",sans-serif;letter-spacing:.01em}
 button{font-family:inherit;cursor:pointer}
 .wrap{max-width:520px;margin:0 auto;min-height:100vh}
 
-/* ---- header ---- */
-header{position:sticky;top:0;z-index:50;background:rgba(10,14,23,.9);
-  backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
-  padding:calc(env(safe-area-inset-top) + .7rem) 1rem .7rem}
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(10,14,23,.9);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + .7rem) 1rem .7rem}
 .brand{display:flex;align-items:center;gap:.55rem}
 .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#3d7dff,#2dd4a7);
   display:grid;place-items:center;flex-shrink:0;box-shadow:0 3px 14px rgba(61,125,255,.35)}
@@ -41,76 +40,61 @@ header{position:sticky;top:0;z-index:50;background:rgba(10,14,23,.9);
 .iconbtn{width:32px;height:32px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);
   color:var(--mid);display:grid;place-items:center;font-size:.95rem;transition:.15s}
 .iconbtn:active{transform:scale(.92)}
-.iconbtn.spin svg,.iconbtn.spin{animation:spin .8s linear infinite}
+.iconbtn.spin{animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .wk{font-size:.72rem;color:var(--mid);background:var(--panel2);border:1px solid var(--line);
   border-radius:9px;padding:.35rem .55rem;white-space:nowrap}
 .wk b{color:var(--txt)}
-
-/* data status */
-.dstat{display:flex;align-items:center;gap:.4rem;margin-top:.6rem;font-size:.68rem;
-  color:var(--dim);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:.35rem .6rem}
+.dstat{display:flex;align-items:center;gap:.4rem;margin-top:.6rem;font-size:.68rem;color:var(--dim);
+  background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:.35rem .6rem}
 .dstat .d{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .dstat.on .d{background:var(--under);box-shadow:0 0 0 3px rgba(45,212,167,.15)}
 .dstat.off .d{background:var(--warn)}
 .dstat.load .d{background:var(--acc);animation:blink 1s infinite}
 @keyframes blink{50%{opacity:.3}}
 .dstat b{color:var(--mid)}
-
-/* ---- mode toggle ---- */
 .modebar{display:flex;gap:.4rem;margin-top:.6rem}
-.modebar button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--mid);
-  padding:.5rem;border-radius:10px;font-size:.8rem;font-weight:600;display:flex;align-items:center;
-  justify-content:center;gap:.35rem;transition:.15s}
+.modebar button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--mid);padding:.5rem;
+  border-radius:10px;font-size:.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.35rem;transition:.15s}
 .modebar button.on{background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:0 3px 12px rgba(61,125,255,.35)}
 .modebar button .dot{width:6px;height:6px;border-radius:50%;background:#f2683c;
   box-shadow:0 0 0 0 rgba(242,104,60,.6);animation:pulse 1.6s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,104,60,.6)}70%{box-shadow:0 0 0 7px rgba(242,104,60,0)}100%{box-shadow:0 0 0 0 rgba(242,104,60,0)}}
 
-/* ---- tabs ---- */
 nav.tabs{display:flex;gap:.3rem;padding:.6rem 1rem 0}
-.tabs button{flex:1;background:none;border:none;color:var(--dim);font-size:.82rem;font-weight:600;
-  padding:.55rem .2rem .7rem;position:relative;transition:.15s}
+.tabs button{flex:1;background:none;border:none;color:var(--dim);font-size:.8rem;font-weight:600;
+  padding:.55rem .1rem .7rem;position:relative;transition:.15s}
 .tabs button.on{color:var(--txt)}
-.tabs button.on::after{content:"";position:absolute;left:15%;right:15%;bottom:0;height:2.5px;
-  border-radius:3px;background:var(--under)}
-
+.tabs button.on::after{content:"";position:absolute;left:12%;right:12%;bottom:0;height:2.5px;border-radius:3px;background:var(--under)}
 main{padding:.4rem 1rem 3rem}
 
-/* ---- summary strip ---- */
 .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.7rem 0 1rem}
 .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--rs);padding:.7rem .6rem;text-align:center}
 .stat .n{font-family:"Barlow Condensed";font-size:1.7rem;font-weight:700;line-height:1}
-.stat .n.u{color:var(--under)}.stat .n.w{color:var(--warn)}
-.stat .l{font-size:.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem}
+.stat .n.u{color:var(--under)}.stat .n.i{color:var(--infl)}.stat .n.s{color:var(--stack)}
+.stat .l{font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-top:.3rem}
+.sortrow{display:flex;align-items:center;justify-content:space-between;margin:.2rem 0 .7rem;gap:.5rem}
+.sortrow .h{font-size:.68rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.sortrow select{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;
+  padding:.3rem .5rem;font-size:.75rem;font-family:inherit}
 
-.sortrow{display:flex;align-items:center;justify-content:space-between;margin:.2rem 0 .7rem}
-.sortrow .h{font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
-.sortrow select{background:var(--panel2);color:var(--txt);border:1px solid var(--line);
-  border-radius:8px;padding:.3rem .5rem;font-size:.75rem;font-family:inherit}
-
-/* ---- game card ---- */
-.game{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
-  margin-bottom:.7rem;overflow:hidden;transition:.15s}
+.game{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);margin-bottom:.7rem;overflow:hidden;transition:.15s}
 .game.lean{border-color:var(--under-d)}
 .game.strong{border-color:#1c6b58;box-shadow:0 0 0 1px rgba(45,212,167,.15)}
+.game.stackedcard{border-color:#5c1d1d;box-shadow:0 0 0 1px rgba(255,107,107,.18)}
 .g-top{padding:.85rem .9rem;display:flex;gap:.8rem;align-items:center}
 .g-main{flex:1;min-width:0}
-.g-match{display:flex;align-items:center;gap:.4rem;font-family:"Barlow Condensed";
-  font-size:1.15rem;font-weight:600;line-height:1}
+.g-match{display:flex;align-items:center;gap:.4rem;font-family:"Barlow Condensed";font-size:1.15rem;font-weight:600;line-height:1}
 .g-match .at{color:var(--dim);font-size:.85rem;font-weight:500}
-.g-match .sc{margin-left:auto;font-size:.85rem;color:var(--mid);font-weight:500}
+.g-match .sc{margin-left:auto;font-size:.8rem;color:var(--mid);font-weight:500}
 .g-meta{font-size:.7rem;color:var(--dim);margin-top:.35rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
-.roofpill{font-size:.58rem;padding:.08rem .38rem;border-radius:5px;background:var(--panel2);
-  border:1px solid var(--line2);color:var(--mid);text-transform:uppercase;letter-spacing:.05em}
+.roofpill{font-size:.56rem;padding:.08rem .38rem;border-radius:5px;background:var(--panel2);border:1px solid var(--line2);
+  color:var(--mid);text-transform:uppercase;letter-spacing:.04em}
 .livedot{color:var(--hot);font-weight:700;display:inline-flex;align-items:center;gap:.2rem}
-.livedot::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--hot);
-  animation:pulse 1.6s infinite}
-
-/* weather chips */
+.livedot::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--hot);animation:pulse 1.6s infinite}
 .wx{display:flex;gap:.35rem;margin-top:.55rem;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:.25rem;font-size:.7rem;font-weight:600;
-  padding:.22rem .5rem;border-radius:7px;background:var(--panel2);border:1px solid var(--line);color:var(--mid)}
+.chip{display:inline-flex;align-items:center;gap:.25rem;font-size:.7rem;font-weight:600;padding:.22rem .5rem;
+  border-radius:7px;background:var(--panel2);border:1px solid var(--line);color:var(--mid)}
 .chip.act{color:var(--txt)}
 .chip.wind.act{background:var(--warn-d);border-color:#5c4715;color:var(--warn)}
 .chip.hot.act{background:#3d1f14;border-color:#5c2e1c;color:var(--hot)}
@@ -119,135 +103,144 @@ main{padding:.4rem 1rem 3rem}
 .chip.snow.act{background:#1c2434;border-color:#33415c;color:#cfe0ff}
 .chip.indoor{background:var(--panel2);color:var(--dim)}
 
-/* edge readout */
-.g-edge{flex-shrink:0;text-align:right;min-width:78px}
-.g-edge .lbl{font-size:.55rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.g-edge{flex-shrink:0;text-align:right;min-width:82px}
+.g-edge .lbl{font-size:.53rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
 .totals{display:flex;align-items:baseline;gap:.35rem;justify-content:flex-end;margin-top:.1rem}
-.mkt{font-size:.85rem;color:var(--dim);text-decoration:line-through}
+.mkt{font-size:.82rem;color:var(--dim);text-decoration:line-through}
 .adj{font-family:"Barlow Condensed";font-size:1.7rem;font-weight:700;line-height:1}
 .adj.u{color:var(--under)}
-.leanpill{margin-top:.35rem;display:inline-flex;align-items:center;gap:.25rem;font-size:.62rem;
-  font-weight:700;padding:.18rem .45rem;border-radius:6px;text-transform:uppercase;letter-spacing:.04em}
+.leanpill{margin-top:.35rem;display:inline-flex;align-items:center;gap:.25rem;font-size:.6rem;font-weight:700;
+  padding:.18rem .45rem;border-radius:6px;text-transform:uppercase;letter-spacing:.03em}
 .leanpill.u{background:var(--under-d);color:var(--under)}
 .leanpill.n{background:var(--panel2);color:var(--dim)}
-.bookline{font-size:.55rem;color:var(--dim);margin-top:.2rem}
+.trio{display:flex;gap:.55rem;font-size:.58rem;color:var(--dim);margin-top:.35rem;justify-content:flex-end;flex-wrap:wrap}
+.trio span b{color:var(--txt);font-family:"Barlow Condensed";font-size:.82rem;font-weight:700}
+.trio .sh b{color:var(--infl)}
 
-/* edge bar */
 .edgebar{height:4px;background:var(--panel2);position:relative}
-.edgebar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#1c6b58,var(--under))}
+.edgebar i{position:absolute;left:0;top:0;bottom:0}
+.edgebar i.we{background:linear-gradient(90deg,#1c6b58,var(--under))}
+.edgebar i.in{background:linear-gradient(90deg,#5c1d4a,var(--infl));opacity:.9}
 
-/* live pace strip */
-.pace{margin:0 .9rem;background:#161d2e;border:1px solid var(--line);border-radius:9px;
-  padding:.5rem .65rem;display:flex;align-items:center;gap:.6rem;font-size:.72rem}
-.pace .pl{color:var(--dim)}
-.pace .pv{font-family:"Barlow Condensed";font-size:1.15rem;font-weight:700;color:var(--txt)}
-.pace .tag2{margin-left:auto;font-size:.62rem;font-weight:700;padding:.15rem .45rem;border-radius:6px}
-.pace .tag2.u{background:var(--under-d);color:var(--under)}
-.pace .tag2.o{background:#2a1512;color:var(--hot)}
+/* inflation strip */
+.infstrip{padding:.55rem .9rem;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.4rem;
+  align-items:center;background:var(--panel2)}
+.infbadge{font-size:.68rem;font-weight:700;padding:.24rem .55rem;border-radius:7px;display:inline-flex;gap:.3rem;align-items:center}
+.infbadge.s3{background:var(--infl-d);color:var(--infl);border:1px solid var(--infl-b)}
+.infbadge.s2{background:#2a1626;color:#e0a8d0;border:1px solid #47203c}
+.infbadge.s1{background:var(--panel);color:var(--mid);border:1px solid var(--line2)}
+.infbadge.s0{background:var(--panel);color:var(--dim);border:1px solid var(--line)}
+.sig{font-size:.6rem;color:var(--mid);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:.14rem .4rem}
+.stacked{font-size:.62rem;font-weight:700;color:var(--stack);background:#3a1414;border:1px solid #5c1d1d;
+  border-radius:6px;padding:.2rem .5rem;margin-left:auto;display:inline-flex;gap:.25rem;align-items:center}
 
-/* why breakdown */
-.why-btn{width:100%;background:var(--panel2);border:none;border-top:1px solid var(--line);
-  color:var(--mid);font-size:.72rem;font-weight:600;padding:.55rem;display:flex;
-  align-items:center;justify-content:center;gap:.35rem;margin-top:.6rem}
+.why-btn{width:100%;background:var(--panel2);border:none;border-top:1px solid var(--line);color:var(--mid);
+  font-size:.72rem;font-weight:600;padding:.55rem;display:flex;align-items:center;justify-content:center;gap:.35rem}
 .why-btn .cx{transition:.2s}
 .why{display:none;padding:.2rem .9rem .9rem;border-top:1px solid var(--line);background:var(--panel2)}
 .why.open{display:block}
-.why h5{font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin:.7rem 0 .5rem}
-.comp{display:flex;align-items:center;gap:.5rem;padding:.32rem 0;font-size:.78rem}
+.why h5{font-size:.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:.09em;margin:.85rem 0 .5rem;
+  display:flex;align-items:center;gap:.35rem}
+.why h5 .sub{color:var(--dim);text-transform:none;letter-spacing:0;font-weight:400;font-size:.66rem;margin-left:auto}
+.comp{display:flex;align-items:center;gap:.5rem;padding:.3rem 0;font-size:.77rem}
 .comp .ci{width:20px;text-align:center;flex-shrink:0}
 .comp .cn{flex:1;color:var(--mid)}
 .comp .cn b{color:var(--txt);font-weight:600}
 .comp .cv{font-family:"Barlow Condensed";font-weight:700;font-size:.95rem;flex-shrink:0}
 .comp .cv.neg{color:var(--under)}
+.comp .cv.pos{color:var(--infl)}
 .comp .cv.zero{color:var(--dim)}
-.comp .track{flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden;max-width:70px}
-.comp .track i{display:block;height:100%;background:var(--under);border-radius:3px}
-.wsum{display:flex;justify-content:space-between;align-items:center;margin-top:.7rem;
-  padding-top:.6rem;border-top:1px dashed var(--line2);font-size:.8rem}
-.wsum b{font-family:"Barlow Condensed";font-size:1.15rem}
-.forecast{font-size:.72rem;color:var(--dim);margin-top:.55rem;line-height:1.5;font-style:italic}
+.comp .track{flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden;max-width:64px}
+.comp .track i{display:block;height:100%;border-radius:3px}
+.comp .track i.u{background:var(--under)}
+.comp .track i.p{background:var(--infl)}
+.wsum{display:flex;justify-content:space-between;align-items:center;margin-top:.6rem;padding-top:.55rem;
+  border-top:1px dashed var(--line2);font-size:.78rem}
+.wsum b{font-family:"Barlow Condensed";font-size:1.1rem}
+.fairbox{margin-top:.7rem;background:var(--bg);border:1px solid var(--line2);border-radius:9px;padding:.6rem .7rem;
+  display:flex;justify-content:space-between;align-items:center;font-size:.76rem}
+.fairbox .fl{color:var(--mid)}
+.fairbox .fv{font-family:"Barlow Condensed";font-size:1.35rem;font-weight:700;color:var(--under)}
+.forecast{font-size:.7rem;color:var(--dim);margin-top:.5rem;line-height:1.5;font-style:italic}
+.pace{margin:0 .9rem;background:#161d2e;border:1px solid var(--line);border-radius:9px;padding:.5rem .65rem;
+  display:flex;align-items:center;gap:.6rem;font-size:.72rem}
+.pace .pl{color:var(--dim)}
+.pace .pv{font-family:"Barlow Condensed";font-size:1.15rem;font-weight:700;color:var(--txt)}
+.pace .tag2{margin-left:auto;font-size:.6rem;font-weight:700;padding:.15rem .45rem;border-radius:6px}
+.pace .tag2.u{background:var(--under-d);color:var(--under)}
+.pace .tag2.o{background:#2a1512;color:var(--hot)}
 
-/* ---- locks & parlays ---- */
-.sec-h{font-family:"Barlow Condensed";font-size:1.35rem;font-weight:700;margin:.4rem 0 .2rem;
-  display:flex;align-items:center;gap:.45rem}
+/* locks & parlays */
+.sec-h{font-family:"Barlow Condensed";font-size:1.35rem;font-weight:700;margin:.4rem 0 .2rem;display:flex;align-items:center;gap:.45rem}
 .sec-sub{font-size:.76rem;color:var(--mid);margin-bottom:.9rem;line-height:1.5}
-.lock{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
-  padding:.85rem .9rem;margin-bottom:.65rem;display:flex;gap:.75rem;align-items:center}
-.lock .rank{font-family:"Barlow Condensed";font-size:1.5rem;font-weight:700;color:var(--under);
-  width:26px;text-align:center;flex-shrink:0}
+.lock{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:.85rem .9rem;
+  margin-bottom:.65rem;display:flex;gap:.75rem;align-items:center}
+.lock.stackedcard{border-color:#5c1d1d}
+.lock .rank{font-family:"Barlow Condensed";font-size:1.5rem;font-weight:700;color:var(--under);width:26px;text-align:center;flex-shrink:0}
 .lock .li{flex:1;min-width:0}
-.lock .lm{font-family:"Barlow Condensed";font-size:1.1rem;font-weight:600}
-.lock .lsub{font-size:.7rem;color:var(--dim);margin-top:.2rem}
-.lock .bet{margin-top:.4rem;font-size:.78rem;font-weight:600;color:var(--under)}
-.conv{flex-shrink:0;text-align:center;width:56px}
-.ring{width:48px;height:48px;margin:0 auto}
-.conv .cl{font-size:.55rem;color:var(--dim);margin-top:.15rem;text-transform:uppercase;letter-spacing:.05em}
-
-.parlay{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
-  padding:.9rem;margin-bottom:.75rem}
+.lock .lm{font-family:"Barlow Condensed";font-size:1.1rem;font-weight:600;display:flex;align-items:center;gap:.4rem}
+.lock .lsub{font-size:.68rem;color:var(--dim);margin-top:.2rem}
+.lock .bet{margin-top:.4rem;font-size:.77rem;font-weight:600;color:var(--under)}
+.lock .split{margin-top:.35rem;display:flex;gap:.35rem}
+.lock .split span{font-size:.58rem;padding:.12rem .4rem;border-radius:5px}
+.lock .split .m{background:var(--infl-d);color:var(--infl)}
+.lock .split .w{background:var(--under-d);color:var(--under)}
+.conv{flex-shrink:0;text-align:center;width:54px}
+.ring{width:46px;height:46px;margin:0 auto}
+.conv .cl{font-size:.53rem;color:var(--dim);margin-top:.15rem;text-transform:uppercase;letter-spacing:.04em}
+.parlay{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:.9rem;margin-bottom:.75rem}
 .parlay.feat{border-color:#1c6b58;box-shadow:0 0 0 1px rgba(45,212,167,.12)}
 .p-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
 .p-h .pt{font-family:"Barlow Condensed";font-size:1.15rem;font-weight:700}
-.p-h .pc{font-size:.7rem;font-weight:700;color:var(--under);background:var(--under-d);
-  padding:.25rem .55rem;border-radius:20px}
+.p-h .pc{font-size:.7rem;font-weight:700;color:var(--under);background:var(--under-d);padding:.25rem .55rem;border-radius:20px}
 .leg{display:flex;align-items:center;gap:.55rem;padding:.45rem 0;border-top:1px solid var(--line)}
 .leg .lg-i{width:22px;text-align:center;flex-shrink:0}
 .leg .lg-t{flex:1;font-size:.82rem}
 .leg .lg-t b{font-weight:600}
-.leg .lg-t span{color:var(--dim);font-size:.72rem}
-.leg .lg-b{font-size:.74rem;font-weight:700;color:var(--under);flex-shrink:0}
-.p-foot{display:flex;justify-content:space-between;margin-top:.6rem;padding-top:.55rem;
-  border-top:1px dashed var(--line2);font-size:.72rem;color:var(--mid)}
+.leg .lg-t span{color:var(--dim);font-size:.7rem}
+.leg .lg-b{font-size:.72rem;font-weight:700;color:var(--under);flex-shrink:0}
+.p-foot{display:flex;justify-content:space-between;margin-top:.6rem;padding-top:.55rem;border-top:1px dashed var(--line2);font-size:.7rem;color:var(--mid)}
 .p-foot b{color:var(--txt);font-family:"Barlow Condensed";font-size:1rem}
 
-/* ---- methodology ---- */
-.method{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
-  padding:1rem;margin-bottom:.8rem}
-.method h4{font-family:"Barlow Condensed";font-size:1.05rem;font-weight:600;margin-bottom:.4rem;
-  display:flex;align-items:center;gap:.4rem}
+.method{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1rem;margin-bottom:.8rem}
+.method h4{font-family:"Barlow Condensed";font-size:1.05rem;font-weight:600;margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
 .method p{font-size:.8rem;color:var(--mid);line-height:1.6}
 .method ul{margin:.5rem 0 0;padding-left:1.1rem}
-.method li{font-size:.78rem;color:var(--mid);line-height:1.65;margin-bottom:.3rem}
-.method code{background:var(--panel2);border:1px solid var(--line);border-radius:5px;
-  padding:.05rem .35rem;font-size:.72rem;color:var(--under);font-family:ui-monospace,monospace}
-.mtable{width:100%;border-collapse:collapse;margin-top:.5rem;font-size:.74rem}
-.mtable th{text-align:left;color:var(--dim);font-weight:600;font-size:.66rem;text-transform:uppercase;
-  letter-spacing:.05em;padding:.35rem .4rem;border-bottom:1px solid var(--line)}
-.mtable td{padding:.4rem .4rem;border-bottom:1px solid var(--line);color:var(--mid)}
-.mtable td b{color:var(--txt)}
-.mtable tr:last-child td{border-bottom:none}
-
-.disc{background:#1a1207;border:1px solid #3d2f10;border-radius:var(--r);padding:.9rem 1rem;
-  margin:.5rem 0 1rem;font-size:.74rem;color:#d9b878;line-height:1.6}
+.method li{font-size:.78rem;color:var(--mid);line-height:1.6;margin-bottom:.3rem}
+.method li b{color:var(--txt)}
+.method code{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:.05rem .35rem;font-size:.72rem;color:var(--under);font-family:ui-monospace,monospace}
+.wtable{width:100%;border-collapse:collapse;margin-top:.5rem;font-size:.74rem}
+.wtable th{text-align:left;color:var(--dim);font-weight:600;font-size:.64rem;text-transform:uppercase;letter-spacing:.04em;padding:.35rem .4rem;border-bottom:1px solid var(--line)}
+.wtable td{padding:.4rem .4rem;border-bottom:1px solid var(--line);color:var(--mid)}
+.wtable td b{color:var(--txt)}
+.wtable .wt{color:var(--infl);font-family:"Barlow Condensed";font-weight:700}
+.wtable tr:last-child td{border-bottom:none}
+.disc{background:#1a1207;border:1px solid #3d2f10;border-radius:var(--r);padding:.9rem 1rem;margin:.5rem 0 1rem;font-size:.74rem;color:#d9b878;line-height:1.6}
 .disc b{color:var(--warn)}
 .foot{text-align:center;font-size:.68rem;color:var(--dim);padding:1.5rem 1rem 2rem;line-height:1.7}
 .empty{text-align:center;color:var(--dim);padding:2.5rem 1rem;font-size:.85rem;line-height:1.6}
-
-/* skeleton loading */
-.sk{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);height:96px;
-  margin-bottom:.7rem;position:relative;overflow:hidden}
-.sk::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);
-  animation:sweep 1.3s infinite}
+.sk{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);height:104px;margin-bottom:.7rem;position:relative;overflow:hidden}
+.sk::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);animation:sweep 1.3s infinite}
 @keyframes sweep{to{transform:translateX(100%)}}
 
-/* settings modal */
-.modal{position:fixed;inset:0;z-index:100;background:rgba(3,6,12,.7);backdrop-filter:blur(4px);
-  display:none;align-items:flex-end;justify-content:center}
+.modal{position:fixed;inset:0;z-index:100;background:rgba(3,6,12,.7);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
 .modal.open{display:flex}
-.sheet{background:var(--panel);border:1px solid var(--line2);border-radius:20px 20px 0 0;
-  width:100%;max-width:520px;padding:1.1rem 1.1rem calc(1.4rem + env(safe-area-inset-bottom));
-  animation:up .22s ease}
+.sheet{background:var(--panel);border:1px solid var(--line2);border-radius:20px 20px 0 0;width:100%;max-width:520px;
+  padding:1.1rem 1.1rem calc(1.4rem + env(safe-area-inset-bottom));animation:up .22s ease;max-height:90vh;overflow-y:auto}
 @keyframes up{from{transform:translateY(30px);opacity:.6}to{transform:none;opacity:1}}
 .sheet h3{font-family:"Barlow Condensed";font-size:1.35rem;font-weight:700;margin-bottom:.2rem}
 .sheet .sh-sub{font-size:.75rem;color:var(--mid);line-height:1.55;margin-bottom:1rem}
 .fld{margin-bottom:.8rem}
-.fld label{display:block;font-size:.66rem;color:var(--dim);text-transform:uppercase;
-  letter-spacing:.07em;margin-bottom:.35rem;font-weight:600}
-.fld input,.fld select{width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--txt);
-  border-radius:9px;padding:.65rem .75rem;font-size:.85rem;font-family:inherit}
+.fld label{display:block;font-size:.66rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem;font-weight:600}
+.fld input,.fld select{width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--txt);border-radius:9px;padding:.65rem .75rem;font-size:.85rem;font-family:inherit}
 .fld input:focus,.fld select:focus{outline:none;border-color:var(--acc)}
 .fld .hint{font-size:.68rem;color:var(--dim);margin-top:.35rem;line-height:1.5}
 .fld .hint a{color:var(--acc)}
+.tog{display:flex;align-items:center;gap:.6rem;background:var(--panel2);border:1px solid var(--line2);border-radius:9px;padding:.6rem .75rem;margin-bottom:.8rem}
+.tog input{width:18px;height:18px;accent-color:var(--acc)}
+.tog .tt{flex:1}
+.tog .tt b{font-size:.82rem}
+.tog .tt p{font-size:.66rem;color:var(--dim);margin-top:.15rem;line-height:1.4}
 .sheet-btns{display:flex;gap:.5rem;margin-top:.4rem}
 .sheet-btns button{flex:1;padding:.75rem;border-radius:10px;font-size:.85rem;font-weight:700;border:none}
 .btn-save{background:var(--acc);color:#fff}
@@ -262,13 +255,9 @@ main{padding:.4rem 1rem 3rem}
         <div class="logo">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 15.5a4 4 0 0 1 .7-7.94 5 5 0 0 1 9.5-1.06A3.5 3.5 0 0 1 18 15.5"/>
-            <path d="M12 9.5v8"/><path d="M8.5 14l3.5 3.5 3.5-3.5"/>
-          </svg>
+            <path d="M12 9.5v8"/><path d="M8.5 14l3.5 3.5 3.5-3.5"/></svg>
         </div>
-        <div>
-          <h1>UNDER<b>CAST</b></h1>
-          <div class="tag">Forecasting the Under</div>
-        </div>
+        <div><h1>UNDER<b>CAST</b></h1><div class="tag">Line Value × Weather</div></div>
       </div>
       <div class="hd-r">
         <span class="wk">Wk <b id="wkNum">–</b> · <b id="wkSeason">–</b></span>
@@ -290,164 +279,145 @@ main{padding:.4rem 1rem 3rem}
   </nav>
 
   <main>
-    <!-- GAMES TAB -->
     <section id="tab-games">
       <div class="strip">
-        <div class="stat"><div class="n" id="sGames">–</div><div class="l">Games</div></div>
-        <div class="stat"><div class="n u" id="sUnders">–</div><div class="l">Weather Unders</div></div>
-        <div class="stat"><div class="n w" id="sBig">–</div><div class="l">Strong Edges</div></div>
+        <div class="stat"><div class="n u" id="sUnders">–</div><div class="l">Under Leans</div></div>
+        <div class="stat"><div class="n i" id="sInfl">–</div><div class="l">Inflated Lines</div></div>
+        <div class="stat"><div class="n s" id="sStack">–</div><div class="l">Stacked Edges</div></div>
       </div>
       <div class="sortrow">
-        <span class="h">Most weather-impacted first</span>
+        <span class="h">Sorted by edge</span>
         <select id="sortSel" onchange="renderGames()">
-          <option value="edge">Sort: Weather edge</option>
+          <option value="combo">Sort: Combined edge</option>
+          <option value="inflation">Sort: Inflation (pre-weather)</option>
+          <option value="weather">Sort: Weather</option>
           <option value="wind">Sort: Wind</option>
           <option value="time">Sort: Kickoff</option>
         </select>
       </div>
       <div id="gameList"></div>
       <div class="disc">
-        <b>⚠️ For entertainment only.</b> UnderCast is a weather-based model, not betting advice
-        and not a guarantee. Lines and forecasts move — always confirm at your book before wagering.
-        Must be 21+. If gambling stops being fun, call <b>1-800-GAMBLER</b>.
+        <b>⚠️ For entertainment only.</b> UnderCast is a model, not betting advice and not a guarantee.
+        Lines, forecasts and injuries move — always confirm at your book before wagering. Must be 21+.
+        If gambling stops being fun, call <b>1-800-GAMBLER</b>.
       </div>
     </section>
 
-    <!-- LOCKS & PARLAYS TAB -->
     <section id="tab-locks" style="display:none">
-      <h2 class="sec-h">🔒 Weather Locks</h2>
-      <p class="sec-sub">The individual unders where the weather model most disagrees with the
-        book. Ranked by model conviction — the bigger the gap, the stronger the lean.</p>
+      <h2 class="sec-h">🔒 Weather + Line Locks</h2>
+      <p class="sec-sub">Ranked by <b>model conviction</b>, which weighs betting-market signals
+        (your book vs. the sharp number, line movement) most heavily, then layers weather on top.
+        <span style="color:var(--stack)">🔥 Stacked</span> = the market <i>and</i> the weather both scream under.</p>
       <div id="lockList"></div>
-
       <h2 class="sec-h" style="margin-top:1.4rem">🎯 Model Parlays</h2>
-      <p class="sec-sub">Under legs stacked from the highest-conviction weather games.
-        Combined conviction is the model's estimate that <i>every</i> leg cashes — it drops fast
-        as you add legs, which is exactly why parlays are hard.</p>
+      <p class="sec-sub">Under legs stacked from the highest-conviction spots. Combined conviction is
+        the model's estimate that <i>every</i> leg cashes — it falls fast as legs are added.</p>
       <div id="parlayList"></div>
       <div class="disc" style="margin-top:.3rem">
-        <b>Conviction ≠ a real probability.</b> It's a relative score from our weather model, scaled
-        for readability. Use it to compare our leans against each other, not as a true win rate.
+        <b>Conviction ≠ a true probability.</b> It's a relative, market-weighted score, scaled for
+        readability. Use it to compare our leans against each other, not as a real win rate.
       </div>
     </section>
 
-    <!-- METHOD TAB -->
     <section id="tab-method" style="display:none">
       <h2 class="sec-h" style="margin-bottom:.6rem">⚙️ How UnderCast Works</h2>
       <div class="method">
-        <h4>🧮 The core idea</h4>
-        <p>Sportsbooks set a point total (over/under) for each game. Our thesis — and your
-          experience betting unders — is that books are <b>slow to fully price bad weather</b>,
-          leaving totals a little inflated. UnderCast estimates a weather penalty in points and
-          subtracts it from the market total:</p>
-        <p style="margin-top:.6rem;text-align:center;background:var(--panel2);border:1px solid var(--line);
-          border-radius:9px;padding:.7rem;color:var(--txt)">
-          <code>Adjusted&nbsp;Total = Market&nbsp;Total − Weather&nbsp;Penalty</code></p>
-        <p style="margin-top:.6rem">The <b>penalty</b> is the sum of four independent, transparent
-          components. When it's ≥ <b>1.5 pts</b>, we flag an <b style="color:var(--under)">UNDER</b>
-          lean. Indoor and roof-closed venues get a penalty of exactly 0.</p>
-      </div>
-
-      <div class="method">
-        <h4>🌬️ Wind — the heavyweight</h4>
-        <p>Wind is by far the most reliable weather factor for totals: it kills the deep passing
-          game and long field goals. Below ~10 mph there's little effect; it ramps up from there
-          and bites hard above 20 mph.</p>
-        <table class="mtable">
-          <tr><th>Sustained wind</th><th>Penalty</th></tr>
-          <tr><td><b>&lt; 10 mph</b></td><td>0 pts</td></tr>
-          <tr><td><b>10–20 mph</b></td><td>0.18 pt per mph over 10 <span style="color:var(--dim)">(up to 1.8)</span></td></tr>
-          <tr><td><b>&gt; 20 mph</b></td><td>1.8 + 0.32 pt per mph over 20</td></tr>
-        </table>
-      </div>
-
-      <div class="method">
-        <h4>🌧️ Precipitation</h4>
-        <p>Rain and snow reduce scoring through ball-handling, footing and passing. Snow hits
-          harder than rain at equal intensity.</p>
-        <table class="mtable">
-          <tr><th>Intensity</th><th>Rain</th><th>Snow</th></tr>
-          <tr><td><b>Light</b></td><td>0.6</td><td>1.4</td></tr>
-          <tr><td><b>Moderate</b></td><td>1.6</td><td>2.4</td></tr>
-          <tr><td><b>Heavy</b></td><td>2.6</td><td>3.6</td></tr>
-        </table>
-      </div>
-
-      <div class="method">
-        <h4>🌡️ Cold &amp; Heat</h4>
-        <table class="mtable">
-          <tr><th>Temperature</th><th>Penalty</th></tr>
-          <tr><td><b>≥ 32°F</b></td><td>0 (cold)</td></tr>
-          <tr><td><b>20–31°F</b></td><td>0.6</td></tr>
-          <tr><td><b>10–19°F</b></td><td>1.1</td></tr>
-          <tr><td><b>&lt; 10°F</b></td><td>1.7</td></tr>
-          <tr><td><b>85–92°F</b></td><td>0.5 (heat)</td></tr>
-          <tr><td><b>&gt; 92°F</b></td><td>1.0</td></tr>
-        </table>
-        <p style="margin-top:.5rem">Extreme cold slows kicking and ball security; extreme heat drives
-          late-game fatigue and clock-milking. Both nudge totals down modestly. <b>Cold is scored on
-          the wind-chill "feels-like" temperature</b> — see below.</p>
-      </div>
-
-      <div class="method">
-        <h4>🥶 Wind chill — cold × wind</h4>
-        <p>Cold bites harder when it's windy. Rather than the raw thermometer reading, the cold
-          penalty uses the <b>"feels-like" temperature</b> from the National Weather Service
-          wind-chill formula — so a 30°F day at 20 mph (which feels like ~17°F) is scored as the
-          deep-freeze game it actually plays like.</p>
-        <p style="margin-top:.6rem;text-align:center;background:var(--panel2);border:1px solid var(--line);
-          border-radius:9px;padding:.7rem;color:var(--txt);font-size:.7rem">
-          <code>WC = 35.74 + 0.6215·T − 35.75·V^0.16 + 0.4275·T·V^0.16</code></p>
-        <p style="margin-top:.6rem;color:var(--dim);font-size:.74rem">T = temp °F, V = wind mph. Applied
-          only when it's cold (≤ 50°F) and breezy (≥ 3 mph), the range the formula is defined for.
-          Wind still carries its own separate penalty for its effect on passing and kicking — wind
-          chill only sharpens the <i>cold</i> component.</p>
-      </div>
-
-      <div class="method">
-        <h4>📡 Where the data comes from</h4>
-        <p>When deployed to a real web host, UnderCast pulls <b>live data</b> from two free,
-          key-free sources — no sign-up required:</p>
+        <h4>🧮 Two independent edges</h4>
+        <p>UnderCast looks for point totals that sit <b>above their fair value</b> for two separate
+          reasons, and shows each on its own so you can see where the value comes from:</p>
+        <p style="margin-top:.6rem;text-align:center;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:.7rem;color:var(--txt)">
+          <code>Fair = Book − Inflation − (unpriced Weather)</code></p>
         <ul>
-          <li><b>Schedule, venues &amp; market totals</b> — ESPN's public NFL scoreboard
-            (real games, kickoff times, indoor/outdoor flags, live scores and the current over/under).</li>
-          <li><b>Weather</b> — Open-Meteo forecast keyed to each stadium's coordinates and matched
-            to the kickoff hour (temperature, sustained wind, gusts, precipitation).</li>
+          <li><b>Inflation Score</b> — how far your book's number sits above fair, driven mostly by
+            <i>betting-market</i> signals. This is a <b>pre-weather</b> number.</li>
+          <li><b>Weather</b> — the points the whole market is still under-pricing for the forecast.</li>
         </ul>
-        <p style="margin-top:.5rem">Want the <b>exact FanDuel or DraftKings</b> number instead of the
-          consensus line? Add a free <a href="https://the-odds-api.com" style="color:var(--acc)">The Odds API</a>
-          key under <b>⚙ Settings</b> — it's stored only in your browser and overrides the market total
-          with your chosen book. Live in-game totals also use that feed when a key is present.</p>
-        <p style="margin-top:.5rem;color:var(--dim);font-size:.74rem">Inside this preview, external
-          calls are sandboxed, so you'll see a labeled sample slate. Deployed to your own site, it runs live.</p>
+      </div>
+
+      <div class="method">
+        <h4>📊 The Inflation Score — market signals weighted heaviest</h4>
+        <p>Recreational money loves overs, so books shade popular totals up. The Inflation Score
+          measures that, leaning hardest on the two signals that are actually <i>measured</i> from the
+          market, not guessed:</p>
+        <table class="wtable">
+          <tr><th>Signal</th><th>What it means</th><th>Weight</th></tr>
+          <tr><td><b>Book vs. Sharp</b></td><td>Your book's total minus a sharp book (Pinnacle). Pure, weather-neutral inflation.</td><td class="wt">×1.0</td></tr>
+          <tr><td><b>Line move</b></td><td>How far the total has drifted up since it opened.</td><td class="wt">×0.6</td></tr>
+          <tr><td><b>Primetime</b></td><td>SNF/MNF/TNF draw the most public over money.</td><td class="wt">+0.4</td></tr>
+          <tr><td><b>Public team</b></td><td>Marquee offenses attract over bets.</td><td class="wt">+0.15–0.3</td></tr>
+          <tr><td><b>Division game</b></td><td>Familiar rivals trend a touch lower-scoring.</td><td class="wt">+0.3</td></tr>
+          <tr><td><b>Big favorite</b></td><td>Blowout scripts kill the clock late.</td><td class="wt">+0.2</td></tr>
+          <tr><td><b>West→East early</b></td><td>Body-clock disadvantage in 1pm ET kicks.</td><td class="wt">+0.3</td></tr>
+          <tr><td><b>Short week</b></td><td>Thursday games are sloppier.</td><td class="wt">+0.2</td></tr>
+        </table>
+        <p style="margin-top:.5rem;color:var(--dim);font-size:.74rem">Book-vs-sharp and line move dwarf
+          the situational nudges by design — the market tells us more than any heuristic. Because both
+          your book and the sharp book see the same forecast, <b>Book − Sharp cancels out weather</b>,
+          so there's no double-counting with the weather edge.</p>
+      </div>
+
+      <div class="method">
+        <h4>🌬️ Weather — the part the market misses</h4>
+        <p>Weather still gets its own model (wind, precipitation, cold with wind chill, heat — see the
+          full tables in the app). But since sharp books already price <i>most</i> weather, UnderCast
+          only adds back the fraction the market is slow on:</p>
+        <p style="margin-top:.6rem;text-align:center;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:.7rem;color:var(--txt)">
+          <code>unpriced Weather = Weather penalty × 40%</code></p>
+        <p style="margin-top:.5rem;color:var(--dim);font-size:.74rem">The 40% reflects the evidence that
+          markets — even sharp ones — under-react to wind in particular. That residual is exactly the
+          edge you've been winning on.</p>
+      </div>
+
+      <div class="method">
+        <h4>🔗 Combining &amp; conviction</h4>
+        <p>A game leans <b>UNDER</b> when Inflation + unpriced Weather clears <b>1.5 pts</b>. Conviction
+          is market-weighted: your book-vs-sharp gap and line move drive it, with weather as a
+          confirming boost. When the market and the weather both point under, the game is flagged
+          <b style="color:var(--stack)">🔥 Stacked</b> — the highest-confidence spot on the board.</p>
+      </div>
+
+      <div class="method">
+        <h4>📡 Data</h4>
+        <ul>
+          <li><b>Schedule, venues, scores</b> — ESPN public scoreboard (no key).</li>
+          <li><b>Weather</b> — Open-Meteo per venue at kickoff (no key).</li>
+          <li><b>Totals, sharp lines, line movement</b> — <a href="https://the-odds-api.com" style="color:var(--acc)">The Odds API</a>
+            across FanDuel, DraftKings, Pinnacle and more. Add your key under <b>⚙ Settings</b>; it
+            stays in your browser. Line movement uses the historical endpoint (extra credits) and can
+            be toggled off.</li>
+        </ul>
+        <p style="margin-top:.5rem;color:var(--dim);font-size:.74rem">Without an odds key the app still
+          runs on ESPN's consensus total and situational signals; book-vs-sharp and line move simply
+          go quiet. Inside sandboxed previews external calls are blocked, so a labeled sample slate is shown.</p>
       </div>
     </section>
   </main>
 
   <div class="foot">
-    UnderCast · Weather-adjusted NFL totals model<br>
-    Model estimates for entertainment · Not affiliated with any sportsbook · 21+ · 1-800-GAMBLER
+    UnderCast · Line value × weather · Model estimates for entertainment<br>
+    Not affiliated with any sportsbook · 21+ · 1-800-GAMBLER
   </div>
 </div>
 
-<!-- SETTINGS SHEET -->
 <div class="modal" id="settings" onclick="if(event.target===this)closeSettings()">
   <div class="sheet">
     <h3>Settings</h3>
-    <p class="sh-sub">Optional. Out of the box, UnderCast uses ESPN's consensus over/under.
-      Add a key to pull exact book lines.</p>
+    <p class="sh-sub">Add a key to unlock the heaviest signals — your exact book's line, the sharp
+      (Pinnacle) number, and line movement.</p>
     <div class="fld">
       <label>The Odds API key</label>
       <input id="oddsKey" type="text" placeholder="paste key (optional)" autocomplete="off" spellcheck="false">
-      <div class="hint">Free tier at <a href="https://the-odds-api.com" target="_blank" rel="noopener">the-odds-api.com</a>.
-        Stored only on this device — never sent anywhere but the odds provider.</div>
+      <div class="hint">From <a href="https://the-odds-api.com" target="_blank" rel="noopener">the-odds-api.com</a>.
+        Stored only on this device — sent only to the odds provider.</div>
     </div>
     <div class="fld">
-      <label>Preferred book</label>
-      <select id="bookSel">
-        <option value="fanduel">FanDuel</option>
-        <option value="draftkings">DraftKings</option>
-      </select>
+      <label>Your book (the line you bet)</label>
+      <select id="bookSel"><option value="fanduel">FanDuel</option><option value="draftkings">DraftKings</option></select>
+    </div>
+    <div class="tog">
+      <input type="checkbox" id="lineMove" checked>
+      <div class="tt"><b>Track line movement</b><p>Compares now vs. the opener via the historical
+        endpoint. Uses extra API credits — turn off to save them.</p></div>
     </div>
     <div class="sheet-btns">
       <button class="btn-clear" onclick="clearSettings()">Clear</button>
@@ -458,60 +428,100 @@ main{padding:.4rem 1rem 3rem}
 
 <script>
 /* =========================================================================
-   UNDERCAST — weather-adjusted NFL totals model
-   -------------------------------------------------------------------------
-   DATA (live when deployed; sample fallback inside sandboxed previews):
-     • ESPN scoreboard  → schedule, venues, market totals, live scores
-     • Open-Meteo       → per-venue weather at kickoff (no key)
-     • The Odds API     → exact FanDuel/DraftKings lines (optional key)
-   MODEL: computeEdge() is pure — identical math for live & sample data.
+   UNDERCAST — line-value (inflation) × weather model for NFL totals
+   Betting-market signals are weighted heaviest; weather layered on top.
+   Live data: ESPN (schedule/scores) + Open-Meteo (weather) + The Odds API
+   (totals, sharp line, line movement). Sample fallback in sandboxed previews.
    ========================================================================= */
 
-/* ---------- MODEL: transparent weather penalty ---------- */
-function windPenalty(w){
-  if(w < 10) return 0;
-  let p = (Math.min(w,20) - 10) * 0.18;      // 10–20 mph ramp (→ up to 1.8)
-  if(w > 20) p += (w - 20) * 0.32;           // steeper above 20
-  return Math.min(p, 5.5);
-}
-function precipPenalty(type, intensity){
-  const t = { rain:{light:0.6,moderate:1.6,heavy:2.6}, snow:{light:1.4,moderate:2.4,heavy:3.6} };
-  if(!type || type==='none' || !t[type]) return 0;
-  return t[type][intensity] || 0;
-}
+const CFG = { underThreshold:1.5, marketWeatherEfficiency:0.60, sharpBook:'pinnacle' };
+
+/* ---------- WEATHER MODEL ---------- */
+function windPenalty(w){ if(w<10)return 0; let p=(Math.min(w,20)-10)*0.18; if(w>20)p+=(w-20)*0.32; return Math.min(p,5.5); }
+function precipPenalty(type,intensity){ const t={rain:{light:0.6,moderate:1.6,heavy:2.6},snow:{light:1.4,moderate:2.4,heavy:3.6}};
+  if(!type||type==='none'||!t[type])return 0; return t[type][intensity]||0; }
 function coldPenalty(f){ if(f>=32)return 0; if(f>=20)return 0.6; if(f>=10)return 1.1; return 1.7; }
 function heatPenalty(f){ if(f<=85)return 0; if(f<=92)return 0.5; return 1.0; }
-// NWS wind-chill "feels-like" (°F). Only defined for cold, breezy air; otherwise returns the raw temp.
-function windChill(tempF, windMph){
-  if(tempF==null || tempF>50 || windMph==null || windMph<3) return tempF;
-  const v = Math.pow(windMph, 0.16);
-  return 35.74 + 0.6215*tempF - 35.75*v + 0.4275*tempF*v;
-}
+function windChill(tempF,windMph){ if(tempF==null||tempF>50||windMph==null||windMph<3)return tempF;
+  const v=Math.pow(windMph,0.16); return 35.74+0.6215*tempF-35.75*v+0.4275*tempF*v; }
 
-function computeEdge(game){
-  const indoor = game.roof !== 'open';
-  const wx = game.weather || {};
-  const active = !(indoor || wx.unknown);
-  // Cold is scored on the wind-chill feels-like temp, not the raw thermometer.
-  const feelsF = active ? Math.round(windChill(wx.tempF, wx.windMph)) : (wx.tempF ?? null);
-  const chillApplied = active && wx.tempF!=null && (wx.tempF - feelsF) >= 1;
+function computeWeather(game){
+  const indoor = game.roof!=='open';
+  const wx = game.weather||{};
+  const active = !(indoor||wx.unknown||wx.indoorNeutral);
+  const feelsF = active ? Math.round(windChill(wx.tempF,wx.windMph)) : (wx.tempF ?? null);
+  const chillApplied = active && wx.tempF!=null && (wx.tempF-feelsF)>=1;
   const comps = !active ? {wind:0,precip:0,cold:0,heat:0} : {
-    wind:   windPenalty(wx.windMph),
-    precip: precipPenalty(wx.precipType, wx.precipIntensity),
-    cold:   coldPenalty(feelsF),
-    heat:   heatPenalty(wx.tempF)
-  };
-  const penalty = +(comps.wind + comps.precip + comps.cold + comps.heat).toFixed(2);
-  const raw = game.mode==='live' ? (game.liveTotal ?? game.marketTotal) : game.marketTotal;
-  const hasLine = raw != null && !isNaN(raw);
-  const market = hasLine ? +raw : null;
-  const adjusted = hasLine ? +(market - penalty).toFixed(1) : null;
-  const lean = (hasLine && penalty >= 1.5) ? 'under' : 'none';
-  const conviction = Math.round(50 + Math.min(penalty, 6) / 6 * 42);
-  return {indoor, comps, penalty, market, adjusted, hasLine, lean, conviction, feelsF, chillApplied};
+    wind:windPenalty(wx.windMph), precip:precipPenalty(wx.precipType,wx.precipIntensity),
+    cold:coldPenalty(feelsF), heat:heatPenalty(wx.tempF) };
+  const penalty = +(comps.wind+comps.precip+comps.cold+comps.heat).toFixed(2);
+  return {indoor:!active, comps, penalty, feelsF, chillApplied};
 }
 
-/* ---------- VENUES: home-team abbr → stadium ---------- */
+/* ---------- INFLATION MODEL (market-weighted) ---------- */
+const DIV = {BUF:'AFCE',MIA:'AFCE',NE:'AFCE',NYJ:'AFCE',BAL:'AFCN',CIN:'AFCN',CLE:'AFCN',PIT:'AFCN',
+  HOU:'AFCS',IND:'AFCS',JAX:'AFCS',TEN:'AFCS',DEN:'AFCW',KC:'AFCW',LV:'AFCW',LAC:'AFCW',
+  DAL:'NFCE',NYG:'NFCE',PHI:'NFCE',WSH:'NFCE',CHI:'NFCN',DET:'NFCN',GB:'NFCN',MIN:'NFCN',
+  ATL:'NFCS',CAR:'NFCS',NO:'NFCS',TB:'NFCS',ARI:'NFCW',LAR:'NFCW',SF:'NFCW',SEA:'NFCW'};
+const ZONE = {SEA:3,SF:3,LAR:3,LAC:3,LV:3,ARI:2,DEN:2,CHI:1,GB:1,MIN:1,DAL:1,HOU:1,NO:1,KC:1,TEN:1,
+  BUF:0,MIA:0,NE:0,NYJ:0,BAL:0,CIN:0,CLE:0,PIT:0,IND:0,JAX:0,NYG:0,PHI:0,WSH:0,ATL:0,CAR:0,TB:0,DET:0};
+const PUBLIC = new Set(['KC','BUF','DAL','SF','PHI','DET','MIA','GB','PIT','BAL','CIN','LAR']);
+
+function etParts(iso){
+  try{ const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',hour12:false}).formatToParts(new Date(iso));
+    const wd=p.find(x=>x.type==='weekday').value; let hr=+p.find(x=>x.type==='hour').value; if(hr===24)hr=0; return {wd,hr}; }
+  catch(e){ return {wd:'Sun',hr:13}; }
+}
+const isNum = v => v!=null && !isNaN(v);
+
+function computeInflation(g, retail){
+  const sharp = isNum(g.sharpTotal) ? +g.sharpTotal : (isNum(g.medianTotal)? +g.medianTotal : null);
+  const hasSharp = isNum(g.sharpTotal);
+  const marketInflation = (isNum(retail)&&sharp!=null) ? +(retail-sharp).toFixed(2) : 0;
+  const lineMove = (isNum(retail)&&isNum(g.openTotal)) ? +(retail-g.openTotal).toFixed(2) : 0;
+  const {wd,hr} = etParts(g.kickISO);
+  const prime = (wd==='Thu'||wd==='Mon'||wd==='Sat')||(wd==='Sun'&&hr>=19);
+  const early = wd==='Sun'&&hr<=13;
+  const shortWeek = wd==='Thu';
+  const division = DIV[g.homeAb] && DIV[g.homeAb]===DIV[g.awayAb];
+  const bigFav = isNum(g.spread) && Math.abs(g.spread)>=7;
+  const travel = ((ZONE[g.awayAb]??0)-(ZONE[g.homeAb]??0))>=2 && early;
+  const publicTeam = PUBLIC.has(g.homeAb)||PUBLIC.has(g.awayAb);
+
+  const sit=[]; let situational=0;
+  const add=(cond,icon,label,val)=>{ if(cond){ situational+=val; sit.push([icon,label,val]); } };
+  add(prime,'🌙','Primetime — max public over money',0.4);
+  add(publicTeam,'📣','Public team draws overs', prime?0.3:0.15);
+  add(division,'🤼','Division game',0.3);
+  add(bigFav,'📉','Big favorite — clock control',0.2);
+  add(travel,'✈️','West team, early body-clock',0.3);
+  add(shortWeek,'🗓️','Short week (Thursday)',0.2);
+  situational=+situational.toFixed(2);
+
+  const marketPart = marketInflation*1.0 + Math.max(0,lineMove)*0.6;
+  const inflationPts = +(marketPart + situational).toFixed(2);
+  const score = Math.round(Math.max(0,Math.min(100, 50 + inflationPts*10)));
+  return {sharp,hasSharp,marketInflation,lineMove,situational,sit,marketPart,inflationPts,score,
+    flags:{prime,early,shortWeek,division,bigFav,travel,publicTeam}};
+}
+
+/* ---------- COMBINE ---------- */
+function evaluate(g){
+  const we = computeWeather(g);
+  const retailRaw = MODE==='live' ? (g.liveTotal ?? g.marketTotal) : g.marketTotal;
+  const hasLine = isNum(retailRaw);
+  const retail = hasLine ? +retailRaw : null;
+  const inf = computeInflation(g, retail);
+  const residualWeather = +(we.penalty*(1-CFG.marketWeatherEfficiency)).toFixed(2);
+  const totalEdge = +(inf.inflationPts + residualWeather).toFixed(2);
+  const fair = hasLine ? +(retail - totalEdge).toFixed(1) : null;
+  const lean = (hasLine && totalEdge>=CFG.underThreshold) ? 'under' : 'none';
+  const stacked = inf.marketInflation>=1 && we.penalty>=1.5;
+  const conv = Math.round(Math.max(50,Math.min(95, 50 + inf.marketPart*8 + inf.situational*4 + residualWeather*5)));
+  return {...g, we, inf, residualWeather, totalEdge, retail, fair, lean, stacked, conv, hasLine};
+}
+
+/* ---------- VENUES ---------- */
 const VENUES = {
   ARI:{lat:33.5277,lon:-112.2626,roof:'retractable',name:'State Farm Stadium',city:'Glendale, AZ'},
   ATL:{lat:33.7554,lon:-84.4008,roof:'retractable',name:'Mercedes-Benz Stadium',city:'Atlanta, GA'},
@@ -547,382 +557,320 @@ const VENUES = {
   WSH:{lat:38.9077,lon:-76.8645,roof:'open',name:'Northwest Stadium',city:'Landover, MD'}
 };
 
-/* ---------- LIVE DATA LAYER ---------- */
-const ESPN_URL = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+/* ---------- LIVE DATA ---------- */
+const ESPN_URL='https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+const ODDS_BOOKS='pinnacle,draftkings,fanduel,betmgm,caesars,lowvig,betonlineag';
 
-function classifyPrecip(code, mm){
-  const snow = [71,73,75,77,85,86].includes(code);
-  const wet  = [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].includes(code) || mm > 0.1;
-  if(snow) return {type:'snow', intensity: mm>2?'heavy':mm>0.6?'moderate':'light'};
-  if(wet)  return {type:'rain', intensity: mm>4?'heavy':mm>1?'moderate':'light'};
-  return {type:'none', intensity:'none'};
-}
-function skyText(code){
-  const m={0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Fog',
-    51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',
-    61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',
-    71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Rain showers',81:'Rain showers',
-    82:'Heavy showers',85:'Snow showers',86:'Snow showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
-  return m[code] || 'Fair';
-}
-function fmtKick(iso){
-  try{ return new Date(iso).toLocaleString('en-US',
-    {weekday:'short',hour:'numeric',minute:'2-digit',timeZone:'America/New_York'}) + ' ET'; }
-  catch(e){ return ''; }
-}
-function livePace(status, home, away){
-  const per = status.period || 0;
-  const [mm,ss] = (status.displayClock || '15:00').split(':').map(Number);
-  const left = (mm||0)*60 + (ss||0), regPer = 900;
-  let elapsed = per<=4 ? (per-1)*regPer + (regPer-left) : 4*regPer + (600-left);
-  const frac = Math.min(Math.max(elapsed/(4*regPer), 0.06), 1);
-  const scored = (+home||0) + (+away||0);
-  return { scored, pace: Math.round(scored/frac) };
-}
+function classifyPrecip(code,mm){ const snow=[71,73,75,77,85,86].includes(code);
+  const wet=[51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].includes(code)||mm>0.1;
+  if(snow)return{type:'snow',intensity:mm>2?'heavy':mm>0.6?'moderate':'light'};
+  if(wet)return{type:'rain',intensity:mm>4?'heavy':mm>1?'moderate':'light'}; return{type:'none',intensity:'none'}; }
+function skyText(code){ const m={0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Fog',
+  51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',
+  61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',
+  75:'Heavy snow',77:'Snow grains',80:'Rain showers',81:'Rain showers',82:'Heavy showers',85:'Snow showers',
+  86:'Snow showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'}; return m[code]||'Fair'; }
+function fmtKick(iso){ try{ return new Date(iso).toLocaleString('en-US',{weekday:'short',hour:'numeric',minute:'2-digit',timeZone:'America/New_York'})+' ET'; }catch(e){ return ''; } }
+function livePace(status,home,away){ const per=status.period||0; const [mm,ss]=(status.displayClock||'15:00').split(':').map(Number);
+  const left=(mm||0)*60+(ss||0),regPer=900; let elapsed=per<=4?(per-1)*regPer+(regPer-left):4*regPer+(600-left);
+  const frac=Math.min(Math.max(elapsed/(4*regPer),0.06),1); const scored=(+home||0)+(+away||0); return {scored,pace:Math.round(scored/frac)}; }
 
-async function fetchJSON(url, ms){
-  const ctrl = new AbortController();
-  const t = setTimeout(()=>ctrl.abort(), ms||9000);
-  try{ const r = await fetch(url,{signal:ctrl.signal}); if(!r.ok) throw new Error('HTTP '+r.status); return await r.json(); }
-  finally{ clearTimeout(t); }
-}
+async function fetchJSON(url,ms){ const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms||9000);
+  try{ const r=await fetch(url,{signal:c.signal}); if(!r.ok)throw new Error('HTTP '+r.status); return await r.json(); } finally{ clearTimeout(t); } }
 
 function buildGamesFromESPN(d){
-  return (d.events||[]).map(ev=>{
-    const c = ev.competitions[0];
-    const home = c.competitors.find(x=>x.homeAway==='home') || c.competitors[0];
-    const away = c.competitors.find(x=>x.homeAway==='away') || c.competitors[1];
-    const homeAb = home.team.abbreviation, awayAb = away.team.abbreviation;
-    const v = VENUES[homeAb] || {roof:'open', name:(c.venue&&c.venue.fullName)||'', city:'', lat:null, lon:null};
-    if(c.venue && c.venue.indoor && v.roof==='open') v.roof = 'retractable';
-    const odds = c.odds && c.odds[0];
-    const total = odds && odds.overUnder!=null ? +odds.overUnder : null;
-    const st = c.status.type.state; // pre | in | post
-    const g = {
-      id: ev.id, kickISO: ev.date, kick: fmtKick(ev.date), kickSort: new Date(ev.date).getTime(),
-      away: away.team.displayName, home: home.team.displayName, awayAb, homeAb,
-      venue: v.name, city: v.city, roof: v.roof, lat: v.lat, lon: v.lon,
-      marketTotal: total, liveTotal: total,
-      book: odds && odds.provider ? odds.provider.name : 'Consensus',
-      weather: null,
-      live: { state: st, period: c.status.period, clock: c.status.displayClock,
-              homeScore: home.score, awayScore: away.score }
-    };
-    if(st==='in') Object.assign(g.live, livePace(c.status, home.score, away.score));
+  return (d.events||[]).map(ev=>{ const c=ev.competitions[0];
+    const home=c.competitors.find(x=>x.homeAway==='home')||c.competitors[0];
+    const away=c.competitors.find(x=>x.homeAway==='away')||c.competitors[1];
+    const homeAb=home.team.abbreviation, awayAb=away.team.abbreviation;
+    const v=VENUES[homeAb]||{roof:'open',name:(c.venue&&c.venue.fullName)||'',city:'',lat:null,lon:null};
+    if(c.venue&&c.venue.indoor&&v.roof==='open')v.roof='retractable';
+    const odds=c.odds&&c.odds[0]; const total=odds&&odds.overUnder!=null?+odds.overUnder:null;
+    const st=c.status.type.state;
+    const g={ id:ev.id, kickISO:ev.date, kick:fmtKick(ev.date), kickSort:new Date(ev.date).getTime(),
+      away:away.team.displayName, home:home.team.displayName, awayAb, homeAb,
+      venue:v.name, city:v.city, roof:v.roof, lat:v.lat, lon:v.lon,
+      marketTotal:total, liveTotal:total, sharpTotal:null, medianTotal:null, openTotal:null, spread:null,
+      book:odds&&odds.provider?odds.provider.name:'Consensus', weather:null,
+      live:{state:st,period:c.status.period,clock:c.status.displayClock,homeScore:home.score,awayScore:away.score} };
+    if(st==='in')Object.assign(g.live,livePace(c.status,home.score,away.score));
     return g;
   });
 }
-
 async function attachWeather(games){
   await Promise.all(games.map(async g=>{
-    if(g.roof!=='open' || g.lat==null){ g.weather = {indoorNeutral:true}; return; }
-    try{
-      const u = `https://api.open-meteo.com/v1/forecast?latitude=${g.lat}&longitude=${g.lon}`
-        + `&hourly=temperature_2m,precipitation,precipitation_probability,weather_code,`
-        + `wind_speed_10m,wind_gusts_10m,relative_humidity_2m`
-        + `&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=UTC&forecast_days=10`;
-      const d = await fetchJSON(u);
-      const times = d.hourly.time, target = new Date(g.kickISO).getTime();
-      let bi=0, bd=Infinity;
-      for(let i=0;i<times.length;i++){
-        const t = new Date(times[i]+(times[i].endsWith('Z')?'':'Z')).getTime();
-        const df = Math.abs(t-target); if(df<bd){bd=df;bi=i;}
-      }
-      const code = d.hourly.weather_code[bi], mm = d.hourly.precipitation[bi]||0;
-      const p = classifyPrecip(code, mm);
-      g.weather = {
-        tempF: Math.round(d.hourly.temperature_2m[bi]),
-        windMph: Math.round(d.hourly.wind_speed_10m[bi]),
-        gust: Math.round(d.hourly.wind_gusts_10m[bi]),
-        precipType: p.type, precipIntensity: p.intensity,
-        precipProb: d.hourly.precipitation_probability[bi] ?? 0,
-        humidity: d.hourly.relative_humidity_2m[bi] ?? 0,
-        sky: skyText(code)
-      };
-    }catch(e){ g.weather = {unknown:true, sky:'Forecast unavailable'}; }
+    if(g.roof!=='open'||g.lat==null){ g.weather={indoorNeutral:true}; return; }
+    try{ const u=`https://api.open-meteo.com/v1/forecast?latitude=${g.lat}&longitude=${g.lon}`
+      +`&hourly=temperature_2m,precipitation,precipitation_probability,weather_code,wind_speed_10m,wind_gusts_10m,relative_humidity_2m`
+      +`&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=UTC&forecast_days=10`;
+      const d=await fetchJSON(u); const times=d.hourly.time,target=new Date(g.kickISO).getTime();
+      let bi=0,bd=Infinity; for(let i=0;i<times.length;i++){ const t=new Date(times[i]+(times[i].endsWith('Z')?'':'Z')).getTime(); const df=Math.abs(t-target); if(df<bd){bd=df;bi=i;} }
+      const code=d.hourly.weather_code[bi],mm=d.hourly.precipitation[bi]||0,p=classifyPrecip(code,mm);
+      g.weather={tempF:Math.round(d.hourly.temperature_2m[bi]),windMph:Math.round(d.hourly.wind_speed_10m[bi]),
+        gust:Math.round(d.hourly.wind_gusts_10m[bi]),precipType:p.type,precipIntensity:p.intensity,
+        precipProb:d.hourly.precipitation_probability[bi]??0,humidity:d.hourly.relative_humidity_2m[bi]??0,sky:skyText(code)};
+    }catch(e){ g.weather={unknown:true,sky:'Forecast unavailable'}; }
   }));
 }
+const normTeam=s=>(s||'').toLowerCase().replace(/[^a-z]/g,'');
+function medianOf(arr){ if(!arr.length)return null; const a=[...arr].sort((x,y)=>x-y); return a[Math.floor(a.length/2)]; }
 
-const normTeam = s => (s||'').toLowerCase().replace(/[^a-z]/g,'');
-async function applyOddsAPI(games){
-  const key = localStorage.getItem('uc_oddskey'); if(!key) return null;
-  const book = localStorage.getItem('uc_book') || 'fanduel';
-  const u = `https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/?apiKey=${encodeURIComponent(key)}`
-    + `&regions=us&markets=totals&oddsFormat=american&bookmakers=${book}`;
-  const arr = await fetchJSON(u);
-  const map = {};
-  (arr||[]).forEach(o=>{
-    const bm = (o.bookmakers||[]).find(b=>b.key===book); if(!bm) return;
-    const m = (bm.markets||[]).find(x=>x.key==='totals'); if(!m||!m.outcomes) return;
-    const pt = m.outcomes[0] && m.outcomes[0].point; if(pt!=null) map[normTeam(o.home_team)] = +pt;
-  });
-  const label = book==='fanduel' ? 'FanDuel' : 'DraftKings';
-  games.forEach(g=>{ const pt = map[normTeam(g.home)]; if(pt!=null){ g.marketTotal=pt; g.liveTotal=pt; g.book=label; } });
-  return label;
+async function applyOdds(games){
+  const key=localStorage.getItem('uc_oddskey'); if(!key) return;
+  const book=localStorage.getItem('uc_book')||'fanduel';
+  const u=`https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/?apiKey=${encodeURIComponent(key)}`
+    +`&regions=us,eu&markets=totals,spreads&oddsFormat=american&bookmakers=${ODDS_BOOKS}`;
+  const arr=await fetchJSON(u,12000); const byTeam={};
+  (arr||[]).forEach(o=>{ const tot={},spr={};
+    (o.bookmakers||[]).forEach(b=>{ (b.markets||[]).forEach(m=>{
+      if(m.key==='totals'){ const ov=(m.outcomes||[]).find(x=>x.name==='Over'); if(ov&&ov.point!=null)tot[b.key]=+ov.point; }
+      if(m.key==='spreads'){ const h=(m.outcomes||[]).find(x=>x.name===o.home_team); if(h&&h.point!=null)spr[b.key]=+h.point; } }); });
+    byTeam[normTeam(o.home_team)]={tot,spr}; });
+  const label=book==='fanduel'?'FanDuel':'DraftKings';
+  games.forEach(g=>{ const rec=byTeam[normTeam(g.home)]; if(!rec)return; const tot=rec.tot;
+    if(tot[book]!=null){ g.marketTotal=tot[book]; g.liveTotal=tot[book]; g.book=label; }
+    if(tot[CFG.sharpBook]!=null) g.sharpTotal=tot[CFG.sharpBook];
+    g.medianTotal=medianOf(Object.values(tot));
+    g.spread=medianOf(Object.values(rec.spr)); });
+}
+async function applyLineMovement(games){
+  const key=localStorage.getItem('uc_oddskey'); if(!key||localStorage.getItem('uc_linemove')==='0') return;
+  const book=localStorage.getItem('uc_book')||'fanduel';
+  const earliest=Math.min(...games.map(g=>g.kickSort).filter(Boolean)); if(!isFinite(earliest)) return;
+  const date=new Date(earliest-5*864e5).toISOString().slice(0,19)+'Z';
+  const u=`https://api.the-odds-api.com/v4/historical/sports/americanfootball_nfl/odds/?apiKey=${encodeURIComponent(key)}`
+    +`&regions=us&markets=totals&oddsFormat=american&bookmakers=${book}&date=${encodeURIComponent(date)}`;
+  const snap=await fetchJSON(u,12000); const data=(snap&&snap.data)?snap.data:[]; const byTeam={};
+  data.forEach(o=>{ const bm=(o.bookmakers||[]).find(b=>b.key===book); if(!bm)return; const m=(bm.markets||[]).find(x=>x.key==='totals');
+    const ov=m&&(m.outcomes||[]).find(x=>x.name==='Over'); if(ov&&ov.point!=null)byTeam[normTeam(o.home_team)]=+ov.point; });
+  games.forEach(g=>{ const p=byTeam[normTeam(g.home)]; if(p!=null)g.openTotal=p; });
 }
 
-/* ---------- SAMPLE fallback (used when live fetch is blocked) ---------- */
+/* ---------- SAMPLE (sandbox fallback) ---------- */
 function sampleGames(){
-  const w=(tempF,windMph,gust,precipType,precipIntensity,precipProb,humidity,sky)=>
-    ({tempF,windMph,gust,precipType,precipIntensity,precipProb,humidity,sky});
-  const g=(away,home,awayAb,homeAb,venue,city,roof,kick,kickSort,mkt,live,weather)=>
-    ({id:awayAb+homeAb,away,home,awayAb,homeAb,venue,city,roof,kick,kickSort,
-      marketTotal:mkt,liveTotal:live,book:'Consensus',weather,live:{state:'pre'}});
+  const wx=(tempF,windMph,gust,precipType,precipIntensity,precipProb,humidity,sky)=>({tempF,windMph,gust,precipType,precipIntensity,precipProb,humidity,sky});
+  const D='2026-09-13', PM='2026-09-14', MON='2026-09-15';
+  const mk=o=>({book:'FanDuel',live:{state:'pre'},...o});
   return [
-    g('Jets','Bills','NYJ','BUF','Highmark Stadium','Orchard Park, NY','open','Sun 1:00 PM ET',1,45.5,41.5, w(58,24,33,'rain','light',55,78,'Windy, showers off Lake Erie')),
-    g('Bengals','Browns','CIN','CLE','Huntington Bank Field','Cleveland, OH','open','Sun 1:00 PM ET',1,46.5,44.5, w(61,19,26,'none','none',15,64,'Breezy lakefront, clouds')),
-    g('Packers','Bears','GB','CHI','Soldier Field','Chicago, IL','open','Sun 1:00 PM ET',1,43.5,42.5, w(66,16,22,'rain','light',40,70,'Gusty off the lake, passing showers')),
-    g('Commanders','Buccaneers','WAS','TB','Raymond James Stadium','Tampa, FL','open','Sun 4:05 PM ET',3,49.5,48.5, w(91,11,15,'rain','moderate',65,80,'Afternoon thunderstorms, humid')),
-    g('Broncos','Seahawks','DEN','SEA','Lumen Field','Seattle, WA','open','Sun 4:25 PM ET',4,44.5,43.5, w(60,13,18,'rain','moderate',70,82,'Steady Pacific NW rain')),
-    g('Dolphins','Jaguars','MIA','JAX','EverBank Stadium','Jacksonville, FL','open','Sun 1:00 PM ET',1,48.5,47.5, w(94,6,9,'none','none',20,74,'Hot & humid, midday sun')),
-    g('Steelers','Giants','PIT','NYG','MetLife Stadium','East Rutherford, NJ','open','Sun 1:00 PM ET',1,41.5,40.5, w(69,12,17,'none','none',10,58,'Partly cloudy, light breeze')),
-    g('Lions','Vikings','DET','MIN','U.S. Bank Stadium','Minneapolis, MN','dome','Sun 1:00 PM ET',1,51.5,50.5, {indoorNeutral:true}),
-    g('Chiefs','Chargers','KC','LAC','SoFi Stadium','Inglewood, CA','fixed','Sun 8:20 PM ET',6,47.5,46.5, {indoorNeutral:true}),
-    g('Panthers','Cardinals','CAR','ARI','State Farm Stadium','Glendale, AZ','retractable','Sun 4:25 PM ET',4,45.5,44.5, {indoorNeutral:true}),
-    g('Eagles','Cowboys','PHI','DAL','AT&T Stadium','Arlington, TX','retractable','Sun 8:20 PM ET',6,49.5,48.5, {indoorNeutral:true})
+    mk({id:'NYJBUF',away:'New York Jets',home:'Buffalo Bills',awayAb:'NYJ',homeAb:'BUF',venue:'Highmark Stadium',city:'Orchard Park, NY',roof:'open',
+      kick:'Sun 1:00 PM ET',kickISO:D+'T17:00:00Z',kickSort:Date.parse(D+'T17:00:00Z'),
+      marketTotal:45.5,liveTotal:41.5,sharpTotal:44.5,openTotal:45.0,spread:-2.5,
+      weather:wx(58,24,33,'rain','light',55,78,'Windy, showers off Lake Erie')}),
+    mk({id:'PHIDAL',away:'Philadelphia Eagles',home:'Dallas Cowboys',awayAb:'PHI',homeAb:'DAL',venue:'AT&T Stadium',city:'Arlington, TX',roof:'retractable',
+      kick:'Sun 8:20 PM ET',kickISO:PM+'T00:20:00Z',kickSort:Date.parse(PM+'T00:20:00Z'),
+      marketTotal:49.5,liveTotal:48.5,sharpTotal:47.5,openTotal:47.5,spread:-1.5,weather:{indoorNeutral:true}}),
+    mk({id:'KCLAC',away:'Kansas City Chiefs',home:'Los Angeles Chargers',awayAb:'KC',homeAb:'LAC',venue:'SoFi Stadium',city:'Inglewood, CA',roof:'fixed',
+      kick:'Sun 8:20 PM ET',kickISO:PM+'T00:20:00Z',kickSort:Date.parse(PM+'T00:20:00Z'),
+      marketTotal:47.5,liveTotal:46.5,sharpTotal:47.0,openTotal:46.5,spread:-3,weather:{indoorNeutral:true}}),
+    mk({id:'CINCLE',away:'Cincinnati Bengals',home:'Cleveland Browns',awayAb:'CIN',homeAb:'CLE',venue:'Huntington Bank Field',city:'Cleveland, OH',roof:'open',
+      kick:'Sun 1:00 PM ET',kickISO:D+'T17:00:00Z',kickSort:Date.parse(D+'T17:00:00Z'),
+      marketTotal:46.5,liveTotal:44.5,sharpTotal:46.0,openTotal:46.0,spread:-3,weather:wx(61,19,26,'none','none',15,64,'Breezy lakefront, clouds')}),
+    mk({id:'GBCHI',away:'Green Bay Packers',home:'Chicago Bears',awayAb:'GB',homeAb:'CHI',venue:'Soldier Field',city:'Chicago, IL',roof:'open',
+      kick:'Sun 1:00 PM ET',kickISO:D+'T17:00:00Z',kickSort:Date.parse(D+'T17:00:00Z'),
+      marketTotal:43.5,liveTotal:42.5,sharpTotal:43.0,openTotal:43.5,spread:-1.5,weather:wx(66,16,22,'rain','light',40,70,'Gusty off the lake, showers')}),
+    mk({id:'WASTB',away:'Washington Commanders',home:'Tampa Bay Buccaneers',awayAb:'WAS',homeAb:'TB',venue:'Raymond James Stadium',city:'Tampa, FL',roof:'open',
+      kick:'Sun 4:05 PM ET',kickISO:D+'T20:05:00Z',kickSort:Date.parse(D+'T20:05:00Z'),
+      marketTotal:49.5,liveTotal:48.5,sharpTotal:48.5,openTotal:48.0,spread:-5,weather:wx(91,11,15,'rain','moderate',65,80,'Afternoon thunderstorms, humid')}),
+    mk({id:'DETMIN',away:'Detroit Lions',home:'Minnesota Vikings',awayAb:'DET',homeAb:'MIN',venue:'U.S. Bank Stadium',city:'Minneapolis, MN',roof:'dome',
+      kick:'Sun 1:00 PM ET',kickISO:D+'T17:00:00Z',kickSort:Date.parse(D+'T17:00:00Z'),
+      marketTotal:51.5,liveTotal:50.5,sharpTotal:50.5,openTotal:50.0,spread:-1,weather:{indoorNeutral:true}}),
+    mk({id:'SFNYG',away:'San Francisco 49ers',home:'New York Giants',awayAb:'SF',homeAb:'NYG',venue:'MetLife Stadium',city:'East Rutherford, NJ',roof:'open',
+      kick:'Sun 1:00 PM ET',kickISO:D+'T17:00:00Z',kickSort:Date.parse(D+'T17:00:00Z'),
+      marketTotal:44.5,liveTotal:43.5,sharpTotal:43.5,openTotal:43.5,spread:-3,weather:wx(70,10,14,'none','none',12,58,'Mild, light breeze')}),
+    mk({id:'MIAJAX',away:'Miami Dolphins',home:'Jacksonville Jaguars',awayAb:'MIA',homeAb:'JAX',venue:'EverBank Stadium',city:'Jacksonville, FL',roof:'open',
+      kick:'Sun 1:00 PM ET',kickISO:D+'T17:00:00Z',kickSort:Date.parse(D+'T17:00:00Z'),
+      marketTotal:48.5,liveTotal:47.5,sharpTotal:48.5,openTotal:48.0,spread:1.5,weather:wx(94,6,9,'none','none',20,74,'Hot & humid, midday sun')}),
+    mk({id:'DENSEA',away:'Denver Broncos',home:'Seattle Seahawks',awayAb:'DEN',homeAb:'SEA',venue:'Lumen Field',city:'Seattle, WA',roof:'open',
+      kick:'Mon 8:15 PM ET',kickISO:MON+'T00:15:00Z',kickSort:Date.parse(MON+'T00:15:00Z'),
+      marketTotal:44.5,liveTotal:43.5,sharpTotal:44.0,openTotal:44.0,spread:-1,weather:wx(60,13,18,'rain','moderate',70,82,'Steady Pacific NW rain')})
   ];
 }
 
 /* ---------- STATE ---------- */
-const STATE = { games:[], live:false, loading:true, err:null, week:null, season:null };
-let MODE='pre', TAB='games';
-
-function setLoading(on){
-  STATE.loading = on;
-  const ds = document.getElementById('dstat'), rb = document.getElementById('refreshBtn');
-  if(on){ ds.className='dstat load'; document.getElementById('dstatTxt').textContent='Loading live data…'; rb.classList.add('spin'); }
-  else rb.classList.remove('spin');
-}
-function setStatus(){
-  const ds=document.getElementById('dstat'), txt=document.getElementById('dstatTxt');
+const STATE={games:[],live:false,loading:true,week:null,season:null};
+let MODE='pre',TAB='games';
+function setLoading(on){ STATE.loading=on; const ds=document.getElementById('dstat'),rb=document.getElementById('refreshBtn');
+  if(on){ ds.className='dstat load'; document.getElementById('dstatTxt').textContent='Loading live data…'; rb.classList.add('spin'); } else rb.classList.remove('spin'); }
+function setStatus(){ const ds=document.getElementById('dstat'),txt=document.getElementById('dstatTxt');
+  const hasKey=!!localStorage.getItem('uc_oddskey');
   if(STATE.live){ ds.className='dstat on';
-    txt.innerHTML = 'Live · <b>ESPN + Open-Meteo</b> · totals from ' + (STATE.games[0]?.book||'consensus'); }
-  else { ds.className='dstat off';
-    txt.innerHTML = 'Sample slate · <b>deploy to your site for live data</b>'; }
-}
+    txt.innerHTML = hasKey ? 'Live · ESPN + Open-Meteo + <b>The Odds API</b> (sharp lines on)'
+                           : 'Live · ESPN + Open-Meteo · <b>add an odds key for sharp lines</b>'; }
+  else { ds.className='dstat off'; txt.innerHTML='Sample slate · <b>deploy + add odds key for live data</b>'; } }
 
 async function loadData(){
   setLoading(true); renderSkeleton();
-  try{
-    const d = await fetchJSON(ESPN_URL, 9000);
-    const games = buildGamesFromESPN(d);
-    if(!games.length) throw new Error('no games');
-    STATE.week = d.week && d.week.number; STATE.season = d.season && d.season.year;
+  try{ const d=await fetchJSON(ESPN_URL,9000); const games=buildGamesFromESPN(d); if(!games.length)throw new Error('no games');
+    STATE.week=d.week&&d.week.number; STATE.season=d.season&&d.season.year;
     await attachWeather(games);
-    try{ await applyOddsAPI(games); }catch(e){ /* keep consensus totals */ }
-    STATE.games=games; STATE.live=true; STATE.err=null;
-  }catch(e){
-    STATE.games = sampleGames(); STATE.live=false; STATE.err=e.message;
-    STATE.week=1; STATE.season=2026;
-  }
-  setLoading(false);
-  renderAll();
+    try{ await applyOdds(games); }catch(e){}
+    try{ await applyLineMovement(games); }catch(e){}
+    STATE.games=games; STATE.live=true;
+  }catch(e){ STATE.games=sampleGames(); STATE.live=false; STATE.week=1; STATE.season=2026; }
+  setLoading(false); renderAll();
 }
 
 /* ---------- SETTINGS ---------- */
-function openSettings(){
-  document.getElementById('oddsKey').value = localStorage.getItem('uc_oddskey')||'';
-  document.getElementById('bookSel').value = localStorage.getItem('uc_book')||'fanduel';
-  document.getElementById('settings').classList.add('open');
-}
+function openSettings(){ document.getElementById('oddsKey').value=localStorage.getItem('uc_oddskey')||'';
+  document.getElementById('bookSel').value=localStorage.getItem('uc_book')||'fanduel';
+  document.getElementById('lineMove').checked=localStorage.getItem('uc_linemove')!=='0';
+  document.getElementById('settings').classList.add('open'); }
 function closeSettings(){ document.getElementById('settings').classList.remove('open'); }
-function saveSettings(){
-  const k=document.getElementById('oddsKey').value.trim();
-  if(k) localStorage.setItem('uc_oddskey',k); else localStorage.removeItem('uc_oddskey');
-  localStorage.setItem('uc_book', document.getElementById('bookSel').value);
-  closeSettings(); loadData();
-}
-function clearSettings(){
-  localStorage.removeItem('uc_oddskey'); localStorage.removeItem('uc_book');
-  document.getElementById('oddsKey').value=''; closeSettings(); loadData();
-}
+function saveSettings(){ const k=document.getElementById('oddsKey').value.trim();
+  if(k)localStorage.setItem('uc_oddskey',k); else localStorage.removeItem('uc_oddskey');
+  localStorage.setItem('uc_book',document.getElementById('bookSel').value);
+  localStorage.setItem('uc_linemove',document.getElementById('lineMove').checked?'1':'0');
+  closeSettings(); loadData(); }
+function clearSettings(){ ['uc_oddskey','uc_book','uc_linemove'].forEach(k=>localStorage.removeItem(k));
+  document.getElementById('oddsKey').value=''; closeSettings(); loadData(); }
 
 /* ---------- RENDER ---------- */
-function setMode(m){
-  MODE=m;
-  document.getElementById('mPre').classList.toggle('on', m==='pre');
-  document.getElementById('mLive').classList.toggle('on', m==='live');
-  renderAll();
-}
-function setTab(t, btn){
-  TAB=t;
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  ['games','locks','method'].forEach(x=>document.getElementById('tab-'+x).style.display=(x===t)?'block':'none');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function evaluated(){ return STATE.games.map(g=>({...g, e:computeEdge({...g, mode:MODE})})); }
+function setMode(m){ MODE=m; document.getElementById('mPre').classList.toggle('on',m==='pre');
+  document.getElementById('mLive').classList.toggle('on',m==='live'); renderAll(); }
+function setTab(t,btn){ TAB=t; document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on')); btn.classList.add('on');
+  ['games','locks','method'].forEach(x=>document.getElementById('tab-'+x).style.display=(x===t)?'block':'none'); window.scrollTo({top:0,behavior:'smooth'}); }
+function evaluated(){ return STATE.games.map(evaluate); }
+function renderSkeleton(){ document.getElementById('gameList').innerHTML='<div class="sk"></div>'.repeat(5);
+  ['sUnders','sInfl','sStack'].forEach(id=>document.getElementById(id).textContent='–'); }
 
-function renderSkeleton(){
-  document.getElementById('gameList').innerHTML = '<div class="sk"></div>'.repeat(5);
-  document.getElementById('sGames').textContent='–';
-  document.getElementById('sUnders').textContent='–';
-  document.getElementById('sBig').textContent='–';
-}
-function chip(cls, active, icon, text){ return `<span class="chip ${cls} ${active?'act':''}">${icon} ${text}</span>`; }
-
-function wxChips(g){
-  const w=g.weather||{}, e=g.e;
-  if(e.indoor || w.indoorNeutral){
-    const label = g.roof==='dome'?'Indoor dome':g.roof==='fixed'?'Fixed roof':'Roof closed';
-    return chip('indoor',false,'🏟️', label+' · weather neutral');
-  }
+function chip(cls,active,icon,text){ return `<span class="chip ${cls} ${active?'act':''}">${icon} ${text}</span>`; }
+function wxChips(G){ const w=G.weather||{},we=G.we;
+  if(we.indoor||w.indoorNeutral){ const label=G.roof==='dome'?'Indoor dome':G.roof==='fixed'?'Fixed roof':'Roof closed';
+    return chip('indoor',false,'🏟️',label+' · weather neutral'); }
   if(w.unknown) return chip('indoor',false,'🌫️','Forecast unavailable');
-  let out='';
-  out += chip('wind', e.comps.wind>0, '🌬️', `${w.windMph} mph`+(w.gust>w.windMph?` · G${w.gust}`:''));
-  const coldZone = e.feelsF<=34 || w.tempF<=32;
-  if(coldZone) out += chip('cold', e.comps.cold>0,'❄️',
-    e.chillApplied ? `${w.tempF}° · feels ${e.feelsF}°` : `${w.tempF}°F`);
-  else if(w.tempF>=85) out += chip('hot', e.comps.heat>0,'🔥',`${w.tempF}°F`);
-  else out += chip('',false,'🌡️',`${w.tempF}°F`);
-  if(w.precipType==='rain') out += chip('rain', e.comps.precip>0,'🌧️',`${w.precipIntensity} rain`);
-  else if(w.precipType==='snow') out += chip('snow', e.comps.precip>0,'🌨️',`${w.precipIntensity} snow`);
-  return out;
-}
-function compRow(icon,name,detail,val){
-  const active=val>0, pct=Math.min(val/3.6*100,100);
-  return `<div class="comp"><span class="ci">${icon}</span>
-    <span class="cn"><b>${name}</b> ${detail?`· ${detail}`:''}</span>
-    ${active?`<span class="track"><i style="width:${pct}%"></i></span>`:''}
-    <span class="cv ${active?'neg':'zero'}">${active?'−'+val.toFixed(1):'0'}</span></div>`;
-}
-function whyHTML(g){
-  const e=g.e, w=g.weather||{};
-  if(e.indoor || w.indoorNeutral){
-    return `<div class="why" id="why-${g.id}"><h5>Why — weather breakdown</h5>
-      <div class="comp"><span class="ci">🏟️</span><span class="cn">
-      Venue is ${g.roof==='dome'?'a dome':g.roof==='fixed'?'a fixed-roof stadium':'roof-closed'}.
-      Weather is sealed out, so the model applies <b>no adjustment</b>.</span><span class="cv zero">0</span></div>
-      <div class="wsum"><span>Adjusted total</span>
-      <b>${e.hasLine?e.adjusted:'—'} <span style="color:var(--dim);font-size:.8rem">(no edge)</span></b></div></div>`;
-  }
-  if(w.unknown){
-    return `<div class="why" id="why-${g.id}"><h5>Why</h5>
-      <div class="comp"><span class="ci">🌫️</span><span class="cn">Forecast wasn't available for this venue
-      at kickoff, so no weather adjustment was applied.</span><span class="cv zero">0</span></div></div>`;
-  }
-  return `<div class="why" id="why-${g.id}"><h5>Why — weather breakdown</h5>
-    ${compRow('🌬️','Wind',`${w.windMph} mph sustained`,e.comps.wind)}
-    ${compRow(w.precipType==='snow'?'🌨️':'🌧️','Precip',
-        w.precipType==='none'?'none':`${w.precipIntensity} ${w.precipType}`,e.comps.precip)}
-    ${compRow('❄️','Cold',
-        e.chillApplied ? `feels ${e.feelsF}°F · wind chill from ${w.tempF}°`
-                       : (e.feelsF<32?`${w.tempF}°F`:'above 32°F'), e.comps.cold)}
-    ${compRow('🔥','Heat', w.tempF>85?`${w.tempF}°F`:'below 85°F', e.comps.heat)}
-    <div class="wsum">
-      <span>Market <b style="color:var(--dim)">${e.hasLine?e.market:'—'}</b> − Penalty <b style="color:var(--under)">${e.penalty}</b></span>
-      <b class="cond">= ${e.hasLine?e.adjusted:'—'}</b></div>
-    <div class="forecast">📡 ${w.sky} · ${w.precipProb}% precip · ${w.humidity}% humidity</div></div>`;
-}
-function paceStrip(g){
-  const L=g.live; if(MODE!=='live'||!L||L.state!=='in'||L.pace==null) return '';
-  const u = g.e.hasLine && L.pace < g.e.market;
-  return `<div class="pace">
-    <span class="pl">Score</span><span class="pv">${L.awayScore}–${L.homeScore}</span>
+  let out=chip('wind',we.comps.wind>0,'🌬️',`${w.windMph} mph`+(w.gust>w.windMph?` · G${w.gust}`:''));
+  const coldZone=we.feelsF<=34||w.tempF<=32;
+  if(coldZone) out+=chip('cold',we.comps.cold>0,'❄️',we.chillApplied?`${w.tempF}° · feels ${we.feelsF}°`:`${w.tempF}°F`);
+  else if(w.tempF>=85) out+=chip('hot',we.comps.heat>0,'🔥',`${w.tempF}°F`);
+  else out+=chip('',false,'🌡️',`${w.tempF}°F`);
+  if(w.precipType==='rain') out+=chip('rain',we.comps.precip>0,'🌧️',`${w.precipIntensity} rain`);
+  else if(w.precipType==='snow') out+=chip('snow',we.comps.precip>0,'🌨️',`${w.precipIntensity} snow`);
+  return out; }
+
+function compRow(icon,name,detail,val,pos){ const active=Math.abs(val)>0.001,pct=Math.min(Math.abs(val)/3.6*100,100);
+  const cls=pos?'pos':'neg', bar=pos?'p':'u', sign=val<0?'+':(pos?'+':'−');
+  return `<div class="comp"><span class="ci">${icon}</span><span class="cn"><b>${name}</b> ${detail?`· ${detail}`:''}</span>
+    ${active?`<span class="track"><i class="${bar}" style="width:${pct}%"></i></span>`:''}
+    <span class="cv ${active?cls:'zero'}">${active?sign+Math.abs(val).toFixed(2).replace(/\.?0+$/,''):'0'}</span></div>`; }
+
+function infTier(pts){ return pts>=2?'s3':pts>=1?'s2':pts>0.01?'s1':'s0'; }
+
+function whyHTML(G){ const we=G.we,w=G.weather||{},inf=G.inf;
+  // Inflation block
+  let infRows='';
+  if(inf.hasSharp || inf.marketInflation!==0) infRows+=compRow('🅢','Book vs. Sharp',
+    `${G.retail} vs ${inf.sharp} (Pinnacle)`, inf.marketInflation, true);
+  else infRows+=`<div class="comp"><span class="ci">🅢</span><span class="cn"><b>Book vs. Sharp</b> · add an odds key to unlock</span><span class="cv zero">—</span></div>`;
+  if(G.openTotal!=null) infRows+=compRow('📈','Line move',`opened ${G.openTotal} → ${G.retail}`, +(Math.max(0,inf.lineMove)*0.6).toFixed(2), true);
+  inf.sit.forEach(([ic,label,v])=>{ infRows+=compRow(ic,label,'',v,true); });
+
+  const weatherRows = (we.indoor||w.indoorNeutral)
+    ? `<div class="comp"><span class="ci">🏟️</span><span class="cn">${G.roof==='dome'?'Dome':G.roof==='fixed'?'Fixed roof':'Roof closed'} — weather sealed out</span><span class="cv zero">0</span></div>`
+    : w.unknown ? `<div class="comp"><span class="ci">🌫️</span><span class="cn">Forecast unavailable</span><span class="cv zero">0</span></div>`
+    : compRow('🌬️','Wind',`${w.windMph} mph`,we.comps.wind,false)
+      + compRow(w.precipType==='snow'?'🌨️':'🌧️','Precip',w.precipType==='none'?'none':`${w.precipIntensity} ${w.precipType}`,we.comps.precip,false)
+      + compRow('❄️','Cold',we.chillApplied?`feels ${we.feelsF}°F`:(we.feelsF<32?`${w.tempF}°F`:'—'),we.comps.cold,false)
+      + compRow('🔥','Heat',w.tempF>85?`${w.tempF}°F`:'—',we.comps.heat,false);
+
+  const forecast = (!we.indoor&&!w.indoorNeutral&&!w.unknown)
+    ? `<div class="forecast">📡 ${w.sky} · ${w.precipProb}% precip · ${w.humidity}% humidity</div>` : '';
+
+  return `<div class="why" id="why-${G.id}">
+    <h5>Inflation — market signals <span class="sub">Score ${inf.score}/100</span></h5>
+    ${infRows}
+    <div class="wsum"><span>Inflation subtotal (pre-weather)</span><b class="cond" style="color:var(--infl)">+${inf.inflationPts}</b></div>
+    <h5>Weather <span class="sub">${we.penalty>0?`model −${we.penalty} · 40% unpriced`:'no weather'}</span></h5>
+    ${weatherRows}
+    <div class="wsum"><span>Unpriced weather added</span><b class="cond" style="color:var(--under)">+${G.residualWeather}</b></div>
+    ${forecast}
+    <div class="fairbox"><span class="fl">Fair total ${G.hasLine?`= ${G.retail} − ${G.totalEdge}`:''}</span>
+      <span class="fv">${G.hasLine?G.fair:'—'}</span></div>
+  </div>`; }
+
+function paceStrip(G){ const L=G.live; if(MODE!=='live'||!L||L.state!=='in'||L.pace==null)return '';
+  const u=G.hasLine&&L.pace<G.retail;
+  return `<div class="pace"><span class="pl">Score</span><span class="pv">${L.awayScore}–${L.homeScore}</span>
     <span class="pl">Pace</span><span class="pv">${L.pace}</span>
-    ${g.e.hasLine?`<span class="tag2 ${u?'u':'o'}">${u?'▼ Trending under':'▲ Over pace'}</span>`:''}</div>`;
-}
-function gameCard(g){
-  const e=g.e;
-  const cls = e.lean==='under' ? (e.penalty>=3?'game lean strong':'game lean') : 'game';
-  const barPct = Math.min(e.penalty/5*100,100);
-  const leanPill = e.lean==='under' ? `<span class="leanpill u">▼ Under</span>`
-    : `<span class="leanpill n">${e.hasLine?'No edge':'No line'}</span>`;
-  const L=g.live, liveTag = (MODE==='live'&&L&&L.state==='in') ? `<span class="livedot">LIVE Q${L.period}</span>`
-    : (L&&L.state==='post') ? `<span style="color:var(--dim)">Final</span>` : '';
+    ${G.hasLine?`<span class="tag2 ${u?'u':'o'}">${u?'▼ Trending under':'▲ Over pace'}</span>`:''}</div>`; }
+
+function gameCard(G){ const inf=G.inf,we=G.we;
+  let cls='game'; if(G.stacked)cls+=' stackedcard'; else if(G.lean==='under')cls+=(G.totalEdge>=3?' strong':' lean');
+  const leanPill=G.lean==='under'?`<span class="leanpill u">▼ Under</span>`:`<span class="leanpill n">${G.hasLine?'No edge':'No line'}</span>`;
+  const L=G.live, liveTag=(MODE==='live'&&L&&L.state==='in')?`<span class="livedot">LIVE Q${L.period}</span>`:(L&&L.state==='post')?`<span style="color:var(--dim)">Final</span>`:'';
+  const tier=infTier(inf.inflationPts);
+  const sigChips=inf.sit.slice(0,3).map(s=>`<span class="sig">${s[0]}</span>`).join('')
+    + (G.openTotal!=null&&inf.lineMove>0?`<span class="sig">📈 +${inf.lineMove}</span>`:'');
+  const inflBadge = inf.hasSharp
+    ? `<span class="infbadge ${tier}">▲ Inflated +${inf.inflationPts}</span>`
+    : `<span class="infbadge ${tier}">▲ Infl +${inf.inflationPts} <span style="opacity:.6">(no sharp)</span></span>`;
+  const weBar=Math.min(G.residualWeather/2*100,100), inBar=Math.min(Math.max(inf.inflationPts,0)/3*100,100);
   return `<div class="${cls}">
     <div class="g-top">
       <div class="g-main">
-        <div class="g-match">${g.awayAb} <span class="at">@</span> ${g.homeAb}
-          ${liveTag?`<span class="sc">${liveTag}</span>`:''}</div>
-        <div class="g-meta">
-          <span>${g.kick}</span>
-          <span class="roofpill">${g.roof==='open'?'Outdoor':g.roof==='dome'?'Dome':g.roof==='fixed'?'Fixed roof':'Retractable'}</span>
-          <span>${g.venue||g.city}</span>
-        </div>
-        <div class="wx">${wxChips(g)}</div>
+        <div class="g-match">${G.awayAb} <span class="at">@</span> ${G.homeAb}${liveTag?`<span class="sc">${liveTag}</span>`:''}</div>
+        <div class="g-meta"><span>${G.kick}</span>
+          <span class="roofpill">${G.roof==='open'?'Outdoor':G.roof==='dome'?'Dome':G.roof==='fixed'?'Fixed roof':'Retract.'}</span>
+          <span>${G.venue||G.city}</span></div>
+        <div class="wx">${wxChips(G)}</div>
       </div>
       <div class="g-edge">
-        <div class="lbl">Adj / Mkt</div>
-        <div class="totals">
-          ${(e.hasLine&&e.penalty>0)?`<span class="mkt">${e.market}</span>`:''}
-          <span class="adj ${e.lean==='under'?'u':''}">${e.hasLine?e.adjusted:'—'}</span>
-        </div>
+        <div class="lbl">Fair / Book</div>
+        <div class="totals">${G.hasLine&&G.totalEdge>0?`<span class="mkt">${G.retail}</span>`:''}<span class="adj ${G.lean==='under'?'u':''}">${G.hasLine?G.fair:'—'}</span></div>
         ${leanPill}
-        ${e.hasLine?`<div class="bookline">${g.book}</div>`:''}
+        <div class="trio">${inf.sharp!=null?`<span class="sh">Sharp <b>${inf.sharp}</b></span>`:''}<span>${G.book} <b>${G.hasLine?G.retail:'—'}</b></span></div>
       </div>
     </div>
-    <div class="edgebar"><i style="width:${barPct}%"></i></div>
-    ${paceStrip(g)}
-    <button class="why-btn" onclick="toggleWhy('${g.id}',this)">
-      ${e.penalty>0?`Weather edge −${e.penalty} pts`:'No weather edge'} · Why <span class="cx">▾</span></button>
-    ${whyHTML(g)}
-  </div>`;
-}
-function toggleWhy(id,btn){
-  const el=document.getElementById('why-'+id); el.classList.toggle('open');
-  btn.querySelector('.cx').style.transform = el.classList.contains('open')?'rotate(180deg)':'';
-}
+    <div class="edgebar"><i class="in" style="width:${inBar}%"></i></div>
+    <div class="infstrip">${inflBadge}${sigChips}${G.stacked?`<span class="stacked">🔥 Stacked</span>`:''}</div>
+    ${paceStrip(G)}
+    <button class="why-btn" onclick="toggleWhy('${G.id}',this)">${G.hasLine?`Fair ${G.fair} vs book ${G.retail}`:'Breakdown'} · Why <span class="cx">▾</span></button>
+    ${whyHTML(G)}
+  </div>`; }
 
-function renderGames(){
-  if(STATE.loading){ renderSkeleton(); return; }
-  const list = evaluated();
-  const sort = document.getElementById('sortSel').value;
-  list.sort((a,b)=>{
-    if(sort==='wind') return (b.weather?.windMph||0)-(a.weather?.windMph||0);
-    if(sort==='time') return a.kickSort-b.kickSort;
-    return b.e.penalty-a.e.penalty;
-  });
-  document.getElementById('gameList').innerHTML =
-    list.map(gameCard).join('') || '<div class="empty">No games on the board right now.<br>Check back closer to game day.</div>';
-  const unders=list.filter(g=>g.e.lean==='under');
-  document.getElementById('sGames').textContent=list.length;
-  document.getElementById('sUnders').textContent=unders.length;
-  document.getElementById('sBig').textContent=list.filter(g=>g.e.penalty>=3).length;
-}
-function ring(pct,color){
-  const r=20,c=2*Math.PI*r,off=c*(1-pct/100);
-  return `<svg class="ring" viewBox="0 0 48 48">
-    <circle cx="24" cy="24" r="${r}" fill="none" stroke="var(--panel2)" stroke-width="5"/>
-    <circle cx="24" cy="24" r="${r}" fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round"
-      stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 24 24)"/>
-    <text x="24" y="28" text-anchor="middle" fill="var(--txt)" font-size="13"
-      font-family="Barlow Condensed" font-weight="700">${pct}</text></svg>`;
-}
-function renderLocks(){
-  if(STATE.loading) return;
-  const unders = evaluated().filter(g=>g.e.lean==='under').sort((a,b)=>b.e.penalty-a.e.penalty);
-  document.getElementById('lockList').innerHTML = unders.length ? unders.map((g,i)=>`
-    <div class="lock"><div class="rank">${i+1}</div>
-      <div class="li"><div class="lm">${g.awayAb} @ ${g.homeAb}</div>
-        <div class="lsub">${g.kick} · ${g.venue} · −${g.e.penalty} pts weather</div>
-        <div class="bet">▼ UNDER ${g.e.market} &nbsp;→&nbsp; model ${g.e.adjusted}</div></div>
-      <div class="conv">${ring(g.e.conviction,'var(--under)')}<div class="cl">Conviction</div></div></div>`).join('')
-    : '<div class="empty">No weather unders on this slate.<br>Clean-air week — the model stands down. 🌤️</div>';
+function toggleWhy(id,btn){ const el=document.getElementById('why-'+id); el.classList.toggle('open');
+  btn.querySelector('.cx').style.transform=el.classList.contains('open')?'rotate(180deg)':''; }
 
-  const box=document.getElementById('parlayList'), combos=[];
-  if(unders.length>=2) combos.push({name:'2-Leg Weather Under', legs:unders.slice(0,2), feat:true});
-  if(unders.length>=3) combos.push({name:'3-Leg Weather Under', legs:unders.slice(0,3), feat:false});
-  box.innerHTML = combos.length ? combos.map(c=>{
-    const conv=Math.round(c.legs.reduce((p,g)=>p*(g.e.conviction/100),1)*100);
-    return `<div class="parlay ${c.feat?'feat':''}">
-      <div class="p-h"><span class="pt">${c.name}</span><span class="pc">${conv}% combined</span></div>
-      ${c.legs.map(g=>`<div class="leg"><span class="lg-i">🌬️</span>
-        <span class="lg-t"><b>${g.awayAb} @ ${g.homeAb}</b> <span>· ${g.venue}</span></span>
-        <span class="lg-b">U ${g.e.market}</span></div>`).join('')}
-      <div class="p-foot"><span>Weather points on this ticket</span>
-        <b>−${c.legs.reduce((s,g)=>s+g.e.penalty,0).toFixed(1)} pts total</b></div></div>`;
-  }).join('') : '<div class="empty">Need at least 2 weather unders to build a parlay.</div>';
-}
-function renderAll(){
-  document.getElementById('wkNum').textContent = STATE.week ?? '–';
-  document.getElementById('wkSeason').textContent = STATE.season ?? '–';
-  setStatus(); renderGames(); renderLocks();
-}
+function renderGames(){ if(STATE.loading){ renderSkeleton(); return; }
+  const list=evaluated(); const sort=document.getElementById('sortSel').value;
+  list.sort((a,b)=>{ if(sort==='inflation')return b.inf.inflationPts-a.inf.inflationPts;
+    if(sort==='weather')return b.we.penalty-a.we.penalty;
+    if(sort==='wind')return (b.weather?.windMph||0)-(a.weather?.windMph||0);
+    if(sort==='time')return a.kickSort-b.kickSort; return b.totalEdge-a.totalEdge; });
+  document.getElementById('gameList').innerHTML=list.map(gameCard).join('')||'<div class="empty">No games on the board.</div>';
+  document.getElementById('sUnders').textContent=list.filter(g=>g.lean==='under').length;
+  document.getElementById('sInfl').textContent=list.filter(g=>g.inf.inflationPts>=1).length;
+  document.getElementById('sStack').textContent=list.filter(g=>g.stacked).length; }
 
-/* ---------- BOOT ---------- */
-renderSkeleton();
-loadData();
+function ring(pct,color){ const r=19,c=2*Math.PI*r,off=c*(1-pct/100);
+  return `<svg class="ring" viewBox="0 0 46 46"><circle cx="23" cy="23" r="${r}" fill="none" stroke="var(--panel2)" stroke-width="5"/>
+    <circle cx="23" cy="23" r="${r}" fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 23 23)"/>
+    <text x="23" y="27" text-anchor="middle" fill="var(--txt)" font-size="12" font-family="Barlow Condensed" font-weight="700">${pct}</text></svg>`; }
+
+function renderLocks(){ if(STATE.loading)return;
+  const unders=evaluated().filter(g=>g.lean==='under').sort((a,b)=>b.conv-a.conv);
+  document.getElementById('lockList').innerHTML=unders.length?unders.map((g,i)=>`
+    <div class="lock ${g.stacked?'stackedcard':''}"><div class="rank">${i+1}</div>
+      <div class="li"><div class="lm">${g.awayAb} @ ${g.homeAb} ${g.stacked?'<span class="stacked">🔥 Stacked</span>':''}</div>
+        <div class="lsub">${g.kick} · ${g.venue}</div>
+        <div class="bet">▼ UNDER ${g.retail} &nbsp;→&nbsp; fair ${g.fair}</div>
+        <div class="split"><span class="m">market +${g.inf.inflationPts}</span><span class="w">weather +${g.residualWeather}</span></div></div>
+      <div class="conv">${ring(g.conv,'var(--under)')}<div class="cl">Conviction</div></div></div>`).join('')
+    :'<div class="empty">No under leans on this slate.<br>No inflated lines + clean weather. The model stands down. 🌤️</div>';
+
+  const box=document.getElementById('parlayList'),combos=[];
+  if(unders.length>=2)combos.push({name:'2-Leg Under',legs:unders.slice(0,2),feat:true});
+  if(unders.length>=3)combos.push({name:'3-Leg Under',legs:unders.slice(0,3),feat:false});
+  box.innerHTML=combos.length?combos.map(c=>{ const conv=Math.round(c.legs.reduce((p,g)=>p*(g.conv/100),1)*100);
+    return `<div class="parlay ${c.feat?'feat':''}"><div class="p-h"><span class="pt">${c.name}</span><span class="pc">${conv}% combined</span></div>
+      ${c.legs.map(g=>`<div class="leg"><span class="lg-i">${g.stacked?'🔥':'▼'}</span>
+        <span class="lg-t"><b>${g.awayAb} @ ${g.homeAb}</b> <span>· ${g.venue}</span></span><span class="lg-b">U ${g.retail}</span></div>`).join('')}
+      <div class="p-foot"><span>Total edge on this ticket</span><b>−${c.legs.reduce((s,g)=>s+g.totalEdge,0).toFixed(1)} pts</b></div></div>`;
+  }).join(''):'<div class="empty">Need at least 2 under leans to build a parlay.</div>'; }
+
+function renderAll(){ document.getElementById('wkNum').textContent=STATE.week??'–';
+  document.getElementById('wkSeason').textContent=STATE.season??'–'; setStatus(); renderGames(); renderLocks(); }
+
+renderSkeleton(); loadData();
 </script>
 </body>
 </html>
